@@ -13,7 +13,8 @@ void VypocetBMI()
     cout << "Zadejte vysku (v metrech): ";
     cin >> vyska;
 
-    if (vyska <= 0) {
+    if (vyska <= 0) 
+    {
         cout << "Vyska musi byt vetsi nez nula." << endl;
         return;
     }
@@ -21,13 +22,20 @@ void VypocetBMI()
     bmi = vaha / (vyska * vyska);
     cout << "Vase BMI je: " << bmi << endl;
 
-    if (bmi < 18.5) {
+    if (bmi < 18.5) 
+    {
         cout << "Podvaha" << endl;
-    } else if (bmi >= 18.5 && bmi < 24.9) {
+    } 
+    else if (bmi >= 18.5 && bmi < 24.9) 
+    {
         cout << "Normalni vaha" << endl;
-    } else if (bmi >= 25 && bmi < 29.9) {
+    } 
+    else if (bmi >= 25 && bmi < 29.9) 
+    {
         cout << "Nadvaha" << endl;
-    } else {
+    } 
+    else 
+    {
         cout << "Obezita" << endl;
     }
 }
@@ -45,11 +53,16 @@ void VypocetBMR()
     cout << "Zadejte sve pohlavi (M pro muze, Z pro zeny): ";
     cin >> pohlavi;
 
-    if (pohlavi == 'M' || pohlavi == 'm') {
+    if (pohlavi == 'M' || pohlavi == 'm') 
+    {
         bmr = 66.47 + (13.75 * hmotnost) + (5.003 * vyska) - (6.775 * vek);
-    } else if (pohlavi == 'Z' || pohlavi == 'z') {
+    } 
+    else if (pohlavi == 'Z' || pohlavi == 'z') 
+    {
         bmr = 655.1 + (9.563 * hmotnost) + (1.850 * vyska) - (4.676 * vek);
-    } else {
+    } 
+    else 
+    {
         cout << "Neplatne pohlavi." << endl;
         return;
     }
