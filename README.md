@@ -19,4 +19,5 @@ na konci bude vyhodnocení, tedy počet správných odpovědí a procentuální 
 
        
 Obsažené kategorie: 
+
 podmínky, cykly, vstup a výstup, načítání ze souboru, vektor, náhodnost, měření času, uživatelské rozhraní, filtrování dat, vyhodnocování výsledků, zpracování chyb a kontrola vstupu
