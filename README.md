@@ -20,3 +20,7 @@ na konci bude vyhodnocení, tedy počet správných odpovědí a procentuální 
        
 Obsažené kategorie: 
 podmínky, cykly, vstup a výstup, načítání ze souboru, vektor, náhodnost, měření času, uživatelské rozhraní, filtrování dat, vyhodnocování výsledků, zpracování chyb a kontrola vstupu
+
+![IMG_2037](https://github.com/user-attachments/assets/aace9d88-bc97-44df-a28d-66120142e568)
+
+
