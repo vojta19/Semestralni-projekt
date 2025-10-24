@@ -9,3 +9,5 @@
 107, Adam Novy, 1.9 
 109, Barbora Ticha, 2.8 
 110, Michal Hruby, 1.1
+230, Jan Jansky, 5.0
+240, Frantisek Illes, 0.0
