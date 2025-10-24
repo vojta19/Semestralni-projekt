@@ -6,6 +6,6 @@
 107, Adam Novy,1.9
 105, Petra Svobodova,2.1
 106, Lucie Pokorna,2.5
-150,Jaroslav Veselý,2.5
+111,Jaroslav Vesely,2.5
 109, Barbora Ticha,2.8
 104, Eva Kralova,3

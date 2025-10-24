@@ -176,11 +176,16 @@ int main()
     std::cout << "\n";
     
     // Přidání nového záznamu
-    Student novyStudent = {150, "Jaroslav Veselý", 2.5};
+    Student novyStudent = {111, "Jaroslav Vesely", 2.5};
     if (pridejStudentaNaKonec(&head, novyStudent) == 0) 
     {
         std::cout << "Přidán nový student.\n\n";
     }
+
+    // Výpis seznamu po přidání nového záznamu
+    std::cout << "Seznam studentů po přidání nového záznamu:\n";
+    vypisSeznam(head);
+    std::cout << "\n";
     
     // Seřazení seznamu
     std::cout << "Řadím seznam podle průměru...\n";
