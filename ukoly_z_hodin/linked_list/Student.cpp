@@ -17,3 +17,9 @@ Student::Student(std::string radek){
     name = nameStr;
     prumer = stod(prumerStr);
 }
+
+std::ostream& operator<<(std::ostream& out, Student& m)
+{
+    out << m.id << ", " << m.name << ", " << m.prumer;
+    return out;
+}

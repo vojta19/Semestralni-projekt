@@ -32,6 +32,13 @@ void Node::vypis_node()
     std::cout << student.id << std::setw(5) << student.name << std::setw(5) << student.prumer << '\n';
 }
 
+std::ostream&operator<<(std::ostream &out, const Node &m)
+{
+    // use the public getter (via const_cast because get_student is not const)
+    out << const_cast<Node&>(m).get_student();
+    return out;
+}
+
 // Node *operator[](int index)
 // {
 //     Node *current = this;
@@ -45,3 +52,4 @@ void Node::vypis_node()
 //     }
 //     return current;
 // }
+

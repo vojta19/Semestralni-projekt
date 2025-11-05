@@ -24,4 +24,5 @@ public:
     Student get_student();
     void set_next(Node* next);
     void vypis_node();
+    friend std::ostream& operator<<(std::ostream& out, Node& m);
 };

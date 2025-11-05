@@ -14,6 +14,8 @@ int main()
     cout << "\n Pred serazenim \n";
     ll.vypisSeznam();
 
+    cout<<ll;
+
     // ll.setridSeznamPodlePrumeru();
 
     cout << "\n Po serazeni \n";

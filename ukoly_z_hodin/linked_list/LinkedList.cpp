@@ -125,3 +125,11 @@ Student LinkedList::parsujRadek(const std::string &radek)
     return s;
 }
 
+std::ostream& operator<<(std::ostream& out, LinkedList& m)
+{
+    // Use the public printing method to avoid accessing private members.
+    // Note: vypisSeznam prints to std::cout; if you need operator<< to write to 'out',
+    // consider refactoring vypisSeznam to accept an std::ostream& parameter.
+    m.vypisSeznam();
+    return out;
+}

@@ -10,3 +10,4 @@ struct Student
     Student();
     Student(std::string radek);
 };
+std::ostream &operator<<(std::ostream &out, const Student &m);
