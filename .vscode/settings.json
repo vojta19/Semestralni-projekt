@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "iostream": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled",
     "cmake.sourceDirectory": "/workspaces/Semestralni-projekt/ZpetDoMinulosti"
