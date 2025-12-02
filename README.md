@@ -4,7 +4,7 @@ Obdobná implementace oblíbené televizní soutěže Chcete být milionářem s
 
 ## 📋 Přehled
 
-Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu s grafickým rozhraním postaveným na knihovně FTXUI, která umožňuje tvorbu pokročilých textových uživatelských rozhraní.
+Toto je kvízová hra v C++. Hra běží s grafickým rozhraním postaveným na knihovně SFML, která umožňuje tvorbu pokročilých textových uživatelských rozhraní.
 
 ## ✨ Popis
 
