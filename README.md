@@ -1,15 +1,23 @@
-# Semestralni-projekt
-Název projektu: 
-Zpět do minulosti (Kvízová hra)
+# Zpět do minulosti (Kvízová hra)
 
-Popis:        
-bude se jednat o minihru na styl kvízu (Chcete být milionářem) s otázkami z historie v jazyce C++
-bude se skládat z úvodního okna, kde si uživatel vybere obtížnosti a období ze kterého budou otázky položeny + samotné tlačítko na start,
-poté se objeví samotná hra, jedná se o set 30 otázek z historie, kde je 1 správná a 3 špatné odpovědi a je zde také časový limit na základě zvolené obtížnosti (30,20,15 vteřin)
-bude zde pravděpodobně i nějaká úprava pro zkrášlení herního zážitku a samotného odpovídání (zatím v procesu přípravy)
-     
-Obsažené kategorie: 
-podmínky, cykly, vstup a výstup, načítání ze souboru, vektor, náhodnost, měření času, uživatelské rozhraní, filtrování dat, vyhodnocování výsledků, zpracování chyb a kontrola vstupu
+Obdobná implementace oblíbené televizní soutěže Chcete být milionářem s otázkami z historie.
 
+## 📋 Přehled
 
+Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu s grafickým rozhraním postaveným na knihovně FTXUI, která umožňuje tvorbu pokročilých textových uživatelských rozhraní.
 
+## ✨ Popis
+
+- Uživatelské rozhraní - vše přehledně na úvodním okně hry s možností výběru akce pomocí tlačítek
+- Grafické zpracování - hra bude postupně doplněna grafickými prvky a podtextovou hudbou
+- Okruhy otázek - otázky budou až ze 3 kategorií: Středověk, Novověk a Moderní doba
+- Herní módy - hráč si podle svého rozvážení vybere z několika herních módů
+- Časový limit - na základě zvolené obtížnosti a herního módu
+
+## Obsažené kategorie
+
+- Podmínky, cykly, vstup a výstup
+- Načítání ze souboru, vektory, náhodnost, měření času
+- Uživatelské rozhraní, grafické rozhraní
+- Filtrování dat, zpracování výsledků
+- Detekce chyb a kontrola vstupu
