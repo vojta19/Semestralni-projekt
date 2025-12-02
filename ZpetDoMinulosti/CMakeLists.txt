@@ -2,12 +2,29 @@ cmake_minimum_required(VERSION 3.10)
 project(ZpetDoMinulosti)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Cesta k SFML
-set(SFML_DIR "C:\Users\vojta\Documents\Visual Studio Code\SFML-3.0.2")
+# --- Pro Linux/DevContainer: Stáhneme SFML automaticky ---
+include(FetchContent)
+FetchContent_Declare(
+    SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG        3.0.0
+)
+FetchContent_MakeAvailable(SFML)
 
-find_package(SFML 2.6 COMPONENTS system window graphics audio REQUIRED)
+# --- Zbytek nastavení ---
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h")
 
-add_executable(ZpetDoMinulosti src/main.cpp)
+add_executable(ZpetDoMinulosti ${SOURCES})
 
-target_link_libraries(ZpetDoMinulosti sfml-system sfml-window sfml-graphics sfml-audio)
+target_include_directories(ZpetDoMinulosti PRIVATE src)
+
+# Linkování (pro SFML 3.0)
+target_link_libraries(ZpetDoMinulosti PRIVATE 
+    SFML::Graphics 
+    SFML::Window 
+    SFML::System 
+    SFML::Audio 
+    SFML::Network
+)
