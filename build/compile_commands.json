@@ -11,13 +11,18 @@
 },
 {
   "directory": "/workspaces/Semestralni-projekt/build",
+  "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.cpp",
+  "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.cpp"
+},
+{
+  "directory": "/workspaces/Semestralni-projekt/build",
   "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/MenuScreen.cpp",
   "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/MenuScreen.cpp"
 },
 {
   "directory": "/workspaces/Semestralni-projekt/build",
-  "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/ScreenManager.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/ScreenManager.cpp",
-  "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/ScreenManager.cpp"
+  "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp",
+  "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp"
 },
 {
   "directory": "/workspaces/Semestralni-projekt/build",

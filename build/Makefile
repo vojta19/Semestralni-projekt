@@ -287,6 +287,30 @@ src/Button.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.s
 .PHONY : src/Button.cpp.s
 
+src/GameScreen.o: src/GameScreen.cpp.o
+.PHONY : src/GameScreen.o
+
+# target to build an object file
+src/GameScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o
+.PHONY : src/GameScreen.cpp.o
+
+src/GameScreen.i: src/GameScreen.cpp.i
+.PHONY : src/GameScreen.i
+
+# target to preprocess a source file
+src/GameScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.i
+.PHONY : src/GameScreen.cpp.i
+
+src/GameScreen.s: src/GameScreen.cpp.s
+.PHONY : src/GameScreen.s
+
+# target to generate assembly for a file
+src/GameScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.s
+.PHONY : src/GameScreen.cpp.s
+
 src/MenuScreen.o: src/MenuScreen.cpp.o
 .PHONY : src/MenuScreen.o
 
@@ -311,29 +335,29 @@ src/MenuScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.s
 .PHONY : src/MenuScreen.cpp.s
 
-src/ScreenManager.o: src/ScreenManager.cpp.o
-.PHONY : src/ScreenManager.o
+src/SettingScreen.o: src/SettingScreen.cpp.o
+.PHONY : src/SettingScreen.o
 
 # target to build an object file
-src/ScreenManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/ScreenManager.cpp.o
-.PHONY : src/ScreenManager.cpp.o
+src/SettingScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o
+.PHONY : src/SettingScreen.cpp.o
 
-src/ScreenManager.i: src/ScreenManager.cpp.i
-.PHONY : src/ScreenManager.i
+src/SettingScreen.i: src/SettingScreen.cpp.i
+.PHONY : src/SettingScreen.i
 
 # target to preprocess a source file
-src/ScreenManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/ScreenManager.cpp.i
-.PHONY : src/ScreenManager.cpp.i
+src/SettingScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.i
+.PHONY : src/SettingScreen.cpp.i
 
-src/ScreenManager.s: src/ScreenManager.cpp.s
-.PHONY : src/ScreenManager.s
+src/SettingScreen.s: src/SettingScreen.cpp.s
+.PHONY : src/SettingScreen.s
 
 # target to generate assembly for a file
-src/ScreenManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/ScreenManager.cpp.s
-.PHONY : src/ScreenManager.cpp.s
+src/SettingScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.s
+.PHONY : src/SettingScreen.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -383,12 +407,15 @@ help:
 	@echo "... src/Button.o"
 	@echo "... src/Button.i"
 	@echo "... src/Button.s"
+	@echo "... src/GameScreen.o"
+	@echo "... src/GameScreen.i"
+	@echo "... src/GameScreen.s"
 	@echo "... src/MenuScreen.o"
 	@echo "... src/MenuScreen.i"
 	@echo "... src/MenuScreen.s"
-	@echo "... src/ScreenManager.o"
-	@echo "... src/ScreenManager.i"
-	@echo "... src/ScreenManager.s"
+	@echo "... src/SettingScreen.o"
+	@echo "... src/SettingScreen.i"
+	@echo "... src/SettingScreen.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
