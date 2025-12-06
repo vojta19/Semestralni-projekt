@@ -63,3 +63,18 @@ void Button::setText(const std::string&text)
         }
     );
 }
+
+void Button::setPosition(float x, float y)
+{
+    shape.setPosition({x,y});   //posunume obdelnik
+
+    //posuneme text a musime ho dat doprostred obdelniku
+    sf::Vector2f size=shape.getSize();
+    buttonText.setPosition
+    (
+        {
+            x+size.x/2.0f,
+            y+size.y/2.0f
+        }
+    );
+}

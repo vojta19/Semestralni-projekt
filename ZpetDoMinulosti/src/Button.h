@@ -11,6 +11,8 @@ public:
 
     void setText(const std::string&text);
 
+    void setPosition(float x, float y);
+
     bool isClicked(sf::Vector2f mousePos); //zjisteni, zda myš klikla uvnitr tlacitka
 
 private:
