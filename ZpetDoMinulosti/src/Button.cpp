@@ -49,3 +49,17 @@ bool Button::isClicked(sf::Vector2f mousePos)
 {
     return shape.getGlobalBounds().contains(mousePos);
 }
+
+void Button::setText(const std::string&text)
+{
+    buttonText.setString(text);
+
+    sf::FloatRect textBounds = buttonText.getLocalBounds();
+    buttonText.setOrigin
+    (
+        {
+            textBounds.position.x+textBounds.size.x/2.0f,
+            textBounds.position.y+textBounds.size.y/2.0f
+        }
+    );
+}

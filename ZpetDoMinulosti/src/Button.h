@@ -9,6 +9,8 @@ public:
 
     void draw(sf::RenderWindow&window); //vykresleni tlacitka do okna
 
+    void setText(const std::string&text);
+
     bool isClicked(sf::Vector2f mousePos); //zjisteni, zda myš klikla uvnitr tlacitka
 
 private:
