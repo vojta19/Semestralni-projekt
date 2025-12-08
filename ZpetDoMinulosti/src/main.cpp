@@ -84,7 +84,7 @@ int main()
                 }
             }
 
-            else if(currentState = SETTINGS)
+            else if(currentState == SETTINGS)
             {
                 bool goBack= settings.handleInput(window,audio);
                 if(goBack)
@@ -96,11 +96,11 @@ int main()
             }
         }
         window.clear(sf::Color(30,30,30));
-        if(currentState = MENU)
+        if(currentState == MENU)
         {
             menu.draw(window);
         }
-        else if(currentState = SETTINGS)
+        else if(currentState == SETTINGS)
         {
             settings.draw(window);
         }
