@@ -8,9 +8,9 @@ AudioManager::AudioManager() : ClickSound(clickBuffer)
 
 bool AudioManager::loadAssets()
 {
-    if(!backgroundMusic.openFromFile("/workspaces/Semestralni-projekt/assets/music.ogg")) //primární cesta načtení souboru
+    if(!backgroundMusic.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/music.ogg")) //primární cesta načtení souboru
     {
-        if(!backgroundMusic.openFromFile("/workspaces/Semestralni-projekt/assets/music.ogg")) //záložní cesta načtení souboru
+        if(!backgroundMusic.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/music.ogg")) //záložní cesta načtení souboru
         {
             std::cerr << "CHYBA: Nepodarilo se nacist music.ogg!" << std::endl; //neúspěch tolik nevadí, hru to nezastaví
         }
@@ -19,9 +19,9 @@ bool AudioManager::loadAssets()
     backgroundMusic.setLooping(true); //ať hraje pořád do kola
     backgroundMusic.setVolume(20.f); //hlasitost na 20%
 
-    if(!clickBuffer.loadFromFile("/workspaces/Semestralni-projekt/assets/click.wav")) //načtení zvuku cvaknutí
+    if(!clickBuffer.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/click.wav")) //načtení zvuku cvaknutí
     {
-        if(!clickBuffer.loadFromFile("/workspaces/Semestralni-projekt/assets/click.wav"))
+        if(!clickBuffer.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/click.wav"))
         {
             std::cerr << "CHYBA: Nepodarilo se nacist click.wav!" << std::endl;
             return false; //tady vrátíme false, je něco špatně
