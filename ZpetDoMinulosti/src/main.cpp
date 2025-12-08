@@ -55,21 +55,6 @@ int main()
             {
                 window.close();
             }
-            if (const auto* resized = event->getIf<sf::Event::Resized>())
-            {
-                sf::Vector2f newSize = static_cast<sf::Vector2f>(resized->size);
-                sf::View view(sf::FloatRect({0.f, 0.f}, {newSize.x, newSize.y}));
-                window.setView(view);
-                if (currentState == MENU)
-                {
-                    menu.recalculatePosition(newSize.x, newSize.y); // Tuto metodu musíte přidat do MenuScreen!
-                }
-                else if (currentState == SETTINGS)
-                {
-                    settings.recalculatePosition(newSize.x, newSize.y);
-                }
-            }
-
             if (event->is<sf::Event::MouseButtonReleased>())
             {
                 mouseClickedReleased = true;
@@ -79,6 +64,7 @@ int main()
         
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && mouseClickedReleased)
         {
+            mouseClickedReleased = false;
             if (currentState == MENU)
             {
                 int action = menu.handleInput(window);

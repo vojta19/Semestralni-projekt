@@ -68,8 +68,6 @@ bool SettingsScreen::handleInput(sf::RenderWindow& window, AudioManager& audio)
     sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-    {
         if (btnBack.isClicked(mousePos))
         {
             audio.PlayClick();
@@ -117,9 +115,6 @@ bool SettingsScreen::handleInput(sf::RenderWindow& window, AudioManager& audio)
             updateResolutionButtonText();
             recalculatePosition(static_cast<float>(newRes.x), static_cast<float>(newRes.y));
             
-             sf::sleep(sf::milliseconds(200)); 
-        }
-    }
-    
+        }   
     return false;
 }
