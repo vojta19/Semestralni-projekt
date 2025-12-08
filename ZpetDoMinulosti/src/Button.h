@@ -5,11 +5,11 @@
 class Button
 {
 public:
-    Button(float x, float y, float width, float height, const std::string&text, const sf::Font&font); //konstruktor, rika kde tlacitko bude a co v nem bude
+    Button(float x, float y, float width, float height, const sf::String&text, const sf::Font&font); //konstruktor, rika kde tlacitko bude a co v nem bude
 
     void draw(sf::RenderWindow&window); //vykresleni tlacitka do okna
 
-    void setText(const std::string&text);
+    void setText(const sf::String&text);
 
     void setPosition(float x, float y);
 

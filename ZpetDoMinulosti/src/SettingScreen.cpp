@@ -3,13 +3,13 @@
 
 SettingsScreen::SettingsScreen(float width,float height, const sf::Font&font)
 :titleText(font),
-btnToggle(0,0,300,50,"Hudba ZAP/VYP",font),
-btnResolution(0,0,300,50,"Rozlišení: 800x600",font),
-btnBack(0,0,150,40,"Zpět",font)
+btnToggle(0,0,300,50,L"Hudba ZAP/VYP",font),
+btnResolution(0,0,300,50,L"Rozlišení: 800x600",font),
+btnBack(0,0,150,40,L"Zpět",font)
 
 {
     //nadpis
-    titleText.setString("NASTAVENÍ");
+    titleText.setString(L"NASTAVENÍ");
     titleText.setCharacterSize(50);
     titleText.setFillColor(sf::Color::White);
     titleText.setStyle(sf::Text::Bold);

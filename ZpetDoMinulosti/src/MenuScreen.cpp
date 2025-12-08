@@ -2,10 +2,9 @@
 
 MenuScreen::MenuScreen(float width, float height, const sf::Font&font) 
 :titleText(font),
-
-btnPlay(width/2-100,height/2,200,50,"Hrej!",font), //uprostred
-btnSettings(20,20,150,40,"Nastavení",font),        //vlevo nahore
-btnExit(width-170,height-60,150,40,"Ukončit",font) //vpravo dole
+btnPlay(width/2-100,height/2,200,50,L"Hrej!",font), //uprostred
+btnSettings(20,20,150,40,L"Nastavení",font),        //vlevo nahore
+btnExit(width-170,height-60,150,40,L"Ukončit",font) //vpravo dole
 
 {
     //nastaveni vzhledu nadpisu

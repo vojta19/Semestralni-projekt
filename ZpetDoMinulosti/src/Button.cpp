@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(float x, float y, float width, float height, const std::string&text,const sf::Font&font)
+Button::Button(float x, float y, float width, float height, const sf::String&text,const sf::Font&font)
 :buttonText(font)
 {
     //nastaveni vzhledu obdelniku
@@ -50,7 +50,7 @@ bool Button::isClicked(sf::Vector2f mousePos)
     return shape.getGlobalBounds().contains(mousePos);
 }
 
-void Button::setText(const std::string&text)
+void Button::setText(const sf::String&text)
 {
     buttonText.setString(text);
 
