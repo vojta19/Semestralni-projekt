@@ -49,3 +49,25 @@ int MenuScreen::handleInput(sf::RenderWindow&window)
 
     return 0;
 }
+
+// Vložte na konec souboru MenuScreen.cpp
+
+void MenuScreen::recalculatePosition(float width, float height)
+{
+    // 1. Vycentrování nadpisu
+    sf::FloatRect titleRect = titleText.getLocalBounds();
+    
+    // Výpočet pozice X: (šířka okna - šířka textu) / 2
+    float titleX = (width - titleRect.size.x) / 2.0f;
+    
+    titleText.setPosition({titleX, 50.0f});
+
+    // 2. Vycentrování tlačítek
+    float buttonWidth = 200.0f; // Šířka tlačítek (pokud máte jinou, upravte)
+    float centerX = width / 2.0f - buttonWidth / 2.0f;
+
+    // Srovnání tlačítek pod sebe (upravte názvy proměnných btn..., pokud se jmenují jinak)
+    btnPlay.setPosition(centerX, 200.0f);
+    btnSettings.setPosition(centerX, 300.0f);
+    btnExit.setPosition(centerX, 400.0f);
+}
