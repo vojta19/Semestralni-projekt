@@ -2,27 +2,34 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Button.h"
-#include "AudioManager.h"
+#include "AudioManager.h" // Předpokládám, že tento soubor máte vytvořený
 
 class SettingsScreen
 {
 public:
-    SettingsScreen(float width,float height, const sf::Font&font);
-    void draw(sf::RenderWindow&window);
-    bool handleInput(sf::RenderWindow&window, AudioManager&audio);
+    // Konstruktor: Přijímá rozměry okna a font pro texty
+    SettingsScreen(float width, float height, const sf::Font& font);
+
+    // Vykreslení celé obrazovky nastavení
+    void draw(sf::RenderWindow& window);
+
+    // Zpracování vstupu (klikání myší)
+    // Vrací 'true', pokud se má uživatel vrátit do menu (stisk tlačítka Zpět)
+    bool handleInput(sf::RenderWindow& window, AudioManager& audio);
 
 private:
-    sf::Text titleText;
+    sf::Text titleText;       // Nadpis "NASTAVENÍ"
 
-    Button btnToggle;     //pro vypnuti/zapnuti hudby
-    Button btnResolution; //pro zmenu rozliseni
-    Button btnBack;       //pro cestu zpet
+    Button btnToggle;         // Tlačítko pro vypnutí/zapnutí hudby
+    Button btnResolution;     // Tlačítko pro změnu rozlišení
+    Button btnBack;           // Tlačítko pro návrat zpět
 
-    std::vector<sf::Vector2u>resolutions; //seznam moznosti
-    int currentResIndex;                    //jake je vybrane
+    std::vector<sf::Vector2u> resolutions; // Seznam možných rozlišení (např. 800x600, 1920x1080)
+    int currentResIndex;                   // Index aktuálně vybraného rozlišení v seznamu
 
-    void updateResolutionButtonText(); //pomocna funkce pro zmenu textu na tlacitku
+    // Pomocná funkce: aktualizuje text na tlačítku rozlišení (např. "Rozlišení: 800x600")
+    void updateResolutionButtonText();
 
-    void recalculatePosition(float width,float height); //srovna tlacitka nastred podle nove sirky/vysky
-
+    // Pomocná funkce: srovná tlačítka na střed podle nové šířky/výšky okna
+    void recalculatePosition(float width, float height);
 };

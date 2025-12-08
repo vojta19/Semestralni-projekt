@@ -5,89 +5,95 @@
 #include "MenuScreen.h"
 #include "SettingScreen.h"
 
-
 enum GameState
 {
     MENU,
     SETTINGS
 };
 
-
-
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({800,600}),L"Zpět do minulosti");
+    
+    sf::RenderWindow window(sf::VideoMode({800, 600}), L"Zpět do minulosti");
     window.setFramerateLimit(60);
 
+    
     AudioManager audio;
-    if(!audio.loadAssets())
+    if (!audio.loadAssets())
     {
         std::cerr << "Varovani: Nepodarilo se nacist zvuky" << std::endl;
     }
     audio.playMusic();
 
+    
     sf::Font font;
-    if(!font.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
+    
+    if (!font.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
     {
-        if(!font.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
+        
+        if (!font.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
         {
             std::cerr << "CHYBA: Font nenalezen!" << std::endl;
-            return -1;
+            return -1; 
         }
     }
 
-    MenuScreen menu(800,600,font);
-    SettingsScreen settings(800,600,font);
+    
+    MenuScreen menu(800, 600, font);
+    SettingsScreen settings(800, 600, font);
 
-    GameState currentState=MENU;
-
+    GameState currentState = MENU;
     bool mouseClickedReleased = true;
 
-    while(window.isOpen())
+    
+    while (window.isOpen())
     {
-        while(const std::optional event = window.pollEvent())
+        
+        while (const std::optional event = window.pollEvent())
         {
-            if(event -> is<sf::Event::Closed>())
+            if (event->is<sf::Event::Closed>())
             {
                 window.close();
             }
 
-            if(event -> is<sf::Event::MouseButtonReleased>())
+            if (event->is<sf::Event::MouseButtonReleased>())
             {
-                mouseClickedReleased=true;
+                mouseClickedReleased = true;
             }
         }
 
-
+        
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && mouseClickedReleased)
         {
             if (currentState == MENU)
             {
                 int action = menu.handleInput(window);
 
-                if(action !=0)
+                if (action != 0)
                 {
-                    mouseClickedReleased= false;
+                    mouseClickedReleased = false;
                     audio.PlayClick();
                 }
-                if(action ==1)
+
+                if (action == 1) // START
                 {
                     std::cout << "Tlacitko START: Hra se spusti az dodelam GameScreen" << std::endl;
                 }
-                else if (action ==2)
+                else if (action == 2) // NASTAVENÍ
                 {
-                    currentState= SETTINGS;
+                    currentState = SETTINGS;
                 }
-                else if(action == 3)
+                else if (action == 3) // UKONČIT
                 {
                     window.close();
                 }
             }
-
-            else if(currentState == SETTINGS)
+            else if (currentState == SETTINGS)
             {
-                bool goBack= settings.handleInput(window,audio);
-                if(goBack)
+                // Předáváme audio manager, aby tlačítka v nastavení mohla dělat zvuky
+                bool goBack = settings.handleInput(window, audio);
+                
+                if (goBack)
                 {
                     currentState = MENU;
                     mouseClickedReleased = false;
@@ -95,15 +101,19 @@ int main()
                 }
             }
         }
-        window.clear(sf::Color(30,30,30));
-        if(currentState == MENU)
+
+        
+        window.clear(sf::Color(30, 30, 30));
+
+        if (currentState == MENU)
         {
             menu.draw(window);
         }
-        else if(currentState == SETTINGS)
+        else if (currentState == SETTINGS)
         {
             settings.draw(window);
         }
+
         window.display();
     }
 

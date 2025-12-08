@@ -1,22 +1,21 @@
 #pragma once
-#include <string>
 #include <SFML/Graphics.hpp>
 
 class Button
 {
 public:
-    Button(float x, float y, float width, float height, const sf::String&text, const sf::Font&font); //konstruktor, rika kde tlacitko bude a co v nem bude
+    Button(float x, float y, float width, float height, const sf::String& text, const sf::Font& font);
 
-    void draw(sf::RenderWindow&window); //vykresleni tlacitka do okna
-
-    void setText(const sf::String&text);
+    
+    void draw(sf::RenderWindow& window);
+    
+    void setText(const sf::String& text);
 
     void setPosition(float x, float y);
 
-    bool isClicked(sf::Vector2f mousePos); //zjisteni, zda myš klikla uvnitr tlacitka
+    bool isClicked(sf::Vector2f mousePos);
 
 private:
-    sf::RectangleShape shape; //samotny obdelnik
-    sf::Text buttonText;      //napis
-
+    sf::RectangleShape shape; // Samotný obdélník tlačítka
+    sf::Text buttonText;      // Text uvnitř tlačítka
 };
