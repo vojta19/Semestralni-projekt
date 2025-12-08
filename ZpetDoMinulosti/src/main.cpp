@@ -96,6 +96,10 @@ int main()
                 if (goBack)
                 {
                     currentState = MENU;
+                    sf::Vector2u size = window.getSize();
+                    menu.recalculatePosition((float)size.x,(float)size.y);
+                    sf::View view(sf::FloatRect({0.f, 0.f}, {(float)size.x, (float)size.y}));
+                    window.setView(view);                    
                     mouseClickedReleased = false;
                     audio.PlayClick();
                 }
