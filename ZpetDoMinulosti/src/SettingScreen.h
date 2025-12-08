@@ -17,6 +17,8 @@ public:
     // Vrací 'true', pokud se má uživatel vrátit do menu (stisk tlačítka Zpět)
     bool handleInput(sf::RenderWindow& window, AudioManager& audio);
 
+    void recalculatePosition(float width, float height);
+
 private:
     sf::Text titleText;       // Nadpis "NASTAVENÍ"
 
@@ -29,7 +31,4 @@ private:
 
     // Pomocná funkce: aktualizuje text na tlačítku rozlišení (např. "Rozlišení: 800x600")
     void updateResolutionButtonText();
-
-    // Pomocná funkce: srovná tlačítka na střed podle nové šířky/výšky okna
-    void recalculatePosition(float width, float height);
 };

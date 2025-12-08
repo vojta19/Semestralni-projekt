@@ -14,6 +14,8 @@ public:
     //zpracovani kliknuti
     int handleInput(sf::RenderWindow&window);
 
+    void recalculatePosition(float width, float height);
+
 private:
     sf::Text titleText; //nadpis Zpet do minulosti
 

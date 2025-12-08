@@ -95,7 +95,21 @@ bool SettingsScreen::handleInput(sf::RenderWindow& window, AudioManager& audio)
 
             sf::Vector2u newRes = resolutions[currentResIndex];
 
-            window.setSize(newRes);
+            sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+
+            // Pokud se vybrané rozlišení rovná rozlišení monitoru -> Fullscreen
+            if (newRes.x == desktopMode.size.x && newRes.y == desktopMode.size.y)
+            {
+            // Režim Fullscreen (bez rámečků, exkluzivní režim)
+            window.create(sf::VideoMode(newRes), L"Zpět do minulosti", sf::Style::None, sf::State::Fullscreen);
+            }
+            else
+            {
+            // Režim Okno (s křížkem a lištou)
+            window.create(sf::VideoMode(newRes), L"Zpět do minulosti", sf::Style::Default, sf::State::Windowed);
+            }
+
+            window.setFramerateLimit(60);
 
             sf::View view(sf::FloatRect({0.f, 0.f}, {static_cast<float>(newRes.x), static_cast<float>(newRes.y)}));
             window.setView(view);
