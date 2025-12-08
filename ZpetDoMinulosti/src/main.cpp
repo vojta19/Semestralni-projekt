@@ -27,9 +27,9 @@ int main()
     audio.playMusic();
 
     sf::Font font;
-    if(!font.openFromFile("assets/font.ttf"))
+    if(!font.openFromFile("/workspaces/Semestralni-projekt/assets/font.ttf"))
     {
-        if(!font.openFromFile("../assets/font.ttf"))
+        if(!font.openFromFile("/workspaces/Semestralni-projekt/assets/font.ttf"))
         {
             std::cerr << "CHYBA: Font nenalezen!" << std::endl;
             return -1;
