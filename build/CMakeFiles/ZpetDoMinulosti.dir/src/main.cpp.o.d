@@ -302,4 +302,5 @@ CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o: \
  /workspaces/Semestralni-projekt/build/_deps/sfml-src/include/SFML/Audio/SoundFileFactory.inl \
  /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/MenuScreen.h \
  /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/Button.h \
- /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.h
+ /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.h \
+ /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.h

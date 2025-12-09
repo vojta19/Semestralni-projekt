@@ -4,11 +4,13 @@
 #include "AudioManager.h"
 #include "MenuScreen.h"
 #include "SettingScreen.h"
+#include "GameScreen.h"
 
 enum GameState
 {
     MENU,
-    SETTINGS
+    SETTINGS,
+    GAME
 };
 
 int main()
@@ -41,6 +43,7 @@ int main()
     
     MenuScreen menu(800, 600, font);
     SettingsScreen settings(800, 600, font);
+    GameScreen game(800,600,font);
 
     GameState currentState = MENU;
     bool mouseClickedReleased = true;
@@ -77,7 +80,9 @@ int main()
 
                 if (action == 1) // START
                 {
-                    std::cout << "Tlacitko START: Hra se spusti az dodelam GameScreen" << std::endl;
+                    currentState = GAME;
+                    sf::Vector2u currentSize =window.getSize();
+                    game.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                 }
                 else if (action == 2) // NASTAVENÍ
                 {
@@ -111,6 +116,23 @@ int main()
                     audio.PlayClick();
                 }
             }
+            else if (currentState == GAME)
+            {
+                int action = game.handleIndput(window,audio);
+                if(action == 1)
+                {
+                    currentState = MENU;
+                    sf::Vector2u currentSize = window.getSize();
+                    menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
+                    audio.PlayClick();
+                }
+                else if (action == 2)
+                {
+                    std::wcout << L"Spouštím hru!" << std::endl;
+                    std::wcout << L"Kategorie: " << game.getSelectedCategory() <<std::endl;
+                    std::wcout << L"Obtížnost: " << game.getSelectedDifficulty() <<std::endl;
+                }
+            }
         }
 
         
@@ -123,6 +145,10 @@ int main()
         else if (currentState == SETTINGS)
         {
             settings.draw(window);
+        }
+        else if (currentState == GAME)
+        {
+            game.draw(window);
         }
 
         window.display();
