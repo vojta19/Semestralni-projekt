@@ -71,6 +71,6 @@ void MenuScreen::recalculatePosition(float width, float height)
     float centerX = width / 2.0f - 100.0f; 
 
     btnPlay.setPosition(centerX, 200.0f);     
-    btnSettings.setPosition(width/2.0f - 150.0f, 300.0f);
-    btnExit.setPosition(width/2.0f-100.0f, 200.0f);
+    btnSettings.setPosition(centerX, 300.0f);
+    btnExit.setPosition(centerX, 400.0f);
 }
