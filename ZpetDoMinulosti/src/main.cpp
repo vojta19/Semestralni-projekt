@@ -114,7 +114,7 @@ int main()
         }
 
         
-        window.clear(sf::Color(30, 30, 30));
+        window.clear(sf::Color(10, 20, 35));
 
         if (currentState == MENU)
         {

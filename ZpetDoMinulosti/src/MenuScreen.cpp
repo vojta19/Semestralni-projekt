@@ -10,7 +10,7 @@ btnExit(0,0,300,50,L"Ukončit",font) //vpravo dole
     //nastaveni vzhledu nadpisu
     titleText.setString(L"Zpět do minulosti");
     titleText.setCharacterSize(85);
-    titleText.setFillColor(sf::Color::White);
+    titleText.setFillColor(sf::Color(0,255,255));
     titleText.setStyle(sf::Text::Bold);
 
     //vycentrovani nadpisu

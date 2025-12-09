@@ -6,9 +6,9 @@ Button::Button(float x, float y, float width, float height, const sf::String& te
     // 1. Nastavení vzhledu obdélníku
     shape.setPosition({x, y});
     shape.setSize({width, height});
-    shape.setFillColor(sf::Color(70, 70, 70)); 
+    shape.setFillColor(sf::Color(0, 50, 100)); 
     shape.setOutlineThickness(2.f);
-    shape.setOutlineColor(sf::Color::White);   
+    shape.setOutlineColor(sf::Color(0,255,255));   
 
     // 2. Nastavení textu
     buttonText.setString(text);                
