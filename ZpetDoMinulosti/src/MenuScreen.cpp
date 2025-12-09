@@ -22,7 +22,7 @@ btnExit(width-170,height-60,150,40,L"Ukončit",font) //vpravo dole
             textRect.position.y+textRect.size.y/2.0f
         }
     );
-    titleText.setPosition({width/2.0f,300.0f});
+    titleText.setPosition({width/2.0f,100.0f});
 }
 
 //vykresleni
@@ -71,6 +71,6 @@ void MenuScreen::recalculatePosition(float width, float height)
     float centerX = width / 2.0f - 100.0f; 
 
     btnPlay.setPosition(centerX, 200.0f);     
-    btnSettings.setPosition(width/2.0f - 75.0f, 150.0f);
-    btnExit.setPosition(width/2.0f-75.0f, 150.0f);
+    btnSettings.setPosition(width/2.0f - 150.0f, 300.0f);
+    btnExit.setPosition(width/2.0f-100.0f, 200.0f);
 }
