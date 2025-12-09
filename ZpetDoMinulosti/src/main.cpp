@@ -101,10 +101,10 @@ int main()
                     float width = static_cast<float>(currentSize.x);
                     float height = static_cast<float>(currentSize.y);
 
-                    sf::View view(sf::FloatRect({0.f,0.f}, {width,height}));
+                    sf::View view(sf::FloatRect({0.f,0.f}, {(float)currentSize.x, (float)currentSize.y}));
                     window.setView(view);
 
-                    menu.recalculatePosition(width,height);
+                    menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
 
                     
                     mouseClickedReleased = false;
