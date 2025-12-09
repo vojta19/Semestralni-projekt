@@ -2,9 +2,9 @@
 
 MenuScreen::MenuScreen(float width, float height, const sf::Font&font) 
 :titleText(font),
-btnPlay(width/2-100,height/2,200,50,L"Hrej!",font), //uprostred
-btnSettings(20,20,150,40,L"Nastavení",font),        //vlevo nahore
-btnExit(width-170,height-60,150,40,L"Ukončit",font) //vpravo dole
+btnPlay(0,0,300,50,L"Hrej!",font), //uprostred
+btnSettings(0,0,300,50,L"Nastavení",font),        //vlevo nahore
+btnExit(0,0,300,50,L"Ukončit",font) //vpravo dole
 
 {
     //nastaveni vzhledu nadpisu
@@ -14,15 +14,17 @@ btnExit(width-170,height-60,150,40,L"Ukončit",font) //vpravo dole
     titleText.setStyle(sf::Text::Bold);
 
     //vycentrovani nadpisu
-    sf::FloatRect textRect = titleText.getLocalBounds();
-    titleText.setOrigin
-    (
-        {
-            textRect.position.x + textRect.size.x/2.0f,
-            textRect.position.y+textRect.size.y/2.0f
-        }
-    );
-    titleText.setPosition({width/2.0f,100.0f});
+   // sf::FloatRect textRect = titleText.getLocalBounds();
+   // titleText.setOrigin
+   // (
+   //     {
+   //         textRect.position.x + textRect.size.x/2.0f,
+   //         textRect.position.y+textRect.size.y/2.0f
+   //     }
+   // );
+   // titleText.setPosition({width/2.0f,100.0f});
+
+   recalculatePosition(width,height);
 }
 
 //vykresleni
@@ -68,9 +70,10 @@ void MenuScreen::recalculatePosition(float width, float height)
     titleText.setPosition({width / 2.0f, 100.0f});
 
     // 2. Vycentrování tlačítek
-    float centerX = width / 2.0f - 100.0f; 
+    float buttonHalfWidth = 150.0f;
+    float centerX = width / 2.0f - buttonHalfWidth; 
 
-    btnPlay.setPosition(centerX, 200.0f);     
-    btnSettings.setPosition(centerX, 300.0f);
-    btnExit.setPosition(centerX, 400.0f);
+    btnPlay.setPosition(centerX, 250.0f);     
+    btnSettings.setPosition(centerX, 350.0f);
+    btnExit.setPosition(centerX, 450.0f);
 }
