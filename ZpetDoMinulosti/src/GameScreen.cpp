@@ -25,8 +25,8 @@ btnBack(0,0,150,40,L"Zpět",font)
 
 void GameScreen::updateButtonLabels()
 {
-    btnCategory.setText(L"Kategorie " + categories[currentCategoryIndex]);
-    btnDifficulty.setText(L"Obtížnost " + difficulties[currentDifficultyIndex]);
+    btnCategory.setText(L"Kategorie: " + categories[currentCategoryIndex]);
+    btnDifficulty.setText(L"Obtížnost: " + difficulties[currentDifficultyIndex]);
 }
 
 void GameScreen::recalculatePosition(float width, float height)
