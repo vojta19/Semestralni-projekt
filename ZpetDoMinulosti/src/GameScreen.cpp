@@ -10,7 +10,7 @@ btnBack(0,0,150,40,L"Zpět",font)
 {
     titleText.setString(L"PŘÍPRAVA HRY");
     titleText.setCharacterSize(50);
-    titleText.setFillColor(sf::Color(0,255,255));
+    titleText.setFillColor(sf::Color::White);
     titleText.setStyle(sf::Text::Bold);
 
     categories = {L"Starověk",L"Středověk",L"Moderní dějiny"};
