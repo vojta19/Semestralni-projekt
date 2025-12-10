@@ -216,7 +216,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         float centerX = width/2.0f;
         float centerY = height/2.0f;
 
-        resultsPanel.setSize({600.0f,450.0f});
+        resultsPanel.setSize({850.0f,450.0f});
         resultsPanel.setOrigin({300.0f,225.0f});
         resultsPanel.setPosition({centerX,centerY});
 

@@ -166,12 +166,15 @@ int main()
                     menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                     audio.PlayClick();
                 }
-                else if(action==2)
+                else if(action==3)
                 {
                     std::wstring cat = game.getSelectedCategory();
                     std::wstring diff = game.getSelectedDifficulty();
 
                     playing.startNewGame(cat,diff);
+
+                    sf::Vector2u currentSize = window.getSize();
+                    playing.recalculatePosition((float)currentSize.x, (float)currentSize.y);
                 }
             }
 
