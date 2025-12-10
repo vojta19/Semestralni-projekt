@@ -5,12 +5,14 @@
 #include "MenuScreen.h"
 #include "SettingScreen.h"
 #include "GameScreen.h"
+#include "GamePlayScreen.h"
 
 enum GameState
 {
     MENU,
     SETTINGS,
-    GAME
+    GAME,
+    PLAYING
 };
 
 int main()
@@ -44,13 +46,17 @@ int main()
     MenuScreen menu(800, 600, font);
     SettingsScreen settings(800, 600, font);
     GameScreen game(800,600,font);
+    GamePlayScreen playing (800,600,font);
 
     GameState currentState = MENU;
     bool mouseClickedReleased = true;
+    sf::Clock gameClock;
 
     
     while (window.isOpen())
     {
+
+        sf::Time deltaTime = gameClock.restart();
         
         while (const std::optional event = window.pollEvent())
         {
@@ -62,6 +68,18 @@ int main()
             {
                 mouseClickedReleased = true;
             }
+            if(const auto* resized = event->getIf<sf::Event::Resized>())
+            {
+                sf::Vector2f newSize = static_cast<sf::Vector2f>(resized->size);
+                if (currentState == PLAYING) playing.recalculatePosition(newSize.x, newSize.y);
+            }
+            
+            if (event->is<sf::Event::MouseButtonReleased>()) mouseClickedReleased = true;
+        }
+
+        if (currentState == PLAYING)
+        {
+            playing.update(deltaTime);
         }
 
         
@@ -128,11 +146,28 @@ int main()
                 }
                 else if (action == 2)
                 {
-                    std::wcout << L"Spouštím hru!" << std::endl;
-                    std::wcout << L"Kategorie: " << game.getSelectedCategory() <<std::endl;
-                    std::wcout << L"Obtížnost: " << game.getSelectedDifficulty() <<std::endl;
+                    std::wstring cat = game.getSelectedCategory();
+                    std::wstring diff = game.getSelectedDifficulty();
+
+                    playing.startNewGame(cat,diff);
+                    currentState = PLAYING;
+                    
+                    sf::Vector2u currentSize = window.getSize();
+                    playing.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                 }
             }
+            else if (currentState == PLAYING)
+            {
+                int action = playing.handleInput(window,audio);
+                if(action == 1)
+                {
+                    currentState = MENU;
+                    sf::Vector2u currentSize = window.getSize();
+                    menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
+                    audio.PlayClick();
+                }
+            }
+
         }
 
         
@@ -149,6 +184,10 @@ int main()
         else if (currentState == GAME)
         {
             game.draw(window);
+        }
+        else if (currentState == PLAYING)
+        {
+            playing.draw(window);
         }
 
         window.display();
