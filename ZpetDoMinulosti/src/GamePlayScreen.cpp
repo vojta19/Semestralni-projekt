@@ -79,7 +79,7 @@ void GamePlayScreen::loadQuestions(std::wstring category)
     for(int i=0;i<30;i++)
     {
         Question q;
-        q.text = L"Otázka č. " + std::to_wstring(i+1) + L" / " + std::to_wstring(questions.size());
+        q.text = L"Otázka č. " + std::to_wstring(i+1);
         q.answers = {L"Odpověď A", L"Odpověď B", L"Odpověď C", L"Odpověď D"};
         q.correctIndex = 0;
         questions.push_back(q); 
