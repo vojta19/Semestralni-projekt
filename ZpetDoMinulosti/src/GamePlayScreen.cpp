@@ -76,7 +76,7 @@ void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty
 void GamePlayScreen::loadQuestions(std::wstring category)
 {
     questions.clear();
-    for(int i;i<30;i++)
+    for(int i=0;i<30;i++)
     {
         Question q;
         q.text = L"Otázka č. " + std::to_wstring(i+1) + L" / " + std::to_wstring(questions.size());
