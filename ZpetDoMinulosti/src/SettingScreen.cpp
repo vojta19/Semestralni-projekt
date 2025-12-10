@@ -10,7 +10,7 @@ SettingsScreen::SettingsScreen(float width, float height, const sf::Font& font)
     // --- Nadpis ---
     titleText.setString(L"NASTAVENÍ");
     titleText.setCharacterSize(50);
-    titleText.setFillColor(sf::Color(0,255,255));
+    titleText.setFillColor(sf::Color::White);
     titleText.setStyle(sf::Text::Bold);
 
     
