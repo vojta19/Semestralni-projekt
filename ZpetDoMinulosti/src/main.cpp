@@ -166,6 +166,13 @@ int main()
                     menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                     audio.PlayClick();
                 }
+                else if(action==2)
+                {
+                    std::wstring cat = game.getSelectedCategory();
+                    std::wstring diff = game.getSelectedDifficulty();
+
+                    playing.startNewGame(cat,diff);
+                }
             }
 
         }

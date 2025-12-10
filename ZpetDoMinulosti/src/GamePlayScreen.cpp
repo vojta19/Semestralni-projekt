@@ -11,14 +11,16 @@ textCounter(font),
 textGameOverTitle(font),
 textScore(font),
 textPercentage(font),
-textThanks(font),
+//textThanks(font),
+textRank(font),
 
 btnAnswer0(0,0,300,50,L"",font),
 btnAnswer1(0,0,300,50,L"",font),
 btnAnswer2(0,0,300,50,L"",font),
 btnAnswer3(0,0,300,50,L"",font),
 
-btnBackToMenu(0,0,300,50,L"Do hlavní nabídky",font)
+btnBackToMenu(0,0,250,50,L"Do hlavní nabídky",font),
+btnRestart(0,0,250,50,L"Zkusit znovu",font)
 
 {
     textQuestion.setFont(font);
@@ -45,10 +47,18 @@ btnBackToMenu(0,0,300,50,L"Do hlavní nabídky",font)
     textPercentage.setFont(font);
     textPercentage.setCharacterSize(40);
 
-    textThanks.setFont(font);
-    textThanks.setCharacterSize(30);
-    textThanks.setString(L"Děkujeme za hru! ");
-    textThanks.setFillColor(sf::Color::Yellow);
+  //  textThanks.setFont(font);
+ //   textThanks.setCharacterSize(30);
+ //   textThanks.setString(L"Děkujeme za hru! ");
+ //   textThanks.setFillColor(sf::Color::Yellow);
+
+    resultsPanel.setFillColor(sf::Color(0,0,0,150));
+    resultsPanel.setOutlineColor(sf::Color(0,255,255));
+    resultsPanel.setOutlineThickness(2);
+
+    textRank.setFont(font);
+    textRank.setCharacterSize(50);
+    textRank.setStyle(sf::Text::Bold);
 
     isGameOver = false;
     recalculatePosition(width,height);
@@ -149,6 +159,27 @@ void GamePlayScreen::finishGame()
     float percentage = (static_cast<float>(score) / questions.size()) * 100.0f;
     textPercentage.setString(L"Úspěšnost: " + std::to_wstring((int)percentage) + L" %");
 
+    if(percentage>=90.0f)
+    {
+        textRank.setString(L"HODNOST: PÁN ČASU");
+        textRank.setFillColor(sf::Color(255,215,0));
+    }
+    else if(percentage >=60.0f)
+    {
+        textRank.setString(L"HODNOST: STRÁŽCE HISTORIE");
+        textRank.setFillColor(sf::Color(0,255,255));
+    }
+    else if(percentage >=30.0f)
+    {
+        textRank.setString(L"HODNOST: ČASOVÝ TURISTA");
+        textRank.setFillColor(sf::Color(255,165,0));
+    }
+    else
+    {
+        textRank.setString(L"HODNOST: ZTRACEN V ČASE");
+        textRank.setFillColor(sf::Color(255,50,50));
+    }
+
     recalculatePosition(windowWidth,windowHeight);
 }
 
@@ -182,23 +213,35 @@ void GamePlayScreen::recalculatePosition(float width, float height)
     }
     else
     {
+        float centerX = width/2.0f;
+        float centerY = height/2.0f;
+
+        resultsPanel.setSize({600.0f,450.0f});
+        resultsPanel.setOrigin({300.0f,225.0f});
+        resultsPanel.setPosition({centerX,centerY});
+
         sf::FloatRect titleRect = textGameOverTitle.getLocalBounds();
         textGameOverTitle.setOrigin({titleRect.position.x + titleRect.size.x / 2.0f, 0});
-        textGameOverTitle.setPosition({width / 2.0f, 100.0f});
+        textGameOverTitle.setPosition({centerX,centerY - 180.0f});
+
+        sf::FloatRect rankRect = textRank.getLocalBounds();
+        textRank.setOrigin({rankRect.position.x + rankRect.size.x / 2.0f,0});
+        textRank.setPosition({centerX,centerY - 100.0f});
 
         sf::FloatRect scoreRect = textScore.getLocalBounds();
         textScore.setOrigin({scoreRect.position.x + scoreRect.size.x / 2.0f, 0});
-        textScore.setPosition({width / 2.0f, 250.0f});
+        textScore.setPosition({centerX,centerY - 20.0f});
 
         sf::FloatRect percRect = textPercentage.getLocalBounds();
         textPercentage.setOrigin({percRect.position.x + percRect.size.x / 2.0f, 0});
-        textPercentage.setPosition({width / 2.0f, 320.0f});
+        textPercentage.setPosition({centerX,centerY + 30.0f});
 
-        sf::FloatRect thanksRect = textThanks.getLocalBounds();
-        textThanks.setOrigin({thanksRect.position.x + thanksRect.size.x / 2.0f, 0});
-        textThanks.setPosition({width / 2.0f, 400.0f});
+       // sf::FloatRect thanksRect = textThanks.getLocalBounds();
+      //  textThanks.setOrigin({thanksRect.position.x + thanksRect.size.x / 2.0f, 0});
+      //  textThanks.setPosition({width / 2.0f, 400.0f});
 
-        btnBackToMenu.setPosition(width / 2.0f - 150.0f, 500.0f);
+        btnBackToMenu.setPosition(centerX - 10.0f - 250.0f, centerY + 120.0f);
+        btnRestart.setPosition(centerX + 10.0f,centerY + 120.0f);
     }
 }
 
@@ -216,11 +259,14 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
     }
     else
     {
+        window.draw(resultsPanel);
         window.draw(textGameOverTitle);
+        window.draw(textRank);
         window.draw(textScore);
         window.draw(textPercentage);
-        window.draw(textThanks);
+        //window.draw(textThanks);
         btnBackToMenu.draw(window);
+        btnRestart.draw(window);
     }
 }
 
@@ -238,11 +284,14 @@ int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
                 audio.PlayClick();
                 return 1;
             }
+            if(btnRestart.isClicked(mousePos))
+            {
+                audio.PlayClick();
+                return 3;
+            }
         }
         else
         {
-            // Kontrola odpovědí
-            // (Zjednodušeno: kontrolujeme, na co klikl a porovnáme s correctIndex)
             int clickedIndex = -1;
 
             if (btnAnswer0.isClicked(mousePos)) clickedIndex = 0;
@@ -252,17 +301,13 @@ int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
 
             if (clickedIndex != -1)
             {
-                // Kliknuto na odpověď
                 audio.PlayClick();
                 
-                // Je správná?
                 if (clickedIndex == questions[currentQuestionIndex].correctIndex)
                 {
                     score++;
                 }
-
-                // Jdeme na další otázku
-                currentQuestionIndex++;
+               currentQuestionIndex++;
                 loadNextQuestionUI();
             }
         }

@@ -50,11 +50,14 @@ private:
     Button btnAnswer2;
     Button btnAnswer3;
 
+    sf::RectangleShape resultsPanel;
     sf::Text textGameOverTitle;
     sf::Text textScore;
     sf::Text textPercentage;
-    sf::Text textThanks;
+    sf::Text textRank;
+   // sf::Text textThanks;
     Button btnBackToMenu;
+    Button btnRestart;
 
     void loadQuestions(std::wstring category);
     void setTimeForDifficulty(std::wstring difficulty);
