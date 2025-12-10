@@ -287,6 +287,30 @@ src/Button.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.s
 .PHONY : src/Button.cpp.s
 
+src/GamePlayScreen.o: src/GamePlayScreen.cpp.o
+.PHONY : src/GamePlayScreen.o
+
+# target to build an object file
+src/GamePlayScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o
+.PHONY : src/GamePlayScreen.cpp.o
+
+src/GamePlayScreen.i: src/GamePlayScreen.cpp.i
+.PHONY : src/GamePlayScreen.i
+
+# target to preprocess a source file
+src/GamePlayScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.i
+.PHONY : src/GamePlayScreen.cpp.i
+
+src/GamePlayScreen.s: src/GamePlayScreen.cpp.s
+.PHONY : src/GamePlayScreen.s
+
+# target to generate assembly for a file
+src/GamePlayScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.s
+.PHONY : src/GamePlayScreen.cpp.s
+
 src/GameScreen.o: src/GameScreen.cpp.o
 .PHONY : src/GameScreen.o
 
@@ -407,6 +431,9 @@ help:
 	@echo "... src/Button.o"
 	@echo "... src/Button.i"
 	@echo "... src/Button.s"
+	@echo "... src/GamePlayScreen.o"
+	@echo "... src/GamePlayScreen.i"
+	@echo "... src/GamePlayScreen.s"
 	@echo "... src/GameScreen.o"
 	@echo "... src/GameScreen.i"
 	@echo "... src/GameScreen.s"

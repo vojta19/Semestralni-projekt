@@ -11,6 +11,11 @@
 },
 {
   "directory": "/workspaces/Semestralni-projekt/build",
+  "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GamePlayScreen.cpp",
+  "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GamePlayScreen.cpp"
+},
+{
+  "directory": "/workspaces/Semestralni-projekt/build",
   "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.cpp",
   "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.cpp"
 },

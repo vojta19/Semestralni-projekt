@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ZpetDoMinulosti.dir/src/AudioManager.cpp.o.d"
   "CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.o"
   "CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.o.d"
+  "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o"
+  "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o.d"
   "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o"
   "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o.d"
   "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o"
