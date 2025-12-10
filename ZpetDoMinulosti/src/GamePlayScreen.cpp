@@ -242,6 +242,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
 
         btnBackToMenu.setPosition(centerX - 10.0f - 250.0f, centerY + 120.0f);
         btnRestart.setPosition(centerX + 10.0f,centerY + 120.0f);
+        btnRestart.moveText(0.0f,-5.0f);
     }
 }
 

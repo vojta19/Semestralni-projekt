@@ -15,6 +15,8 @@ public:
 
     bool isClicked(sf::Vector2f mousePos);
 
+    void moveText(float x,float y);
+
 private:
     sf::RectangleShape shape; // Samotný obdélník tlačítka
     sf::Text buttonText;      // Text uvnitř tlačítka

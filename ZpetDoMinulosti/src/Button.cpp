@@ -80,3 +80,8 @@ void Button::setPosition(float x, float y)
         y + size.y / 2.0f
     });
 }
+
+void Button::moveText(float x, float y)
+{
+    buttonText.move({x,y});
+}
