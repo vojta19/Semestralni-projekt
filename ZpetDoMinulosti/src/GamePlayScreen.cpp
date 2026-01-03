@@ -21,8 +21,8 @@ btnAnswer2(0,0,300,50,L"",font),
 btnAnswer3(0,0,300,50,L"",font),
 btnResume(0,0,300,50,L"Zpět do hry",font),
 
-btnBackToMenu(0,0,250,50,L"Do hlavní nabídky",font),
-btnRestart(0,0,250,50,L"Zkusit znovu",font)
+btnBackToMenu(0,0,300,50,L"Do hlavní nabídky",font),
+btnRestart(0,0,300,50,L"Zkusit znovu",font)
 
 {
     textQuestion.setFont(font);
