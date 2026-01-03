@@ -22,7 +22,7 @@ btnAnswer3(0,0,300,50,L"",font),
 btnResume(0,0,300,50,L"Zpět do hry",font),
 
 btnBackToMenu(0,0,300,50,L"Do hlavní nabídky",font),
-btnRestart(0,0,250,50,L"Zkusit znovu",font)
+btnRestart(0,0,300,50,L"Zkusit znovu",font)
 
 {
     textQuestion.setFont(font);
@@ -271,7 +271,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
       //  textThanks.setOrigin({thanksRect.position.x + thanksRect.size.x / 2.0f, 0});
       //  textThanks.setPosition({width / 2.0f, 400.0f});
 
-        btnBackToMenu.setPosition(centerX - 10.0f - 250.0f, centerY + 120.0f);
+        btnBackToMenu.setPosition(centerX - 10.0f - 300.0f, centerY + 120.0f);
         btnRestart.setPosition(centerX + 10.0f,centerY + 120.0f);
         btnRestart.moveText(0.0f,-3.0f);
     }
