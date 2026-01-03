@@ -4,8 +4,30 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <cwctype>
+#include <set>
+#include <regex>
 
 using json = nlohmann::json;
+
+std::string cleanHtmlEntities(std::string text)
+{
+    std::string buffer = text;
+    
+    size_t pos;
+    while ((pos = buffer.find("&quot;")) != std::string::npos) buffer.replace(pos, 6, "\"");
+    while ((pos = buffer.find("&apos;")) != std::string::npos) buffer.replace(pos, 6, "'");
+    while ((pos = buffer.find("&#039;")) != std::string::npos) buffer.replace(pos, 6, "'");
+    while ((pos = buffer.find("&amp;")) != std::string::npos) buffer.replace(pos, 5, "&");
+    while ((pos = buffer.find("&lt;")) != std::string::npos) buffer.replace(pos, 4, "<");
+    while ((pos = buffer.find("&gt;")) != std::string::npos) buffer.replace(pos, 4, ">");
+    while ((pos = buffer.find("&deg;")) != std::string::npos) buffer.replace(pos, 5, "°");
+
+    std::regex tagRegex("<[^>]*>");
+    buffer = std::regex_replace(buffer, tagRegex, "");
+
+    return buffer;
+}
 
 void formatQuestionText(std::wstring& text)
 {
@@ -13,7 +35,18 @@ void formatQuestionText(std::wstring& text)
 
     text[0] = std::towupper(text[0]);
 
-    if (text.back() != L'?') {
+    while (!text.empty() && text.back() == L'.') 
+    {
+        text.pop_back();
+    }
+    
+    while (!text.empty() && text.back() == L' ') 
+    {
+        text.pop_back();
+    }
+
+    if (text.empty() || text.back() != L'?') 
+    {
         text += L'?';
     }
 }
@@ -24,7 +57,8 @@ void formatAnswerText(std::wstring& text)
 
     text[0] = std::towupper(text[0]);
 
-    if (text.back() == L'.') {
+    if (text.back() == L'.') 
+    {
         text.pop_back();
     }
 }
@@ -43,6 +77,7 @@ std::wstring QuestionManager::utf8ToWide(const std::string& str)
 std::string QuestionManager::translateText(CURL* curl, std::string text)
 {
     if (text.empty()) return "";
+    std::string cleanText = cleanHtmlEntities(text);
     std::string readBuffer;
 
     char* encodedText = curl_easy_escape(curl, text.c_str(),static_cast<int>(text.length()));
@@ -149,6 +184,7 @@ bool isQuestionRelevant(const std::string& text, const std::wstring& category)
 std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std::wstring difficulty)
 {
     std::vector<Question> resultQuestions;
+    std::set<std::string> seenQuestions;
     CURL* curl = curl_easy_init();
 
     if (!curl) return resultQuestions;
@@ -161,7 +197,7 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     else difficultyParam = "&difficulty=hard";
 
     int retryCount = 0;
-    const int MAX_RETRIES = 10; 
+    const int MAX_RETRIES = 15; 
 
     while (resultQuestions.size() < 30 && retryCount < MAX_RETRIES)
     {
@@ -194,7 +230,11 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
                         if (!isQuestionRelevant(enQuestion, category)) continue;
 
-                        bool isDuplicate = false;
+                        if (seenQuestions.count(enQuestion)>0)
+                        {
+                            continue;
+                        }
+                        seenQuestions.insert(enQuestion);
 
                         Question q;
                         std::string enCorrect = item["correct_answer"];
