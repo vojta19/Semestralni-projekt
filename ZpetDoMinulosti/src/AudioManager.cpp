@@ -61,7 +61,7 @@ void AudioManager::toggleMusic() //logika pro tlačítko v nastavení
 
 bool AudioManager::isMusicPlaying() const 
 {
-//    return isMusicEnabled;
+  return false;
 }
 
 void AudioManager::PlayClick()
