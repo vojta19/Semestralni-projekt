@@ -10,7 +10,123 @@
 
 using json = nlohmann::json;
 
-// --- 1. POMOCNÉ FUNKCE (Čištění a formátování) ---
+void replaceAll(std::string& str, const std::string& from, const std::string& to) 
+{
+    if(from.empty()) return;
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) 
+    {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length();
+    }
+}
+
+std::string fixBadTranslations(std::string csText, std::string enText)
+{
+    std::string enLower = enText;
+    std::transform(enLower.begin(), enLower.end(), enLower.begin(), ::tolower);
+
+    if (enLower.find("trinity") != std::string::npos) 
+    {
+        replaceAll(csText, "Trojice", "Trinity");
+        replaceAll(csText, "trojice", "Trinity");
+    }
+    if (enLower.find("manhattan project") != std::string::npos) 
+    {
+        replaceAll(csText, "projekt Manhattan", "Projekt Manhattan"); // Jen pro jistotu velkých písmen
+        replaceAll(csText, "manhattanský projekt", "Projekt Manhattan");
+    }
+    if (enLower.find("midway") != std::string::npos) 
+    {
+        replaceAll(csText, "Uprostřed", "Midway");
+        replaceAll(csText, "uprostřed", "Midway");
+        replaceAll(csText, "V polovině cesty", "Midway");
+        replaceAll(csText, "Mezi", "Midway");
+    }
+    if (enLower.find("pearl harbor") != std::string::npos) 
+    {
+        replaceAll(csText, "Perlový přístav", "Pearl Harbor");
+        replaceAll(csText, "perlový přístav", "Pearl Harbor");
+    }
+    if (enLower.find("d-day") != std::string::npos) 
+    {
+        replaceAll(csText, "D-den", "Den D");
+        replaceAll(csText, "d-den", "Den D");
+    }
+    if (enLower.find("stalingrad") != std::string::npos) replaceAll(csText, "Stalingrad", "Stalingrad"); // Někdy to komolí
+
+    if (enLower.find("axis") != std::string::npos) {
+        // "Axis powers" -> Mocnosti Osy
+        replaceAll(csText, "Osy", "Osa");
+        replaceAll(csText, "osy", "Osa");
+        replaceAll(csText, "náprava", "Osa"); // Axis je i náprava u auta
+    }
+    if (enLower.find("allies") != std::string::npos || enLower.find("allied") != std::string::npos) 
+    {
+        replaceAll(csText, "spojenci", "Spojenci");
+    }
+    if (enLower.find("cold war") != std::string::npos) 
+    {
+        replaceAll(csText, "chladná válka", "Studená válka"); // Občasná chyba
+    }
+    if (enLower.find("iron curtain") != std::string::npos) 
+    {
+        replaceAll(csText, "železný závěs", "Železná opona");
+    }
+    if (enLower.find("enigma") != std::string::npos) 
+    {
+        replaceAll(csText, "hádanka", "Enigma");
+        replaceAll(csText, "Hádanka", "Enigma");
+        replaceAll(csText, "tajemství", "Enigma");
+    }
+    if (enLower.find("little boy") != std::string::npos) 
+    {
+        replaceAll(csText, "malý chlapec", "Little Boy");
+        replaceAll(csText, "Malý chlapec", "Little Boy");
+    }
+    if (enLower.find("fat man") != std::string::npos) 
+    {
+        replaceAll(csText, "tlustý muž", "Fat Man");
+        replaceAll(csText, "Tlustý muž", "Fat Man");
+        replaceAll(csText, "tlouštík", "Fat Man");
+    }
+    if (enLower.find("panzer") != std::string::npos) replaceAll(csText, "brnění", "Panzer");
+    if (enLower.find("spitfire") != std::string::npos) replaceAll(csText, "plivající oheň", "Spitfire");
+
+    if (enLower.find("luftwaffe") != std::string::npos) replaceAll(csText, "letectvo", "Luftwaffe");
+    if (enLower.find("wehrmacht") != std::string::npos) replaceAll(csText, "obranná síla", "Wehrmacht");
+    if (enLower.find("kriegsmarine") != std::string::npos) replaceAll(csText, "válečné námořnictvo", "Kriegsmarine");
+    if (enLower.find("raf") != std::string::npos) replaceAll(csText, "královské letectvo", "RAF"); 
+    
+    if (enText.find("HMS") != std::string::npos) 
+    {
+        if (csText.find("HMS") == std::string::npos) 
+        {
+            if (enLower.find("victory") != std::string::npos) replaceAll(csText, "Vítězství", "HMS Victory");
+        }
+    }
+    if (enText.find("USS") != std::string::npos) 
+    {
+        if (enLower.find("enterprise") != std::string::npos) replaceAll(csText, "Podnik", "USS Enterprise");
+        if (enLower.find("constitution") != std::string::npos) replaceAll(csText, "Ústava", "USS Constitution");
+    }
+    
+    if (enLower.find("mayflower") != std::string::npos) replaceAll(csText, "Májový květ", "Mayflower");
+    if (enLower.find("santa maria") != std::string::npos) replaceAll(csText, "Svatá Marie", "Santa Maria");
+    if (enLower.find("beagle") != std::string::npos) replaceAll(csText, "Bígl", "Beagle");
+
+    if (enLower.find("overlord") != std::string::npos) replaceAll(csText, "Vrchní pán", "Overlord");
+    if (enLower.find("sea lion") != std::string::npos) replaceAll(csText, "Lachtan", "Seelöwe (Lvoun)");
+    if (enLower.find("barbarossa") != std::string::npos) replaceAll(csText, "Rudovous", "Barbarossa");
+    if (enLower.find("market garden") != std::string::npos) replaceAll(csText, "Tržní zahrada", "Market Garden");
+    
+    if (enLower.find("globe theatre") != std::string::npos) replaceAll(csText, "Divadlo Svět", "Globe Theatre");
+    if (enLower.find("white house") != std::string::npos) 
+    {
+    }
+    
+    return csText;
+}
 
 std::string cleanHtmlEntities(std::string text)
 {
@@ -116,7 +232,9 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
 std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std::wstring difficulty)
 {
     std::vector<Question> resultQuestions;
-    std::set<std::string> seenQuestions; 
+    
+    static std::set<std::string> globalSeenQuestions; 
+    
     CURL* curl = curl_easy_init();
 
     if (!curl) return resultQuestions;
@@ -149,6 +267,9 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     else if (difficulty == L"Střední") diffParam = "&difficulty=medium";
     else diffParam = "&difficulty=hard";
 
+    std::srand(std::time(nullptr)); 
+    std::string randomParam = "&random=" + std::to_string(std::rand());
+    
     // Sestavení URL
     std::string currentUrl = baseUrl + tags + diffParam;
 
@@ -172,7 +293,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
         {
             try 
             {
-                // Pozor: The Trivia API vrací rovnou pole [], nemá to obalené v "results"
                 auto jsonArray = json::parse(readBuffer);
                 
                 if (jsonArray.is_array()) 
@@ -181,13 +301,13 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
                     {
                         if (resultQuestions.size() >= 30) break;
 
-                        // 1. Získání textu otázky 
-                        // (Struktura: item["question"]["text"])
                         std::string enQuestion = item["question"]["text"];
 
-                        // 2. Duplicity
-                        if (seenQuestions.count(enQuestion) > 0) continue;
-                        seenQuestions.insert(enQuestion);
+                        if (globalSeenQuestions.count(enQuestion) > 0)
+                        {
+                            continue;
+                        }
+                        globalSeenQuestions.insert(enQuestion);
 
                         Question q;
                         std::string enCorrect = item["correctAnswer"];
