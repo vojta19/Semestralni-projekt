@@ -7,6 +7,28 @@
 
 using json = nlohmann::json;
 
+void formatQuestionText(std::wstring& text)
+{
+    if (text.empty()) return;
+
+    text[0] = std::towupper(text[0]);
+
+    if (text.back() != L'?') {
+        text += L'?';
+    }
+}
+
+void formatAnswerText(std::wstring& text)
+{
+    if (text.empty()) return;
+
+    text[0] = std::towupper(text[0]);
+
+    if (text.back() == L'.') {
+        text.pop_back();
+    }
+}
+
 size_t QuestionManager::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
@@ -131,88 +153,111 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
     if (!curl) return resultQuestions;
 
-    std::string readBuffer;
+    std::string baseUrl = "https://opentdb.com/api.php?category=23&type=multiple&amount=50";
     
-    std::string apiUrl = "https://opentdb.com/api.php?amount=400&category=23&type=multiple";
+    std::string difficultyParam = "";
+    if (difficulty == L"Lehká") difficultyParam = "&difficulty=easy";
+    else if (difficulty == L"Střední") difficultyParam = "&difficulty=medium";
+    else difficultyParam = "&difficulty=hard";
 
-    if (difficulty == L"Lehká") apiUrl += "&difficulty=easy";
-    else if (difficulty == L"Střední") apiUrl += "&difficulty=medium";
-    else apiUrl += "&difficulty=hard";
+    int retryCount = 0;
+    const int MAX_RETRIES = 10; 
 
-    curl_easy_setopt(curl, CURLOPT_URL, apiUrl.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-    
-    CURLcode res = curl_easy_perform(curl);
-
-    if (res == CURLE_OK) 
+    while (resultQuestions.size() < 30 && retryCount < MAX_RETRIES)
     {
-        try 
+        std::string readBuffer;
+        std::string currentUrl = baseUrl + difficultyParam; 
+
+        // Nastavení CURL
+        curl_easy_setopt(curl, CURLOPT_URL, currentUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+        
+        std::cout << "Pokus " << (retryCount + 1) << ": Stahuji balik otazek..." << std::endl;
+        CURLcode res = curl_easy_perform(curl);
+
+        if (res == CURLE_OK) 
         {
-            auto jsonData = json::parse(readBuffer);
-            
-            if (jsonData["response_code"] == 0) 
+            try 
             {
-                auto results = jsonData["results"];
-                int count = 0;
-
-                for (auto& item : results) 
+                auto jsonData = json::parse(readBuffer);
+                if (jsonData["response_code"] == 0) 
                 {
-                    if (count >= 30) break;
-
-                    std::string enQuestion = item["question"];
-
-                    if (!isQuestionRelevant(enQuestion, category)) 
-                    {
-                        continue; 
-                    }
-
-                    Question q;
-                    std::string enCorrect = item["correct_answer"];
-                    std::vector<std::string> enIncorrect;
-                    for(auto& inc : item["incorrect_answers"]) enIncorrect.push_back(inc);
-
-                    std::string csQuestionStr = translateText(curl, enQuestion);
-                    std::string csCorrectStr = translateText(curl, enCorrect);
+                    auto results = jsonData["results"];
                     
-                    q.text = utf8ToWide(csQuestionStr);
-                    
-                    std::vector<std::wstring> answers;
-                    answers.push_back(utf8ToWide(csCorrectStr));
-
-                    for(auto& inc : enIncorrect) 
+                    for (auto& item : results) 
                     {
-                        answers.push_back(utf8ToWide(translateText(curl, inc)));
-                    }
+                        if (resultQuestions.size() >= 30) break;
 
-                    std::wstring correctText = answers[0];
-                    std::random_device rd;
-                    std::mt19937 g(rd());
-                    std::shuffle(answers.begin(), answers.end(), g);
+                        std::string enQuestion = item["question"];
 
-                    for(int i=0; i<4; i++) 
-                    {
-                        if(answers[i] == correctText) 
+                        if (!isQuestionRelevant(enQuestion, category)) continue;
+
+                        bool isDuplicate = false;
+
+                        Question q;
+                        std::string enCorrect = item["correct_answer"];
+                        std::vector<std::string> enIncorrect;
+                        for(auto& inc : item["incorrect_answers"]) enIncorrect.push_back(inc);
+
+                        std::string csQuestionStr = translateText(curl, enQuestion);
+                        std::string csCorrectStr = translateText(curl, enCorrect);
+                        
+                        q.text = utf8ToWide(csQuestionStr);
+                        formatQuestionText(q.text); 
+                        
+                        std::vector<std::wstring> answers;
+
+                        std::wstring wCorrect = utf8ToWide(csCorrectStr);
+                        formatAnswerText(wCorrect); 
+                        answers.push_back(wCorrect);
+
+                        for(auto& inc : enIncorrect) 
                         {
-                            q.correctIndex = i;
-                            break;
+                            std::wstring wInc = utf8ToWide(translateText(curl, inc));
+                            formatAnswerText(wInc); 
+                            answers.push_back(wInc);
                         }
+
+                        std::wstring correctText = answers[0];
+                        std::random_device rd;
+                        std::mt19937 g(rd());
+                        std::shuffle(answers.begin(), answers.end(), g);
+
+                        for(int i=0; i<4; i++) 
+                        {
+                            if(answers[i] == correctText) 
+                            {
+                                q.correctIndex = i;
+                                break;
+                            }
+                        }
+                        q.answers = answers;
+                        resultQuestions.push_back(q);
+                        
+                        std::cout << "Nacteno otazek: " << resultQuestions.size() << "/30" << std::endl;
                     }
-                    q.answers = answers;
-                    resultQuestions.push_back(q);
-                    count++;
-                    
-                    sf::sleep(sf::milliseconds(50));
                 }
+                else 
+                {
+
+                }
+            } catch (...) 
+            {
+                std::cerr << "Chyba JSON" << std::endl;
             }
-        } catch (...) {
-            std::cerr << "Chyba pri zpracovani JSON" << std::endl;
         }
+        
+        retryCount++;
     }
 
-    if (resultQuestions.empty()) {
-        std::cerr << "Filtr nenasel otazky pro tuto kategorii, pouzivam obecnou historii." << std::endl;
+    if (resultQuestions.empty()) 
+    {
+        std::cerr << "VAROVANI: Nepodarilo se stahnout zadne otazky!" << std::endl;
+    } else 
+    {
+        std::cout << "Hotovo. Celkem stazeno: " << resultQuestions.size() << " otazek." << std::endl;
     }
 
     curl_easy_cleanup(curl);
