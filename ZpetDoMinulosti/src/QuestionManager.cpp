@@ -65,25 +65,37 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
     std::string cleanText = cleanHtmlEntities(text);
     std::string readBuffer;
     
+    // Zakódování textu pro URL
     char* encodedText = curl_easy_escape(curl, cleanText.c_str(), static_cast<int>(cleanText.length()));
-    std::string url = "https://api.mymemory.translated.net/get?q=" + std::string(encodedText) + "&langpair=en|cs";
+    
+    // Používáme "clients5" endpoint, který vrací jednoduché JSON pole a nevyžaduje API klíč
+    std::string url = "https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=cs&q=" + std::string(encodedText);
     curl_free(encodedText);
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    // User-Agent, aby si Google myslel, že jsme prohlížeč (pro jistotu)
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
 
     CURLcode res = curl_easy_perform(curl);
     
     if(res == CURLE_OK) {
         try {
+            // Google vrací odpověď ve formátu: ["Přeložený text"]
             auto jsonResponse = json::parse(readBuffer);
-            if (jsonResponse.contains("responseData") && !jsonResponse["responseData"].is_null()) {
-                std::string translated = jsonResponse["responseData"]["translatedText"].get<std::string>();
+            
+            // Kontrola, zda je to pole a má obsah
+            if (jsonResponse.is_array() && !jsonResponse.empty()) {
+                // Vezmeme první prvek pole
+                std::string translated = jsonResponse[0].get<std::string>();
                 return cleanHtmlEntities(translated); 
             }
-        } catch (...) { return cleanText; }
+        } catch (...) { 
+            // Pokud parsování selže, vrátíme původní anglický text
+            return cleanText; 
+        }
     }
     return cleanText;
 }
