@@ -1,0 +1,3 @@
+/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate.dir
+/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-subbuild/CMakeFiles/edit_cache.dir
+/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-subbuild/CMakeFiles/rebuild_cache.dir

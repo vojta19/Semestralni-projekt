@@ -57,9 +57,18 @@ void formatAnswerText(std::wstring& text)
 
     text[0] = std::towupper(text[0]);
 
-    if (text.back() == L'.') 
+    while (!text.empty()) 
     {
-        text.pop_back();
+        wchar_t last = text.back();
+        
+        if (last == L'.' || last == L',' || last == L'!' || last == L'?' || last == L';' || last == L':' || last == L' ') 
+        {
+            text.pop_back(); 
+        } 
+        else 
+        {
+            break; 
+        }
     }
 }
 
@@ -197,7 +206,7 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     else difficultyParam = "&difficulty=hard";
 
     int retryCount = 0;
-    const int MAX_RETRIES = 15; 
+    const int MAX_RETRIES = 100; 
 
     while (resultQuestions.size() < 30 && retryCount < MAX_RETRIES)
     {

@@ -1,0 +1,31 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/AudioManager.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/AudioManager.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/AudioManager.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/Button.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GamePlayScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/MenuScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/main.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o.d"
+  )
+
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/DependInfo.cmake"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/DependInfo.cmake"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/DependInfo.cmake"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-build/src/SFML/Audio/CMakeFiles/sfml-audio.dir/DependInfo.cmake"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/build/_deps/sfml-build/src/SFML/Network/CMakeFiles/sfml-network.dir/DependInfo.cmake"
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")
