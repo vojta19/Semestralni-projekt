@@ -2233,6 +2233,28 @@ CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o
  /usr/include/c++/12/bits/random.h
  /usr/include/x86_64-linux-gnu/c++/12/bits/opt_random.h
  /usr/include/c++/12/bits/random.tcc
+ /usr/include/c++/12/set
+ /usr/include/c++/12/bits/stl_set.h
+ /usr/include/c++/12/bits/stl_multiset.h
+ /usr/include/c++/12/regex
+ /usr/include/c++/12/bitset
+ /usr/include/c++/12/stack
+ /usr/include/c++/12/deque
+ /usr/include/c++/12/bits/stl_deque.h
+ /usr/include/c++/12/bits/deque.tcc
+ /usr/include/c++/12/bits/stl_stack.h
+ /usr/include/c++/12/bits/regex_constants.h
+ /usr/include/c++/12/bits/regex_error.h
+ /usr/include/c++/12/bits/regex_automaton.h
+ /usr/include/c++/12/bits/regex_automaton.tcc
+ /usr/include/c++/12/bits/regex_scanner.h
+ /usr/include/c++/12/bits/regex_scanner.tcc
+ /usr/include/c++/12/bits/regex_compiler.h
+ /usr/include/c++/12/bits/regex_compiler.tcc
+ /usr/include/c++/12/bits/regex.h
+ /usr/include/c++/12/bits/regex.tcc
+ /usr/include/c++/12/bits/regex_executor.h
+ /usr/include/c++/12/bits/regex_executor.tcc
 
 CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o
  /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp

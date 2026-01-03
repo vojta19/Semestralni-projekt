@@ -2226,7 +2226,29 @@ CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o: /workspaces/Semestraln
   /usr/include/c++/12/random \
   /usr/include/c++/12/bits/random.h \
   /usr/include/x86_64-linux-gnu/c++/12/bits/opt_random.h \
-  /usr/include/c++/12/bits/random.tcc
+  /usr/include/c++/12/bits/random.tcc \
+  /usr/include/c++/12/set \
+  /usr/include/c++/12/bits/stl_set.h \
+  /usr/include/c++/12/bits/stl_multiset.h \
+  /usr/include/c++/12/regex \
+  /usr/include/c++/12/bitset \
+  /usr/include/c++/12/stack \
+  /usr/include/c++/12/deque \
+  /usr/include/c++/12/bits/stl_deque.h \
+  /usr/include/c++/12/bits/deque.tcc \
+  /usr/include/c++/12/bits/stl_stack.h \
+  /usr/include/c++/12/bits/regex_constants.h \
+  /usr/include/c++/12/bits/regex_error.h \
+  /usr/include/c++/12/bits/regex_automaton.h \
+  /usr/include/c++/12/bits/regex_automaton.tcc \
+  /usr/include/c++/12/bits/regex_scanner.h \
+  /usr/include/c++/12/bits/regex_scanner.tcc \
+  /usr/include/c++/12/bits/regex_compiler.h \
+  /usr/include/c++/12/bits/regex_compiler.tcc \
+  /usr/include/c++/12/bits/regex.h \
+  /usr/include/c++/12/bits/regex.tcc \
+  /usr/include/c++/12/bits/regex_executor.h \
+  /usr/include/c++/12/bits/regex_executor.tcc
 
 CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o: /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp \
   /usr/include/stdc-predef.h \
@@ -2987,6 +3009,34 @@ CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o: /workspaces/Semestralni-projekt/Z
 
 /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/main.cpp:
 
+/usr/include/c++/12/bits/regex_executor.h:
+
+/usr/include/c++/12/bits/regex.h:
+
+/usr/include/c++/12/bits/regex_compiler.tcc:
+
+/usr/include/c++/12/bits/regex_scanner.tcc:
+
+/usr/include/c++/12/bits/regex_scanner.h:
+
+/usr/include/c++/12/bits/regex_automaton.tcc:
+
+/usr/include/c++/12/bits/regex_automaton.h:
+
+/usr/include/c++/12/bits/regex_error.h:
+
+/usr/include/c++/12/bits/regex_constants.h:
+
+/usr/include/c++/12/bits/regex_executor.tcc:
+
+/usr/include/c++/12/bits/deque.tcc:
+
+/usr/include/c++/12/stack:
+
+/usr/include/c++/12/bitset:
+
+/usr/include/c++/12/bits/stl_multiset.h:
+
 /usr/include/x86_64-linux-gnu/c++/12/bits/opt_random.h:
 
 /usr/include/nlohmann/detail/macro_unscope.hpp:
@@ -3169,6 +3219,8 @@ _deps/sfml-src/include/SFML/Window/GlResource.hpp:
 
 _deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp:
 
+/usr/include/c++/12/bits/stl_stack.h:
+
 _deps/sfml-src/include/SFML/Graphics/Shader.hpp:
 
 _deps/sfml-src/include/SFML/Graphics/VertexArray.hpp:
@@ -3303,6 +3355,8 @@ _deps/sfml-src/include/SFML/Window/Cursor.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
+/usr/include/c++/12/regex:
+
 /usr/include/c++/12/bits/gslice.h:
 
 /usr/include/c++/12/pstl/glue_algorithm_defs.h:
@@ -3332,6 +3386,8 @@ _deps/sfml-src/include/SFML/Window/Cursor.hpp:
 /usr/include/c++/12/tr1/bessel_function.tcc:
 
 /usr/include/c++/12/cwchar:
+
+/usr/include/c++/12/bits/stl_deque.h:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types_64.h:
 
@@ -3383,7 +3439,11 @@ _deps/sfml-src/include/SFML/Audio/SoundStream.hpp:
 
 /usr/include/c++/12/cstdint:
 
+/usr/include/c++/12/bits/stl_set.h:
+
 /usr/include/c++/12/bits/functexcept.h:
+
+/usr/include/c++/12/bits/regex_compiler.h:
 
 /usr/include/nlohmann/detail/meta/detected.hpp:
 
@@ -3438,6 +3498,8 @@ _deps/sfml-src/include/SFML/Window/Mouse.hpp:
 /usr/include/c++/12/bits/fs_fwd.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/usr/include/c++/12/bits/regex.tcc:
 
 /usr/include/nlohmann/detail/input/position_t.hpp:
 
@@ -3733,6 +3795,8 @@ _deps/sfml-src/include/SFML/Window/WindowHandle.hpp:
 
 /usr/include/c++/12/locale:
 
+/usr/include/c++/12/deque:
+
 /usr/include/asm-generic/bitsperlong.h:
 
 /usr/include/c++/12/ext/type_traits.h:
@@ -3890,6 +3954,8 @@ _deps/sfml-src/include/SFML/Graphics/RenderStates.hpp:
 /usr/include/c++/12/iterator:
 
 /usr/include/c++/12/bits/unique_ptr.h:
+
+/usr/include/c++/12/set:
 
 /usr/include/c++/12/bits/ios_base.h:
 
