@@ -13,11 +13,13 @@ textScore(font),
 textPercentage(font),
 //textThanks(font),
 textRank(font),
+textPausedTitle(font),
 
 btnAnswer0(0,0,300,50,L"",font),
 btnAnswer1(0,0,300,50,L"",font),
 btnAnswer2(0,0,300,50,L"",font),
 btnAnswer3(0,0,300,50,L"",font),
+btnResume(0,0,300,50,L"Zpět do hry",font),
 
 btnBackToMenu(0,0,250,50,L"Do hlavní nabídky",font),
 btnRestart(0,0,250,50,L"Zkusit znovu",font)
@@ -60,8 +62,24 @@ btnRestart(0,0,250,50,L"Zkusit znovu",font)
     textRank.setCharacterSize(50);
     textRank.setStyle(sf::Text::Bold);
 
+    pauseOverlay.setFillColor(sf::Color(0,0,0,240));
+    textPausedTitle.setString(L"Hra pozastavena");
+    textPausedTitle.setCharacterSize(50);
+    textPausedTitle.setFillColor(sf::Color::White);
+    textPausedTitle.setStyle(sf::Text::Bold);
+
     isGameOver = false;
+    isPaused = false;
     recalculatePosition(width,height);
+}
+
+void GamePlayScreen::togglePause()
+{
+    if(!isGameOver)
+    {
+        isPaused=!isPaused;
+        recalculatePosition(windowWidth,windowHeight);
+    }
 }
 
 void GamePlayScreen::setTimeForDifficulty(std::wstring difficulty)
@@ -119,42 +137,40 @@ void GamePlayScreen::loadNextQuestionUI()
     recalculatePosition(windowWidth, windowHeight);
 }
 
+
 void GamePlayScreen::update(sf::Time deltaTime)
 {
-    if(isGameOver) return;
+    if(isGameOver || isPaused) return;
     remainingTime -= deltaTime.asSeconds();
 
     int seconds = static_cast<int>(remainingTime);
-    int decis = static_cast<int>((remainingTime - seconds) * 10);
-    if (remainingTime < 0) remainingTime = 0;
-
-    textTimer.setString(std::to_wstring(seconds) + L"." + std::to_wstring(decis) + L" s");
-
-    if (remainingTime < 5.0f)
-    {
-        blinkTimer += deltaTime.asSeconds();
-        if(blinkTimer >= 0.2f)
-        {
-            blinkTimer = 0;
-            timerBlinkState = !timerBlinkState;
-            textTimer.setFillColor(timerBlinkState ? sf::Color::Red : sf::Color::White);
-        }
+    int decis = static_cast<int>((remainingTime - seconds) * 10); 
+    if (remainingTime < 0) remainingTime = 0; 
+    textTimer.setString(std::to_wstring(seconds) + L"." + std::to_wstring(decis) + L" s"); 
+    
+    if (remainingTime < 5.0f) 
+    { 
+        blinkTimer += deltaTime.asSeconds(); 
+        if (blinkTimer >= 0.2f) 
+        { 
+            blinkTimer = 0; 
+            timerBlinkState = !timerBlinkState; 
+            textTimer.setFillColor(timerBlinkState ? sf::Color::Red : sf::Color::White); 
+        } 
+    } 
+    else 
+    { 
+        textTimer.setFillColor(sf::Color::White); 
     }
-    else
-    {
-        textTimer.setFillColor(sf::Color::White);
-    }
-
-    if(remainingTime <= 0.0f)
-    {
-        currentQuestionIndex ++;
-        loadNextQuestionUI();
+    if (remainingTime <= 0.0f) 
+    { 
+        currentQuestionIndex++; loadNextQuestionUI(); 
     }
 }
 
 void GamePlayScreen::finishGame()
 {
-    isGameOver = true;
+    isGameOver = true; isPaused = false;
     textScore.setString(L"Skóre: " + std::to_wstring(score) + L" / " + std::to_wstring(questions.size()));
     float percentage = (static_cast<float>(score) / questions.size()) * 100.0f;
     textPercentage.setString(L"Úspěšnost: " + std::to_wstring((int)percentage) + L" %");
@@ -188,7 +204,22 @@ void GamePlayScreen::recalculatePosition(float width, float height)
     windowWidth = width;
     windowHeight = height;
 
-    if(!isGameOver)
+    float centerX = width/2.0f;
+    float centerY = height / 2.0f;
+
+    if(isPaused)
+    {
+        pauseOverlay.setSize({width,height});
+        pauseOverlay.setPosition({0,0});
+
+        sf::FloatRect pRect = textPausedTitle.getLocalBounds();
+        textPausedTitle.setOrigin({pRect.position.x + pRect.size.x / 2.0f, pRect.position.y + pRect.size.y / 2.0f});
+        textPausedTitle.setPosition({centerX, height * 0.25f});
+
+        btnResume.setPosition(centerX - 150.0f, centerY);
+        btnBackToMenu.setPosition(centerX - 125.0f, centerY + 80.0f);
+    }
+    else if(!isGameOver)
     {
         sf::FloatRect qRect = textQuestion.getLocalBounds();
         textQuestion.setOrigin({qRect.position.x + qRect.size.x / 2.0f, qRect.position.y + qRect.size.y / 2.0f});
@@ -248,7 +279,22 @@ void GamePlayScreen::recalculatePosition(float width, float height)
 
 void GamePlayScreen::draw(sf::RenderWindow&window)
 {
-    if(!isGameOver)
+    if(isPaused)
+    {
+        window.draw(textQuestion);
+        window.draw(textQuestion);
+        window.draw(textTimer);
+        window.draw(textCounter);
+        btnAnswer0.draw(window);
+        btnAnswer1.draw(window);
+        btnAnswer2.draw(window);
+        btnAnswer3.draw(window);
+        window.draw(pauseOverlay);
+        window.draw(textPausedTitle);
+        btnResume.draw(window);
+        btnBackToMenu.draw(window);
+    }
+    else if(!isGameOver)
     {
         window.draw(textQuestion);
         window.draw(textTimer);
@@ -278,7 +324,21 @@ int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
     {
-        if(isGameOver)
+        if(isPaused)
+        {
+            if(btnResume.isClicked(mousePos))
+            {
+                audio.PlayClick();
+                togglePause();
+                return 0;
+            }
+            if(btnBackToMenu.isClicked(mousePos))
+            {
+                audio.PlayClick();
+                return 1;
+            }
+        }
+        else if(isGameOver)
         {
             if(btnBackToMenu.isClicked(mousePos))
             {

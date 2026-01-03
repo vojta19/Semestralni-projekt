@@ -64,6 +64,16 @@ int main()
             {
                 window.close();
             }
+            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            {
+                if(keyPressed->code == sf::Keyboard::Key::Escape)
+                {
+                    if(currentState== PLAYING)
+                    {
+                        playing.togglePause();
+                    }
+                }
+            }
             if (event->is<sf::Event::MouseButtonReleased>())
             {
                 mouseClickedReleased = true;

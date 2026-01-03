@@ -27,6 +27,8 @@ public:
 
     void recalculatePosition(float width, float height);
 
+    void togglePause();
+
 private:
     sf::Font font;
     float windowWidth, windowHeight;
@@ -35,6 +37,7 @@ private:
     int currentQuestionIndex;
     int score;
     bool isGameOver;
+    bool isPaused;
 
     float timeLimit;
     float remainingTime;
@@ -49,6 +52,10 @@ private:
     Button btnAnswer1;
     Button btnAnswer2;
     Button btnAnswer3;
+
+    sf::RectangleShape pauseOverlay;
+    sf::Text textPausedTitle;
+    Button btnResume;
 
     sf::RectangleShape resultsPanel;
     sf::Text textGameOverTitle;
