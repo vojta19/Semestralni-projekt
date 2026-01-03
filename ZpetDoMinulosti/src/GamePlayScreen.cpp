@@ -217,7 +217,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         textPausedTitle.setPosition({centerX, height * 0.25f});
 
         btnResume.setPosition(centerX - 150.0f, centerY);
-        btnBackToMenu.setPosition(centerX - 125.0f, centerY + 80.0f);
+        btnBackToMenu.setPosition(centerX - 150.0f, centerY + 80.0f);
     }
     else if(!isGameOver)
     {
