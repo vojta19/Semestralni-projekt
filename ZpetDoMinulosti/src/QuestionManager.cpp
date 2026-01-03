@@ -7,8 +7,48 @@
 #include <cwctype>
 #include <set>
 #include <regex>
+#include <map>
+#include <vector>
 
 using json = nlohmann::json;
+
+const std::vector<std::string> protectedTerms = 
+{
+    "Fat Man", "Little Boy", "Trinity", "Enigma", "Manhattan Project", "Gadget", "Tsar Bomba",
+    "Midway", "Pearl Harbor", "Overlord", "Barbarossa", "Sea Lion", "Market Garden", "D-Day", "Stalingrad", "Blitzkrieg",
+    "Normandy", "Iwo Jima", "Okinawa", "Guadalcanal",
+    "HMS", "USS", "Bismarck", "Tirpitz", "Yamato", "Titanic", "Lusitania", "Santa Maria", "Mayflower", "Beagle", "Endeavour", "Victory", "Hood", "Enterprise",   
+    "Luftwaffe", "Wehrmacht", "Kriegsmarine", "RAF", "Panzer", "Tiger", "Sherman", "Spitfire", "Hurricane", "Messerschmitt", "Zero", "U-Boat", "U-Boot", "Sputnik", "Apollo",  
+    "Axis", "Allies", "Gestapo", "SS", "KGB", "CIA", "NATO", "Warsaw Pact", "Iron Curtain", "Cold War",
+
+    "Stonehenge", "Acropolis", "Parthenon", "Colosseum", "Pantheon", "Forum Romanum", "Circus Maximus", 
+    "Pompeii", "Carthage", "Babylon", "Mesopotamia", "Sumer", "Ur", "Nineveh", "Persepolis", 
+    "Giza", "Sphinx", "Alexandria", "Thermopylae", "Marathon", "Salamis", "Plataea", "Cannae", "Zama", "Actium", "Rubicon",
+
+    "Pax Romana", "SPQR", "Pharaoh", "Hieroglyphs", "Cuneiform", "Rosetta Stone", "Ziggurat",
+    "Phalanx", "Legion", "Centurion", "Gladiator", "Trireme", "Hoplite", "Triumvirate", "Consul", "Senate", "Plebeian", "Patrician",
+    "Iliad", "Odyssey", "Aeneid", "Gilgamesh", "Hammurabi",
+
+    "Zeus", "Jupiter", "Hades", "Poseidon", "Mars", "Venus", "Apollo", "Athena", "Anubis", "Osiris", "Ra", "Horus", "Minotaur",
+
+    "Magna Carta", "Domesday Book", "Diet of Worms", "Reconquista", "Inquisition", "Excommunication", 
+    "Feudalism", "Chivalry", "Bushido", "Shogun", "Samurai", "Ronin", "Kamikaze", "Seppuku",
+    "Black Death", "Bubonic Plague", "Great Schism", "Hanseatic League",
+    
+    "Templars", "Knights Templar", "Hospitallers", "Teutonic Knights", "Golden Horde", "Vikings", "Mongols", 
+    "Saracens", "Moors", "Normans", "Saxons", "Franks", "Visigoths", "Vandals", "Huns", "Byzantine", "Ottoman",
+
+    "Constantinople", "Hagia Sophia", "Notre Dame", "Tower of London", "Alhambra", "Mecca", "Medina", "Jerusalem",
+    "Excalibur", "Holy Grail", "Longbow", "Crossbow", "Catapult", "Trebuchet",
+
+    "Santa Maria", "Pinta", "Nina", "Mayflower", "Victoria", "Golden Hind", "Silk Road"
+};
+
+struct MaskedText 
+{
+    std::string text; 
+    std::map<std::string, std::string> replacements; 
+};
 
 void replaceAll(std::string& str, const std::string& from, const std::string& to) 
 {
@@ -21,111 +61,50 @@ void replaceAll(std::string& str, const std::string& from, const std::string& to
     }
 }
 
-std::string fixBadTranslations(std::string csText, std::string enText)
+size_t findCaseInsensitive(std::string data, std::string toSearch, size_t pos = 0) 
 {
-    std::string enLower = enText;
-    std::transform(enLower.begin(), enLower.end(), enLower.begin(), ::tolower);
+    std::transform(data.begin(), data.end(), data.begin(), ::tolower);
+    std::transform(toSearch.begin(), toSearch.end(), toSearch.begin(), ::tolower);
+    return data.find(toSearch, pos);
+}
 
-    if (enLower.find("trinity") != std::string::npos) 
-    {
-        replaceAll(csText, "Trojice", "Trinity");
-        replaceAll(csText, "trojice", "Trinity");
-    }
-    if (enLower.find("manhattan project") != std::string::npos) 
-    {
-        replaceAll(csText, "projekt Manhattan", "Projekt Manhattan"); // Jen pro jistotu velkých písmen
-        replaceAll(csText, "manhattanský projekt", "Projekt Manhattan");
-    }
-    if (enLower.find("midway") != std::string::npos) 
-    {
-        replaceAll(csText, "Uprostřed", "Midway");
-        replaceAll(csText, "uprostřed", "Midway");
-        replaceAll(csText, "V polovině cesty", "Midway");
-        replaceAll(csText, "Mezi", "Midway");
-    }
-    if (enLower.find("pearl harbor") != std::string::npos) 
-    {
-        replaceAll(csText, "Perlový přístav", "Pearl Harbor");
-        replaceAll(csText, "perlový přístav", "Pearl Harbor");
-    }
-    if (enLower.find("d-day") != std::string::npos) 
-    {
-        replaceAll(csText, "D-den", "Den D");
-        replaceAll(csText, "d-den", "Den D");
-    }
-    if (enLower.find("stalingrad") != std::string::npos) replaceAll(csText, "Stalingrad", "Stalingrad"); // Někdy to komolí
+MaskedText maskProtectedTerms(std::string text) 
+{
+    MaskedText result;
+    result.text = text;
+    int counter = 0;
 
-    if (enLower.find("axis") != std::string::npos) {
-        // "Axis powers" -> Mocnosti Osy
-        replaceAll(csText, "Osy", "Osa");
-        replaceAll(csText, "osy", "Osa");
-        replaceAll(csText, "náprava", "Osa"); // Axis je i náprava u auta
-    }
-    if (enLower.find("allies") != std::string::npos || enLower.find("allied") != std::string::npos) 
+    for (const auto& term : protectedTerms) 
     {
-        replaceAll(csText, "spojenci", "Spojenci");
-    }
-    if (enLower.find("cold war") != std::string::npos) 
-    {
-        replaceAll(csText, "chladná válka", "Studená válka"); // Občasná chyba
-    }
-    if (enLower.find("iron curtain") != std::string::npos) 
-    {
-        replaceAll(csText, "železný závěs", "Železná opona");
-    }
-    if (enLower.find("enigma") != std::string::npos) 
-    {
-        replaceAll(csText, "hádanka", "Enigma");
-        replaceAll(csText, "Hádanka", "Enigma");
-        replaceAll(csText, "tajemství", "Enigma");
-    }
-    if (enLower.find("little boy") != std::string::npos) 
-    {
-        replaceAll(csText, "malý chlapec", "Little Boy");
-        replaceAll(csText, "Malý chlapec", "Little Boy");
-    }
-    if (enLower.find("fat man") != std::string::npos) 
-    {
-        replaceAll(csText, "tlustý muž", "Fat Man");
-        replaceAll(csText, "Tlustý muž", "Fat Man");
-        replaceAll(csText, "tlouštík", "Fat Man");
-    }
-    if (enLower.find("panzer") != std::string::npos) replaceAll(csText, "brnění", "Panzer");
-    if (enLower.find("spitfire") != std::string::npos) replaceAll(csText, "plivající oheň", "Spitfire");
-
-    if (enLower.find("luftwaffe") != std::string::npos) replaceAll(csText, "letectvo", "Luftwaffe");
-    if (enLower.find("wehrmacht") != std::string::npos) replaceAll(csText, "obranná síla", "Wehrmacht");
-    if (enLower.find("kriegsmarine") != std::string::npos) replaceAll(csText, "válečné námořnictvo", "Kriegsmarine");
-    if (enLower.find("raf") != std::string::npos) replaceAll(csText, "královské letectvo", "RAF"); 
-    
-    if (enText.find("HMS") != std::string::npos) 
-    {
-        if (csText.find("HMS") == std::string::npos) 
+        size_t pos = 0;
+        while ((pos = findCaseInsensitive(result.text, term, pos)) != std::string::npos) 
         {
-            if (enLower.find("victory") != std::string::npos) replaceAll(csText, "Vítězství", "HMS Victory");
+            std::string placeholder = "XPH" + std::to_string(counter++);
+            
+            std::string originalSegment = result.text.substr(pos, term.length());
+            
+            result.replacements[placeholder] = term; 
+
+            result.text.replace(pos, term.length(), placeholder);
+            
+            pos += placeholder.length();
         }
     }
-    if (enText.find("USS") != std::string::npos) 
-    {
-        if (enLower.find("enterprise") != std::string::npos) replaceAll(csText, "Podnik", "USS Enterprise");
-        if (enLower.find("constitution") != std::string::npos) replaceAll(csText, "Ústava", "USS Constitution");
-    }
-    
-    if (enLower.find("mayflower") != std::string::npos) replaceAll(csText, "Májový květ", "Mayflower");
-    if (enLower.find("santa maria") != std::string::npos) replaceAll(csText, "Svatá Marie", "Santa Maria");
-    if (enLower.find("beagle") != std::string::npos) replaceAll(csText, "Bígl", "Beagle");
+    return result;
+}
 
-    if (enLower.find("overlord") != std::string::npos) replaceAll(csText, "Vrchní pán", "Overlord");
-    if (enLower.find("sea lion") != std::string::npos) replaceAll(csText, "Lachtan", "Seelöwe (Lvoun)");
-    if (enLower.find("barbarossa") != std::string::npos) replaceAll(csText, "Rudovous", "Barbarossa");
-    if (enLower.find("market garden") != std::string::npos) replaceAll(csText, "Tržní zahrada", "Market Garden");
-    
-    if (enLower.find("globe theatre") != std::string::npos) replaceAll(csText, "Divadlo Svět", "Globe Theatre");
-    if (enLower.find("white house") != std::string::npos) 
-    {
+std::string unmaskProtectedTerms(std::string text, const std::map<std::string, std::string>& replacements) 
+{
+    std::string result = text;
+    for (const auto& pair : replacements) 
+    { 
+        replaceAll(result, pair.first, pair.second);
+        
+        std::string spacedPlaceholder = pair.first;
+        spacedPlaceholder.insert(3, " "); 
+        replaceAll(result, spacedPlaceholder, pair.second);
     }
-    
-    return csText;
+    return result;
 }
 
 std::string cleanHtmlEntities(std::string text)
