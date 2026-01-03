@@ -65,42 +65,53 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
     std::string cleanText = cleanHtmlEntities(text);
     std::string readBuffer;
     
-    // Zakódování textu pro URL
     char* encodedText = curl_easy_escape(curl, cleanText.c_str(), static_cast<int>(cleanText.length()));
     
-    // Používáme "clients5" endpoint, který vrací jednoduché JSON pole a nevyžaduje API klíč
-    std::string url = "https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=cs&q=" + std::string(encodedText);
+    // ZMĚNA: Používáme "gtx" klienta a "dt=t" (data type = text), což dává lepší větné překlady
+    std::string url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=cs&dt=t&q=" + std::string(encodedText);
     curl_free(encodedText);
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-    // User-Agent, aby si Google myslel, že jsme prohlížeč (pro jistotu)
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
 
     CURLcode res = curl_easy_perform(curl);
     
-    if(res == CURLE_OK) {
-        try {
-            // Google vrací odpověď ve formátu: ["Přeložený text"]
+    if(res == CURLE_OK) 
+    {
+        try 
+        {
+
             auto jsonResponse = json::parse(readBuffer);
             
-            // Kontrola, zda je to pole a má obsah
-            if (jsonResponse.is_array() && !jsonResponse.empty()) {
-                // Vezmeme první prvek pole
-                std::string translated = jsonResponse[0].get<std::string>();
-                return cleanHtmlEntities(translated); 
+            if (jsonResponse.is_array() && !jsonResponse.empty() && jsonResponse[0].is_array()) 
+            {
+                std::string fullTranslation = "";
+                
+                // Projdeme všechny části překladu (někdy Google rozdělí dlouhou větu na víc kusů)
+                for (auto& segment : jsonResponse[0]) 
+                {
+                    if (segment.is_array() && !segment.empty()) 
+                    {
+                        fullTranslation += segment[0].get<std::string>();
+                    }
+                }
+
+                if (!fullTranslation.empty()) 
+                {
+                    return cleanHtmlEntities(fullTranslation);
+                }
             }
-        } catch (...) { 
-            // Pokud parsování selže, vrátíme původní anglický text
+        } catch (...) 
+        { 
             return cleanText; 
         }
     }
     return cleanText;
 }
 
-// --- 2. HLAVNÍ FUNKCE PRO STAŽENÍ ---
 
 std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std::wstring difficulty)
 {
