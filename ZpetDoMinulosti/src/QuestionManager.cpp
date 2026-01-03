@@ -124,7 +124,7 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     
     // --- ZMĚNA: Stahujeme VŽDY Historii (ID 23) ---
     // amount=15 : Stáhneme víc otázek (15), abychom měli z čeho filtrovat
-    std::string apiUrl = "https://opentdb.com/api.php?amount=50&category=23&type=multiple";
+    std::string apiUrl = "https://opentdb.com/api.php?amount=200&category=23&type=multiple";
 
     // Obtížnost
     if (difficulty == L"Lehká") apiUrl += "&difficulty=easy";
