@@ -18,14 +18,12 @@ std::wstring QuestionManager::utf8ToWide(const std::string& str)
     return sf::String::fromUtf8(str.begin(), str.end()).toWideString();
 }
 
-// --- FUNKCE PRO PŘEKLAD (EN -> CS) ---
 std::string QuestionManager::translateText(CURL* curl, std::string text)
 {
     if (text.empty()) return "";
     std::string readBuffer;
 
     char* encodedText = curl_easy_escape(curl, text.c_str(),static_cast<int>(text.length()));
-    // Používáme MyMemory API
     std::string url = "https://api.mymemory.translated.net/get?q=" + std::string(encodedText) + "&langpair=en|cs";
     curl_free(encodedText);
 
@@ -52,65 +50,78 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
     return text;
 }
 
-// --- NOVÁ FUNKCE: ROZHODOVÁNÍ O KATEGORII ---
-// Zjistí, zda anglický text otázky odpovídá vybranému období
+bool containsAny(const std::string& text, const std::vector<std::string>& keywords)
+{
+    for (const auto& word : keywords) 
+    {
+        if (text.find(word) != std::string::npos) 
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool isQuestionRelevant(const std::string& text, const std::wstring& category)
 {
     std::string lowerText = text;
-    // Převedeme na malá písmena pro snazší hledání
     std::transform(lowerText.begin(), lowerText.end(), lowerText.begin(), ::tolower);
 
-    // 1. STAROVĚK (Ancient History)
+    std::vector<std::string> ancientKeywords = 
+    {
+        " bc", "b.c.", "ancient", "antiquity", // Časové určení
+        "rome", "roman", "caesar", "augustus", "nero", "gladiator", "colosseum", // Řím
+        "greece", "greek", "athens", "sparta", "alexander", "socrates", "plato", "olympus", // Řecko
+        "egypt", "pharaoh", "pyramid", "nile", "cleopatra", "mummy", // Egypt
+        "mesopotamia", "babylon", "sumer", "persia", "trojan", "hannibal", "carthage", // Ostatní
+        "stone age", "bronze age", "iron age" // Pravěk/Starověk
+    };
+
+    std::vector<std::string> modernKeywords = 
+    {
+        "18", "19", "20", "21", // Století (1600s - 2000s) a roky začínající 19.. 20..
+        "world war", "wwi", "wwii", "war i", "war ii", "cold war", "vietnam", "korea", // Války
+        "nazi", "hitler", "soviet", "ussr", "stalin", "lenin", "communism", "berlin wall", // Režimy
+        "america", "usa", "president", "kennedy", "lincoln", "washington", "independence", // USA
+        "revolution", "french revolution", "industrial", "napoleon", // Revoluce
+        "nuclear", "atomic", "space", "moon", "apollo", "internet", "computer", // Technologie
+        "union", "republic", "prime minister", "thatcher", "churchill", "queen elizabeth ii"
+    };
+
+    std::vector<std::string> medievalKeywords = 
+    {
+        "middle ages", "medieval", "feudal", "dark ages", 
+        "knight", "castle", "sword", "crusade", "templar", // Vojenství
+        "king", "queen", "monarch", "crown", "throne", "dynasty", // Panovníci (obecné, ale časté ve středověku)
+        "empire", "holy roman", "byzantine", "ottoman", "mongol", "genghis", "viking", // Říše
+        "plague", "black death", "flea", // Nemoci
+        "magna carta", "joan of arc", "charlemagne", "william the conqueror", // Osobnosti
+        "hundred years", "rosese", "tudor", "henry viii" // Pozdní středověk
+    };
+
     if (category == L"Starověk") 
     {
-        // Hledáme klíčová slova: BC (před kristem), Ancient, Rome, Greek, Egypt...
-        if (lowerText.find(" bc") != std::string::npos) return true;
-        if (lowerText.find("b.c.") != std::string::npos) return true;
-        if (lowerText.find("ancient") != std::string::npos) return true;
-        if (lowerText.find("rome") != std::string::npos) return true;
-        if (lowerText.find("roman") != std::string::npos) return true;
-        if (lowerText.find("greek") != std::string::npos) return true;
-        if (lowerText.find("greece") != std::string::npos) return true;
-        if (lowerText.find("egypt") != std::string::npos) return true;
-        if (lowerText.find("pharaoh") != std::string::npos) return true;
-        if (lowerText.find("caesar") != std::string::npos) return true;
-        if (lowerText.find("alexander") != std::string::npos) return true;
+        if (containsAny(lowerText, ancientKeywords)) return true;
         return false;
     }
-    // 2. MODERNÍ DĚJINY (Modern History)
     else if (category == L"Moderní dějiny") 
     {
-        // Hledáme roky 19xx, 20xx, World War, Nazi, Soviet, President...
-        if (lowerText.find("19") != std::string::npos) return true; // Roky 1900-1999
-        if (lowerText.find("20") != std::string::npos) return true; // Roky 2000+
-        if (lowerText.find("war") != std::string::npos) return true;
-        if (lowerText.find("soviet") != std::string::npos) return true;
-        if (lowerText.find("nazi") != std::string::npos) return true;
-        if (lowerText.find("president") != std::string::npos) return true;
-        if (lowerText.find("nuclear") != std::string::npos) return true;
+        if (containsAny(lowerText, modernKeywords)) return true;
         return false;
     }
-    // 3. STŘEDOVĚK (Middle Ages)
     else if (category == L"Středověk") 
     {
-        // Středověk je všechno mezi tím (zhruba). Hledáme King, Empire, Castle...
-        // Tady je to těžší, takže to vezmeme vylučovací metodou:
-        // Pokud to není BC (Starověk) a není to 19xx (Moderní), tak to zkusíme.
-        if (lowerText.find(" bc") != std::string::npos) return false;
-        if (lowerText.find("19") != std::string::npos) return false;
+        if (lowerText.find(" bc") != std::string::npos || lowerText.find("b.c.") != std::string::npos) return false;
+        if (lowerText.find("19") != std::string::npos && lowerText.find("19th") == std::string::npos) return false; 
         if (lowerText.find("20") != std::string::npos) return false;
-        
-        // Pozitivní slova
-        if (lowerText.find("king") != std::string::npos) return true;
-        if (lowerText.find("queen") != std::string::npos) return true;
-        if (lowerText.find("empire") != std::string::npos) return true;
-        if (lowerText.find("century") != std::string::npos) return true;
-        if (lowerText.find("middle ages") != std::string::npos) return true;
-        return false; 
+        if (lowerText.find("nuclear") != std::string::npos) return false;
+
+        if (containsAny(lowerText, medievalKeywords)) return true;
+
+        return false;
     }
 
-    // Pokud kategorie není specifikovaná, bereme všechno
-    return true; 
+    return true;
 }
 
 std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std::wstring difficulty)
@@ -122,16 +133,12 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
     std::string readBuffer;
     
-    // --- ZMĚNA: Stahujeme VŽDY Historii (ID 23) ---
-    // amount=15 : Stáhneme víc otázek (15), abychom měli z čeho filtrovat
-    std::string apiUrl = "https://opentdb.com/api.php?amount=200&category=23&type=multiple";
+    std::string apiUrl = "https://opentdb.com/api.php?amount=400&category=23&type=multiple";
 
-    // Obtížnost
     if (difficulty == L"Lehká") apiUrl += "&difficulty=easy";
     else if (difficulty == L"Střední") apiUrl += "&difficulty=medium";
     else apiUrl += "&difficulty=hard";
 
-    // Stažení anglických otázek
     curl_easy_setopt(curl, CURLOPT_URL, apiUrl.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
@@ -152,25 +159,20 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
                 for (auto& item : results) 
                 {
-                    // POKUD MÁME UŽ 5 OTÁZEK, KONČÍME (aby to netrvalo dlouho)
                     if (count >= 30) break;
 
                     std::string enQuestion = item["question"];
 
-                    // --- FILTROVÁNÍ: Patří otázka do zvolené doby? ---
-                    // Pokud ne, přeskočíme ji a jdeme na další
                     if (!isQuestionRelevant(enQuestion, category)) 
                     {
                         continue; 
                     }
 
-                    // Pokud prošla filtrem, přeložíme ji
                     Question q;
                     std::string enCorrect = item["correct_answer"];
                     std::vector<std::string> enIncorrect;
                     for(auto& inc : item["incorrect_answers"]) enIncorrect.push_back(inc);
 
-                    // Překlad
                     std::string csQuestionStr = translateText(curl, enQuestion);
                     std::string csCorrectStr = translateText(curl, enCorrect);
                     
@@ -184,7 +186,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
                         answers.push_back(utf8ToWide(translateText(curl, inc)));
                     }
 
-                    // Míchání
                     std::wstring correctText = answers[0];
                     std::random_device rd;
                     std::mt19937 g(rd());
@@ -210,12 +211,8 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
         }
     }
 
-    // ZÁCHRANA: Pokud jsme po filtraci nenašli ŽÁDNOU otázku (filtr byl moc přísný),
-    // stáhneme pro jistotu cokoliv z historie, aby hra nespadla.
     if (resultQuestions.empty()) {
         std::cerr << "Filtr nenasel otazky pro tuto kategorii, pouzivam obecnou historii." << std::endl;
-        // Tady by se rekurzivně zavolalo fetchQuestions s jinou kategorií, 
-        // ale pro jednoduchost to necháme prázdné a GameplayScreen použije offline zálohu.
     }
 
     curl_easy_cleanup(curl);
