@@ -1,6 +1,7 @@
 #include "GamePlayScreen.h"
 #include <iostream>
 #include <cmath>
+#include "QuestionManager.h"
 
 GamePlayScreen::GamePlayScreen(float width, float height, const sf::Font&font)
 :font(font), windowHeight(height), windowWidth(width),
@@ -97,44 +98,115 @@ void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty
     currentQuestionIndex = 0;
 
     setTimeForDifficulty(difficulty);
-    loadQuestions(category);
+    loadQuestions(category, difficulty);
     loadNextQuestionUI();
 }
 
-void GamePlayScreen::loadQuestions(std::wstring category)
+void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficulty)
 {
     questions.clear();
-    for(int i=0;i<30;i++)
+
+    // 1. Zkusíme stáhnout a přeložit otázky (to může chvíli trvat!)
+    std::cout << "Stahuji a prekladam otazky... Cekejte prosim." << std::endl;
+    std::vector<Question> downloadedQuestions = QuestionManager::fetchQuestions(category, difficulty);
+
+    // 2. Pokud se stažení povedlo (máme aspoň 1 otázku)
+    if (!downloadedQuestions.empty())
     {
-        Question q;
-        q.text = L"Otázka č. " + std::to_wstring(i+1);
-        q.answers = {L"Odpověď A", L"Odpověď B", L"Odpověď C", L"Odpověď D"};
-        q.correctIndex = 0;
-        questions.push_back(q); 
+        questions = downloadedQuestions;
+        std::cout << "Uspesne stazeno " << questions.size() << " otazek." << std::endl;
+    }
+    else
+    {
+        // 3. FALLBACK - Pokud selže internet, vygenerujeme nouzové otázky
+        std::cerr << "Chyba stahovani! Pouzivam zalozni otazky." << std::endl;
+        
+        for (int i = 0; i < 5; i++)
+        {
+            Question q;
+            q.text = L"Chyba připojení k internetu. (Záložní otázka " + std::to_wstring(i + 1) + L")";
+            q.answers = {L"Odpověď A", L"Odpověď B", L"Odpověď C", L"Odpověď D"};
+            q.correctIndex = 0;
+            questions.push_back(q);
+        }
     }
 }
 
 void GamePlayScreen::loadNextQuestionUI()
 {
-    if(currentQuestionIndex >= questions.size())
-    {
+    if (currentQuestionIndex >= questions.size()) {
         finishGame();
         return;
     }
 
     remainingTime = timeLimit;
-    Question&q = questions[currentQuestionIndex];
+    Question& q = questions[currentQuestionIndex];
 
-    textQuestion.setString(q.text);
+    // --- ZALAMOVÁNÍ HLAVNÍ OTÁZKY ---
+    std::wstring rawText = q.text;
+    std::wstring wrappedText;
+    std::wstring line;
+    
+    // Nastavíme font a velikost, abychom mohli měřit
+    textQuestion.setString(rawText);
+    textQuestion.setCharacterSize(24); // Velikost písma otázky
+    
+    // Maximální šířka textu (např. 80% šířky okna)
+    float maxWidth = windowWidth * 0.8f;
 
+    // Rozborka textu na slova
+    std::size_t startPos = 0;
+    std::size_t spacePos = rawText.find(L' ');
+    
+    while (spacePos != std::wstring::npos || startPos < rawText.length())
+    {
+        std::wstring word;
+        if (spacePos == std::wstring::npos) {
+            word = rawText.substr(startPos);
+            startPos = rawText.length();
+        } else {
+            word = rawText.substr(startPos, spacePos - startPos);
+            startPos = spacePos + 1;
+        }
+
+        std::wstring testLine = line.empty() ? word : line + L" " + word;
+        textQuestion.setString(testLine);
+        
+        if (textQuestion.getLocalBounds().size.x > maxWidth)
+        {
+            if (!wrappedText.empty()) wrappedText += L"\n";
+            wrappedText += line;
+            line = word;
+        }
+        else
+        {
+            line = testLine;
+        }
+        spacePos = rawText.find(L' ', startPos);
+    }
+    if (!wrappedText.empty()) wrappedText += L"\n";
+    wrappedText += line;
+
+    // Nastavíme finální zalomený text
+    textQuestion.setString(wrappedText);
+    
+    // Vycentrování
+    sf::FloatRect qRect = textQuestion.getLocalBounds();
+    textQuestion.setOrigin({
+        qRect.position.x + qRect.size.x / 2.0f,
+        qRect.position.y + qRect.size.y / 2.0f
+    });
+    
+    // Pozice: střed šířky, a trochu níž od vrchu (aby se vešly i 3 řádky)
+    textQuestion.setPosition({windowWidth / 2.0f, 150.0f});
+
+    // --- NASTAVENÍ ODPOVĚDÍ (Zbytek funkce beze změny) ---
     btnAnswer0.setText(q.answers[0]);
     btnAnswer1.setText(q.answers[1]);
     btnAnswer2.setText(q.answers[2]);
     btnAnswer3.setText(q.answers[3]);
 
-    textCounter.setString(std::to_wstring(currentQuestionIndex+1) + L" / " + std::to_wstring(questions.size()));
-
-    recalculatePosition(windowWidth, windowHeight);
+    textCounter.setString(std::to_wstring(currentQuestionIndex + 1) + L" / " + std::to_wstring(questions.size()));
 }
 
 
@@ -219,7 +291,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         btnResume.setPosition(centerX - 150.0f, centerY);
         btnBackToMenu.setPosition(centerX - 150.0f, centerY + 80.0f);
     }
-    else if(!isGameOver)
+    else if(!isGameOver && !isPaused)
     {
         sf::FloatRect qRect = textQuestion.getLocalBounds();
         textQuestion.setOrigin({qRect.position.x + qRect.size.x / 2.0f, qRect.position.y + qRect.size.y / 2.0f});
@@ -281,7 +353,6 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
 {
     if(isPaused)
     {
-        window.draw(textQuestion);
         window.draw(textQuestion);
         window.draw(textTimer);
         window.draw(textCounter);

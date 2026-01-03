@@ -139,10 +139,24 @@ CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/MenuScreen.cpp -o CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.s
 
+CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o: CMakeFiles/ZpetDoMinulosti.dir/flags.make
+CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o: /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp
+CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o: CMakeFiles/ZpetDoMinulosti.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o -MF CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o.d -o CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp
+
+CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp > CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.i
+
+CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp -o CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.s
+
 CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o: CMakeFiles/ZpetDoMinulosti.dir/flags.make
 CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o: /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp
 CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o: CMakeFiles/ZpetDoMinulosti.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o -MF CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o.d -o CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp
 
 CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.s: cmake_force
 CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o: CMakeFiles/ZpetDoMinulosti.dir/flags.make
 CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o: /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/main.cpp
 CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o: CMakeFiles/ZpetDoMinulosti.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o -MF CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o.d -o CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/main.cpp
 
 CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.i: cmake_force
@@ -174,6 +188,7 @@ ZpetDoMinulosti_OBJECTS = \
 "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o" \
 "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o" \
 "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o" \
+"CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o" \
 "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o" \
 "CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o"
 
@@ -185,6 +200,7 @@ ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/Button.cpp.o
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o
+ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/build.make
@@ -193,6 +209,7 @@ ZpetDoMinulosti: _deps/sfml-build/lib/libsfml-window-s-d.a
 ZpetDoMinulosti: _deps/sfml-build/lib/libsfml-system-s-d.a
 ZpetDoMinulosti: _deps/sfml-build/lib/libsfml-audio-s-d.a
 ZpetDoMinulosti: _deps/sfml-build/lib/libsfml-network-s-d.a
+ZpetDoMinulosti: /usr/lib/x86_64-linux-gnu/libcurl.so
 ZpetDoMinulosti: /usr/lib/x86_64-linux-gnu/libXrandr.so
 ZpetDoMinulosti: /usr/lib/x86_64-linux-gnu/libXcursor.so
 ZpetDoMinulosti: /usr/lib/x86_64-linux-gnu/libXrender.so
@@ -210,7 +227,7 @@ ZpetDoMinulosti: /usr/lib/x86_64-linux-gnu/libogg.so
 ZpetDoMinulosti: /usr/lib/x86_64-linux-gnu/libFLAC.so
 ZpetDoMinulosti: _deps/sfml-build/lib/libsfml-system-s-d.a
 ZpetDoMinulosti: CMakeFiles/ZpetDoMinulosti.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable ZpetDoMinulosti"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspaces/Semestralni-projekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable ZpetDoMinulosti"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ZpetDoMinulosti.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

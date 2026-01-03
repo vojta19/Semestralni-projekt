@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o.d"
   "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o"
   "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o.d"
+  "CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o"
+  "CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o.d"
   "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o"
   "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o.d"
   "CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o"

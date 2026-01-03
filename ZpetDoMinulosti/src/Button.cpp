@@ -46,23 +46,78 @@ bool Button::isClicked(sf::Vector2f mousePos)
 
 void Button::setText(const sf::String& text)
 {
+    // 1. Resetujeme nastavení (velikost písma vrátíme na default, pokud by byla zmenšená)
+    unsigned int characterSize = 22; // Výchozí velikost pro odpovědi
+    buttonText.setCharacterSize(characterSize);
     buttonText.setString(text);
 
-    // Musíme znovu přepočítat střed, protože nový text má jinou délku
-    sf::FloatRect textBounds = buttonText.getLocalBounds();
+    // Získáme rozměry tlačítka
+    float containerWidth = shape.getSize().x - 20.0f; // -20px jako vnitřní okraj (padding)
     
-    buttonText.setOrigin
-    ({
-        textBounds.position.x + textBounds.size.x / 2.0f,
-        textBounds.position.y + textBounds.size.y / 2.0f
+    // --- ALGORITMUS PRO ZALAMOVÁNÍ TEXTU (WORD WRAP) ---
+    std::wstring wrappedText = text;
+    std::wstring currentLine;
+    std::wstring finalString;
+    
+    // Rozdělíme text na slova
+    std::size_t startPos = 0;
+    std::size_t spacePos = wrappedText.find(L' ');
+
+    while (spacePos != std::wstring::npos || startPos < wrappedText.length())
+    {
+        // Získání slova
+        std::wstring word;
+        if (spacePos == std::wstring::npos) {
+            word = wrappedText.substr(startPos); // Poslední slovo
+            startPos = wrappedText.length();
+        } else {
+            word = wrappedText.substr(startPos, spacePos - startPos);
+            startPos = spacePos + 1;
+        }
+
+        // Zkusíme přidat slovo k aktuálnímu řádku
+        std::wstring testLine = currentLine.empty() ? word : currentLine + L" " + word;
+        
+        // Změříme délku testovacího řádku
+        buttonText.setString(testLine);
+        if (buttonText.getLocalBounds().size.x > containerWidth)
+        {
+            // Pokud je řádek moc dlouhý, odklepneme to, co jsme měli doteď
+            if (!finalString.empty()) finalString += L"\n";
+            finalString += currentLine;
+            
+            // A aktuální slovo dáme na nový řádek
+            currentLine = word;
+        }
+        else
+        {
+            // Pokud se vejde, pokračujeme
+            currentLine = testLine;
+        }
+
+        // Posun na další mezeru
+        spacePos = wrappedText.find(L' ', startPos);
+    }
+    // Přidáme zbytek
+    if (!finalString.empty()) finalString += L"\n";
+    finalString += currentLine;
+
+    // Aplikujeme zalomený text
+    buttonText.setString(finalString);
+
+    // --- CENTROVÁNÍ TEXTU ---
+    // Protože text může mít teď víc řádků, musíme ho znovu vycentrovat
+    sf::FloatRect bounds = buttonText.getLocalBounds();
+    buttonText.setOrigin({
+        bounds.position.x + bounds.size.x / 2.0f,
+        bounds.position.y + bounds.size.y / 2.0f
     });
-    
-    // Pro jistotu ujistíme, že je text stále na středu tlačítka
+
     sf::Vector2f btnPos = shape.getPosition();
     sf::Vector2f btnSize = shape.getSize();
-    
-    buttonText.setPosition
-    ({
+
+    // Vycentrujeme do středu tlačítka (bez posunu -5, protože u více řádků by to dělalo neplechu)
+    buttonText.setPosition({
         btnPos.x + btnSize.x / 2.0f,
         btnPos.y + btnSize.y / 2.0f
     });

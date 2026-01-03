@@ -26,6 +26,11 @@
 },
 {
   "directory": "/workspaces/Semestralni-projekt/build",
+  "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp",
+  "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp"
+},
+{
+  "directory": "/workspaces/Semestralni-projekt/build",
   "command": "/usr/bin/g++ -DSFML_STATIC -I/workspaces/Semestralni-projekt/ZpetDoMinulosti/src -I/workspaces/Semestralni-projekt/build/_deps/sfml-src/include -g -std=gnu++17 -o CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o -c /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp",
   "file": "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp"
 },

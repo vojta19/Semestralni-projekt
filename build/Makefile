@@ -359,6 +359,30 @@ src/MenuScreen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.s
 .PHONY : src/MenuScreen.cpp.s
 
+src/QuestionManager.o: src/QuestionManager.cpp.o
+.PHONY : src/QuestionManager.o
+
+# target to build an object file
+src/QuestionManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o
+.PHONY : src/QuestionManager.cpp.o
+
+src/QuestionManager.i: src/QuestionManager.cpp.i
+.PHONY : src/QuestionManager.i
+
+# target to preprocess a source file
+src/QuestionManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.i
+.PHONY : src/QuestionManager.cpp.i
+
+src/QuestionManager.s: src/QuestionManager.cpp.s
+.PHONY : src/QuestionManager.s
+
+# target to generate assembly for a file
+src/QuestionManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ZpetDoMinulosti.dir/build.make CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.s
+.PHONY : src/QuestionManager.cpp.s
+
 src/SettingScreen.o: src/SettingScreen.cpp.o
 .PHONY : src/SettingScreen.o
 
@@ -440,6 +464,9 @@ help:
 	@echo "... src/MenuScreen.o"
 	@echo "... src/MenuScreen.i"
 	@echo "... src/MenuScreen.s"
+	@echo "... src/QuestionManager.o"
+	@echo "... src/QuestionManager.i"
+	@echo "... src/QuestionManager.s"
 	@echo "... src/SettingScreen.o"
 	@echo "... src/SettingScreen.i"
 	@echo "... src/SettingScreen.s"

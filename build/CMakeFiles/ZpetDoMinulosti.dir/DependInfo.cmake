@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GamePlayScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/GamePlayScreen.cpp.o.d"
   "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/GameScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/GameScreen.cpp.o.d"
   "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/MenuScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o.d"
+  "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/QuestionManager.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/QuestionManager.cpp.o.d"
   "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/SettingScreen.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/SettingScreen.cpp.o.d"
   "/workspaces/Semestralni-projekt/ZpetDoMinulosti/src/main.cpp" "CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o" "gcc" "CMakeFiles/ZpetDoMinulosti.dir/src/main.cpp.o.d"
   )

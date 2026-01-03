@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(ZpetDoMinulosti)
 
+find_package(CURL REQUIRED)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -27,4 +29,5 @@ target_link_libraries(ZpetDoMinulosti PRIVATE
     SFML::System 
     SFML::Audio 
     SFML::Network
+    CURL::libcurl
 )

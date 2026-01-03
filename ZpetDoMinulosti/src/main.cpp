@@ -6,6 +6,7 @@
 #include "SettingScreen.h"
 #include "GameScreen.h"
 #include "GamePlayScreen.h"
+#include "QuestionManager.h"
 
 enum GameState
 {

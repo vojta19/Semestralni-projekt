@@ -66,7 +66,7 @@ private:
     Button btnBackToMenu;
     Button btnRestart;
 
-    void loadQuestions(std::wstring category);
+    void loadQuestions(std::wstring category,std::wstring difficulty);
     void setTimeForDifficulty(std::wstring difficulty);
     void loadNextQuestionUI();
     void finishGame();
