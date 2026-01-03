@@ -6,15 +6,15 @@
 GamePlayScreen::GamePlayScreen(float width, float height, const sf::Font&font)
 :font(font), windowHeight(height), windowWidth(width),
 
-textQuestion(font),
-textTimer(font),
-textCounter(font),
-textGameOverTitle(font),
-textScore(font),
-textPercentage(font),
-//textThanks(font),
-textRank(font),
-textPausedTitle(font),
+textQuestion(),
+textTimer(),
+textCounter(),
+textGameOverTitle(),
+textScore(),
+textPercentage(),
+//textThanks(),
+textRank(),
+textPausedTitle(),
 
 btnAnswer0(0,0,300,50,L"",font),
 btnAnswer1(0,0,300,50,L"",font),
@@ -172,7 +172,7 @@ void GamePlayScreen::loadNextQuestionUI()
         std::wstring testLine = line.empty() ? word : line + L" " + word;
         textQuestion.setString(testLine);
         
-        if (textQuestion.getLocalBounds().size.x > maxWidth)
+        if (textQuestion.getLocalBounds().width > maxWidth)
         {
             if (!wrappedText.empty()) wrappedText += L"\n";
             wrappedText += line;
@@ -193,8 +193,8 @@ void GamePlayScreen::loadNextQuestionUI()
     // Vycentrování
     sf::FloatRect qRect = textQuestion.getLocalBounds();
     textQuestion.setOrigin({
-        qRect.position.x + qRect.size.x / 2.0f,
-        qRect.position.y + qRect.size.y / 2.0f
+        qRect.left + qRect.width / 2.0f,
+        qRect.top + qRect.height / 2.0f
     });
     
     // Pozice: střed šířky, a trochu níž od vrchu (aby se vešly i 3 řádky)
@@ -285,7 +285,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         pauseOverlay.setPosition({0,0});
 
         sf::FloatRect pRect = textPausedTitle.getLocalBounds();
-        textPausedTitle.setOrigin({pRect.position.x + pRect.size.x / 2.0f, pRect.position.y + pRect.size.y / 2.0f});
+        textPausedTitle.setOrigin({pRect.left + pRect.width / 2.0f, pRect.top + pRect.height / 2.0f});
         textPausedTitle.setPosition({centerX, height * 0.25f});
 
         btnResume.setPosition(centerX - 150.0f, centerY);
@@ -294,11 +294,11 @@ void GamePlayScreen::recalculatePosition(float width, float height)
     else if(!isGameOver && !isPaused)
     {
         sf::FloatRect qRect = textQuestion.getLocalBounds();
-        textQuestion.setOrigin({qRect.position.x + qRect.size.x / 2.0f, qRect.position.y + qRect.size.y / 2.0f});
+        textQuestion.setOrigin({qRect.left + qRect.width / 2.0f, qRect.top + qRect.height / 2.0f});
         textQuestion.setPosition({width / 2.0f,150.0f});
 
         sf::FloatRect tRect = textTimer.getLocalBounds();
-        textTimer.setOrigin({tRect.position.x + tRect.size.x, 0.0f});
+        textTimer.setOrigin({tRect.left + tRect.width, 0.0f});
         textTimer.setPosition({width - 20.0f, 20.0f});
 
         textCounter.setPosition({20.0f,20.0f});
@@ -324,19 +324,19 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         resultsPanel.setPosition({centerX,centerY});
 
         sf::FloatRect titleRect = textGameOverTitle.getLocalBounds();
-        textGameOverTitle.setOrigin({titleRect.position.x + titleRect.size.x / 2.0f, 0});
+        textGameOverTitle.setOrigin({titleRect.left + titleRect.width / 2.0f, 0});
         textGameOverTitle.setPosition({centerX,centerY - 180.0f});
 
         sf::FloatRect rankRect = textRank.getLocalBounds();
-        textRank.setOrigin({rankRect.position.x + rankRect.size.x / 2.0f,0});
+        textRank.setOrigin({rankRect.left + rankRect.width / 2.0f,0});
         textRank.setPosition({centerX,centerY - 100.0f});
 
         sf::FloatRect scoreRect = textScore.getLocalBounds();
-        textScore.setOrigin({scoreRect.position.x + scoreRect.size.x / 2.0f, 0});
+        textScore.setOrigin({scoreRect.left + scoreRect.width / 2.0f, 0});
         textScore.setPosition({centerX,centerY - 20.0f});
 
         sf::FloatRect percRect = textPercentage.getLocalBounds();
-        textPercentage.setOrigin({percRect.position.x + percRect.size.x / 2.0f, 0});
+        textPercentage.setOrigin({percRect.left + percRect.width / 2.0f, 0});
         textPercentage.setPosition({centerX,centerY + 30.0f});
 
        // sf::FloatRect thanksRect = textThanks.getLocalBounds();

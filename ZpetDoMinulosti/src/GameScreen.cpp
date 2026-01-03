@@ -1,7 +1,7 @@
 #include <iostream>
 #include "GameScreen.h"
 
-GameScreen::GameScreen(float width, float height, const sf::Font&font) :titleText(font),
+GameScreen::GameScreen(float width, float height, const sf::Font&font) :titleText(L"", font),
 btnCategory(0,0,300,50,L"Kategorie",font),
 btnDifficulty(0,0,300,50,L"Obtížnost",font),
 btnStart(0,0,300,50,L"SPUSTIT HRU",font),
@@ -37,8 +37,8 @@ void GameScreen::recalculatePosition(float width, float height)
     // SFML 3.0 syntaxe:
     titleText.setOrigin
     ({
-        titleRect.position.x + titleRect.size.x / 2.0f,
-        titleRect.position.y + titleRect.size.y / 2.0f
+        titleRect.left + titleRect.width / 2.0f,
+        titleRect.top + titleRect.height / 2.0f
     });
     
     // Pozice: střed šířky, 100px od vrchu
