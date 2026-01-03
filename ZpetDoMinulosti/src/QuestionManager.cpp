@@ -12,44 +12,6 @@
 
 using json = nlohmann::json;
 
-const std::vector<std::string> protectedTerms = 
-{
-    "Fat Man", "Little Boy", "Trinity", "Enigma", "Manhattan Project", "Gadget", "Tsar Bomba",
-    "Midway", "Pearl Harbor", "Overlord", "Barbarossa", "Sea Lion", "Market Garden", "D-Day", "Stalingrad", "Blitzkrieg",
-    "Normandy", "Iwo Jima", "Okinawa", "Guadalcanal",
-    "HMS", "USS", "Bismarck", "Tirpitz", "Yamato", "Titanic", "Lusitania", "Santa Maria", "Mayflower", "Beagle", "Endeavour", "Victory", "Hood", "Enterprise",   
-    "Luftwaffe", "Wehrmacht", "Kriegsmarine", "RAF", "Panzer", "Tiger", "Sherman", "Spitfire", "Hurricane", "Messerschmitt", "Zero", "U-Boat", "U-Boot", "Sputnik", "Apollo",  
-    "Axis", "Allies", "Gestapo", "SS", "KGB", "CIA", "NATO", "Warsaw Pact", "Iron Curtain", "Cold War",
-
-    "Stonehenge", "Acropolis", "Parthenon", "Colosseum", "Pantheon", "Forum Romanum", "Circus Maximus", 
-    "Pompeii", "Carthage", "Babylon", "Mesopotamia", "Sumer", "Ur", "Nineveh", "Persepolis", 
-    "Giza", "Sphinx", "Alexandria", "Thermopylae", "Marathon", "Salamis", "Plataea", "Cannae", "Zama", "Actium", "Rubicon",
-
-    "Pax Romana", "SPQR", "Pharaoh", "Hieroglyphs", "Cuneiform", "Rosetta Stone", "Ziggurat",
-    "Phalanx", "Legion", "Centurion", "Gladiator", "Trireme", "Hoplite", "Triumvirate", "Consul", "Senate", "Plebeian", "Patrician",
-    "Iliad", "Odyssey", "Aeneid", "Gilgamesh", "Hammurabi",
-
-    "Zeus", "Jupiter", "Hades", "Poseidon", "Mars", "Venus", "Apollo", "Athena", "Anubis", "Osiris", "Ra", "Horus", "Minotaur",
-
-    "Magna Carta", "Domesday Book", "Diet of Worms", "Reconquista", "Inquisition", "Excommunication", 
-    "Feudalism", "Chivalry", "Bushido", "Shogun", "Samurai", "Ronin", "Kamikaze", "Seppuku",
-    "Black Death", "Bubonic Plague", "Great Schism", "Hanseatic League",
-    
-    "Templars", "Knights Templar", "Hospitallers", "Teutonic Knights", "Golden Horde", "Vikings", "Mongols", 
-    "Saracens", "Moors", "Normans", "Saxons", "Franks", "Visigoths", "Vandals", "Huns", "Byzantine", "Ottoman",
-
-    "Constantinople", "Hagia Sophia", "Notre Dame", "Tower of London", "Alhambra", "Mecca", "Medina", "Jerusalem",
-    "Excalibur", "Holy Grail", "Longbow", "Crossbow", "Catapult", "Trebuchet",
-
-    "Santa Maria", "Pinta", "Nina", "Mayflower", "Victoria", "Golden Hind", "Silk Road"
-};
-
-struct MaskedText 
-{
-    std::string text; 
-    std::map<std::string, std::string> replacements; 
-};
-
 void replaceAll(std::string& str, const std::string& from, const std::string& to) 
 {
     if(from.empty()) return;
@@ -61,52 +23,6 @@ void replaceAll(std::string& str, const std::string& from, const std::string& to
     }
 }
 
-size_t findCaseInsensitive(std::string data, std::string toSearch, size_t pos = 0) 
-{
-    std::transform(data.begin(), data.end(), data.begin(), ::tolower);
-    std::transform(toSearch.begin(), toSearch.end(), toSearch.begin(), ::tolower);
-    return data.find(toSearch, pos);
-}
-
-MaskedText maskProtectedTerms(std::string text) 
-{
-    MaskedText result;
-    result.text = text;
-    int counter = 0;
-
-    for (const auto& term : protectedTerms) 
-    {
-        size_t pos = 0;
-        while ((pos = findCaseInsensitive(result.text, term, pos)) != std::string::npos) 
-        {
-            std::string placeholder = "XPH" + std::to_string(counter++);
-            
-            std::string originalSegment = result.text.substr(pos, term.length());
-            
-            result.replacements[placeholder] = term; 
-
-            result.text.replace(pos, term.length(), placeholder);
-            
-            pos += placeholder.length();
-        }
-    }
-    return result;
-}
-
-std::string unmaskProtectedTerms(std::string text, const std::map<std::string, std::string>& replacements) 
-{
-    std::string result = text;
-    for (const auto& pair : replacements) 
-    { 
-        replaceAll(result, pair.first, pair.second);
-        
-        std::string spacedPlaceholder = pair.first;
-        spacedPlaceholder.insert(3, " "); 
-        replaceAll(result, spacedPlaceholder, pair.second);
-    }
-    return result;
-}
-
 std::string cleanHtmlEntities(std::string text)
 {
     // The Trivia API posílá čistší text, ale pro jistotu
@@ -114,6 +30,14 @@ std::string cleanHtmlEntities(std::string text)
     // Odstranění HTML tagů
     std::regex tagRegex("<[^>]*>");
     buffer = std::regex_replace(buffer, tagRegex, "");
+    replaceAll(buffer, "&quot;", "\"");
+    replaceAll(buffer, "&#039;", "'");
+    replaceAll(buffer, "&#39;", "'");
+    replaceAll(buffer, "&amp;", "&");
+    replaceAll(buffer, "&lt;", "<");
+    replaceAll(buffer, "&gt;", ">");
+    replaceAll(buffer, "&deg;", "°");
+    replaceAll(buffer, "&rsquo;", "'");
     return buffer;
 }
 
@@ -121,10 +45,12 @@ void formatQuestionText(std::wstring& text)
 {
     if (text.empty()) return;
     text[0] = std::towupper(text[0]);
-    while (!text.empty() && (text.back() == L'.' || text.back() == L' ')) {
+    while (!text.empty() && (text.back() == L'.' || text.back() == L' ')) 
+    {
         text.pop_back();
     }
-    if (text.empty() || text.back() != L'?') {
+    if (text.empty() || text.back() != L'?') 
+    {
         text += L'?';
     }
 }
@@ -294,18 +220,18 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
                         for(auto& inc : item["incorrectAnswers"]) enIncorrect.push_back(inc);
 
                         // 3. Překlad
-                        std::string csQuestionStr = translateText(curl, enQuestion);
-                        std::string csCorrectStr = translateText(curl, enCorrect);
-                        
+                        std::string csQuestionStr = translateText(curl, enQuestion);                        
                         q.text = utf8ToWide(csQuestionStr);
                         formatQuestionText(q.text); 
                         
                         std::vector<std::wstring> answers;
-                        std::wstring wCorrect = utf8ToWide(csCorrectStr);
+
+                        std::wstring wCorrect = utf8ToWide(cleanHtmlEntities(enCorrect));
                         formatAnswerText(wCorrect);
                         answers.push_back(wCorrect);
 
-                        for(auto& inc : enIncorrect) {
+                        for(auto& inc : enIncorrect) 
+                        {
                             std::wstring wInc = utf8ToWide(translateText(curl, inc));
                             formatAnswerText(wInc);
                             answers.push_back(wInc);
