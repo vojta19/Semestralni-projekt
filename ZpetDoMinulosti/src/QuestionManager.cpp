@@ -232,7 +232,7 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
                         for(auto& inc : enIncorrect) 
                         {
-                            std::wstring wInc = utf8ToWide(translateText(curl, inc));
+                            std::wstring wInc = utf8ToWide(cleanHtmlEntities(inc));
                             formatAnswerText(wInc);
                             answers.push_back(wInc);
                         }
