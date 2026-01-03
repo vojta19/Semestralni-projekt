@@ -219,7 +219,7 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     if (!curl) return resultQuestions;
 
     // A) Nastavení URL pro "The Trivia API"
-    std::string baseUrl = "https://the-trivia-api.com/v2/questions?limit=50";
+    std::string baseUrl = "https://the-trivia-api.com/v2/questions?limit=100";
     
     // B) Mapování kategorií na TAGY (tohle je ta magie)
     std::string tags = "";
