@@ -98,6 +98,7 @@ void GamePlayScreen::setTimeForDifficulty(std::wstring difficulty)
 void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty)
 {
     isGameOver = false;
+    isPaused = false;
     score = 0;
     currentQuestionIndex = 0;
     currentCategory=category;
@@ -142,6 +143,10 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
 
             std::wstring msg = L"NAČÍTÁM OTÁZKY: " + std::to_wstring(loadedCount) + L" / " + std::to_wstring(totalCount);
             loadingText.setString(msg);
+
+            sf::Vector2u winSize = windowRef->getSize();
+            float currentW = static_cast<float>(winSize.x);
+            float currentH = static_cast<float>(winSize.y);
 
             sf::FloatRect r = loadingText.getLocalBounds();
             loadingText.setOrigin({r.position.x + r.size.x/2.0f, r.position.y + r.size.y/2.0f});

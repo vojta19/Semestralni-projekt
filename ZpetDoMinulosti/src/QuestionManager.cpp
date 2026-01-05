@@ -9,6 +9,8 @@
 #include <regex>
 #include <map>
 #include <vector>
+#include <codecvt>
+#include <locale>
 
 using json = nlohmann::json;
 
@@ -75,7 +77,15 @@ size_t QuestionManager::WriteCallback(void* contents, size_t size, size_t nmemb,
 
 std::wstring QuestionManager::utf8ToWide(const std::string& str)
 {
-    return sf::String(str).toWideString();
+    if (str.empty()) return L"";
+    try {
+        std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+        return converter.from_bytes(str);
+    } 
+    catch (...) 
+    {
+        return sf::String(str).toWideString();
+    }
 }
 
 std::string QuestionManager::translateText(CURL* curl, std::string text)
