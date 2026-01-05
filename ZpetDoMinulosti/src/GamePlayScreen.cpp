@@ -172,7 +172,7 @@ void GamePlayScreen::triggerChaosEvent()
 
     sf::FloatRect r = eventLabel.getLocalBounds();
     eventLabel.setOrigin({r.position.x + r.size.x / 2.0f, r.position.y + r.size.y / 2.0f});
-    eventLabel.setPosition({windowWidth / 2.0f, 180.0f}); 
+    eventLabel.setPosition({windowWidth / 2.0f, 290.0f}); 
 }
 
 void GamePlayScreen::loadNextQuestionUI()
@@ -383,7 +383,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         {
             sf::FloatRect eRect = eventLabel.getLocalBounds();
             eventLabel.setOrigin({eRect.position.x + eRect.size.x / 2.0f, eRect.position.y + eRect.size.y / 2.0f});
-            eventLabel.setPosition({centerX, 280.0f});
+            eventLabel.setPosition({centerX, 290.0f});
         }
 
         sf::FloatRect tRect = textTimer.getLocalBounds();
@@ -463,10 +463,10 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
         }
         window.draw(textTimer);
         window.draw(textCounter);
-        btnAnswer0.draw(window);
-        btnAnswer1.draw(window);
-        btnAnswer2.draw(window);
-        btnAnswer3.draw(window);  
+        btnAnswer0.draw(window,isFogActive);
+        btnAnswer1.draw(window,isFogActive);
+        btnAnswer2.draw(window,isFogActive);
+        btnAnswer3.draw(window,isFogActive);  
     }
     else
     {
