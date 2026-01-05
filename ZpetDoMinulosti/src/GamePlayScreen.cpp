@@ -124,12 +124,11 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
 
     while (future.wait_for(std::chrono::milliseconds(16)) != std::future_status::ready)
     {
-        sf::Event event;
         if (windowRef) 
         {
-            while (windowRef->pollEvent(event)) 
+            while (const auto event = windowRef->pollEvent()) 
             {
-                if (event.type == sf::Event::Closed) 
+                if (event->is<sf::Event::Closed>()) 
                 {
                     windowRef->close();
                     return; 
