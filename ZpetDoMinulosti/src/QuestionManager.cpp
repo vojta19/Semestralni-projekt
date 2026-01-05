@@ -149,20 +149,28 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     
     // B) Mapování kategorií na TAGY (tohle je ta magie)
     std::string tags = "";
-    if (category == L"Starověk") {
+    if (category == L"Starověk") 
+    {
         // Hledáme Řím, Řecko, starověk...
         tags = "&tags=ancient_rome,ancient_greece,roman_empire,bronze_age,iron_age"; 
     } 
-    else if (category == L"Středověk") {
+    else if (category == L"Středověk") 
+    {
         // Hledáme středověk, křížové výpravy...
         tags = "&tags=middle_ages,medieval,crusades,vikings,hundred_years_war";
     }
-    else if (category == L"Moderní dějiny") {
+    else if (category == L"Moderní dějiny") 
+    {
         // Hledáme světové války, studenou válku, 20. století
         tags = "&tags=world_war_1,world_war_2,cold_war,soviet_union,american_civil_war,industrial_revolution";
     }
-    else {
+    else if (category == L"Chaos")
+    {
         // Fallback - prostě historie
+        tags = "&categories=history";
+    }
+    else
+    {
         tags = "&categories=history";
     }
 

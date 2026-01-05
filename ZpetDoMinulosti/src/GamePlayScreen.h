@@ -1,16 +1,10 @@
 #pragma once
 #include "Button.h"
 #include "AudioManager.h"
+#include "QuestionManager.h"
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
-
-struct Question
-{
-    std::wstring text;
-    std::vector<std::wstring> answers;
-    int correctIndex;
-};
 
 class GamePlayScreen
 {
@@ -39,6 +33,8 @@ private:
     bool isGameOver;
     bool isPaused;
 
+    std::wstring currentCategory;
+
     float timeLimit;
     float remainingTime;
     bool timerBlinkState;
@@ -66,9 +62,15 @@ private:
     Button btnBackToMenu;
     Button btnRestart;
 
+    bool isShuffleActive;
+    bool isFogActive;
+    sf::Text eventLabel;
+    sf::Clock chaosShuffleTimer;
+
     void loadQuestions(std::wstring category,std::wstring difficulty);
     void setTimeForDifficulty(std::wstring difficulty);
     void loadNextQuestionUI();
     void finishGame();
+    void triggerChaosEvent();
 
 };

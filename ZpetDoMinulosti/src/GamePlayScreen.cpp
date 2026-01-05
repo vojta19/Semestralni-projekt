@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include "QuestionManager.h"
+#include <random>
 
 GamePlayScreen::GamePlayScreen(float width, float height, const sf::Font&font)
 :font(font), windowHeight(height), windowWidth(width),
@@ -15,6 +16,7 @@ textPercentage(font),
 //textThanks(),
 textRank(font),
 textPausedTitle(font),
+eventLabel(font),
 
 btnAnswer0(0,0,300,50,L"",font),
 btnAnswer1(0,0,300,50,L"",font),
@@ -69,8 +71,15 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
     textPausedTitle.setFillColor(sf::Color::White);
     textPausedTitle.setStyle(sf::Text::Bold);
 
+    eventLabel.setCharacterSize(28);
+    eventLabel.setStyle(sf::Text::Bold);
+
     isGameOver = false;
     isPaused = false;
+
+    isShuffleActive=false;
+    isFogActive=false;
+
     recalculatePosition(width,height);
 }
 
@@ -96,6 +105,7 @@ void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty
     isGameOver = false;
     score = 0;
     currentQuestionIndex = 0;
+    currentCategory=category;
 
     setTimeForDifficulty(difficulty);
     loadQuestions(category, difficulty);
@@ -132,14 +142,63 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
     }
 }
 
+void GamePlayScreen::triggerChaosEvent()
+{
+    isShuffleActive = false;
+    isFogActive = false;
+    eventLabel.setString("");
+
+    int roll = rand() % 3;
+
+    if (roll == 0) 
+    {
+        isShuffleActive = true;
+        eventLabel.setString(L"! CHAOS: ZPŘEHÁZENÉ ODPOVĚDI !");
+        eventLabel.setFillColor(sf::Color::White);
+    } 
+    else if (roll == 1) 
+    {
+        isFogActive = true;
+        eventLabel.setString(L"! CHAOS: CENZURA (Najeď myší) !");
+        eventLabel.setFillColor(sf::Color::White);
+    } 
+    else 
+    {
+        isShuffleActive = true;
+        isFogActive = true;
+        eventLabel.setString(L"!!! TOTÁLNÍ CHAOS !!!");
+        eventLabel.setFillColor(sf::Color::White);
+    }
+
+    sf::FloatRect r = eventLabel.getLocalBounds();
+    eventLabel.setOrigin({r.position.x + r.size.x / 2.0f, r.position.y + r.size.y / 2.0f});
+    eventLabel.setPosition({windowWidth / 2.0f, 180.0f}); 
+}
+
 void GamePlayScreen::loadNextQuestionUI()
 {
-    if (currentQuestionIndex >= questions.size()) {
+    if (currentQuestionIndex >= questions.size()) 
+    {
         finishGame();
         return;
     }
 
-    remainingTime = timeLimit;
+    if(currentCategory==L"Chaos")
+    {
+        timeLimit = 20.0f;
+        remainingTime = 20.0f;
+        triggerChaosEvent();
+    }
+    else
+    {
+        remainingTime = timeLimit;
+        isShuffleActive = false;
+        isFogActive = false;
+        eventLabel.setString("");
+    }
+
+    chaosShuffleTimer.restart();
+
     Question& q = questions[currentQuestionIndex];
 
     // --- ZALAMOVÁNÍ HLAVNÍ OTÁZKY ---
@@ -238,6 +297,29 @@ void GamePlayScreen::update(sf::Time deltaTime)
     { 
         currentQuestionIndex++; loadNextQuestionUI(); 
     }
+
+    if (isShuffleActive) 
+    {
+        if (chaosShuffleTimer.getElapsedTime().asSeconds() > 2.5f) 
+        {
+            std::vector<sf::Vector2f> positions;
+            positions.push_back(btnAnswer0.getPosition());
+            positions.push_back(btnAnswer1.getPosition());
+            positions.push_back(btnAnswer2.getPosition());
+            positions.push_back(btnAnswer3.getPosition());
+
+            std::random_device rd;
+            std::mt19937 g(rd());
+            std::shuffle(positions.begin(), positions.end(), g);
+
+            btnAnswer0.setPosition(positions[0]);
+            btnAnswer1.setPosition(positions[1]);
+            btnAnswer2.setPosition(positions[2]);
+            btnAnswer3.setPosition(positions[3]);
+
+            chaosShuffleTimer.restart();
+        }
+    }
 }
 
 void GamePlayScreen::finishGame()
@@ -296,6 +378,13 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         sf::FloatRect qRect = textQuestion.getLocalBounds();
         textQuestion.setOrigin({qRect.position.x + qRect.size.x / 2.0f, qRect.position.y + qRect.size.y / 2.0f});
         textQuestion.setPosition({width / 2.0f,150.0f});
+
+        if(currentCategory==L"Chaos")
+        {
+            sf::FloatRect eRect = eventLabel.getLocalBounds();
+            eventLabel.setOrigin({eRect.position.x + eRect.size.x / 2.0f, eRect.position.y + eRect.size.y / 2.0f});
+            eventLabel.setPosition({centerX, 280.0f});
+        }
 
         sf::FloatRect tRect = textTimer.getLocalBounds();
         textTimer.setOrigin({tRect.position.x + tRect.size.x, 0.0f});
@@ -368,6 +457,10 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
     else if(!isGameOver)
     {
         window.draw(textQuestion);
+        if (currentCategory == L"Chaos") 
+        {
+            window.draw(eventLabel);
+        }
         window.draw(textTimer);
         window.draw(textCounter);
         btnAnswer0.draw(window);

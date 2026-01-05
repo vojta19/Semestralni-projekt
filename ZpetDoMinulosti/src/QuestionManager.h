@@ -2,8 +2,14 @@
 #include <vector>
 #include <string>
 #include <SFML/System.hpp>
-#include "GamePlayScreen.h" // Abychom znali strukturu Question
 #include <curl/curl.h>
+
+struct Question
+{
+    std::wstring text;
+    std::vector<std::wstring> answers;
+    int correctIndex;
+};
 
 class QuestionManager
 {

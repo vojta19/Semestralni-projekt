@@ -13,8 +13,8 @@ btnBack(0,0,150,40,L"Zpět",font)
     titleText.setFillColor(sf::Color::White);
     titleText.setStyle(sf::Text::Bold);
 
-    categories = {L"Starověk",L"Středověk",L"Moderní dějiny"};
-    difficulties = {L"Lehká",L"Střední",L"Těžká",L"Blesková"};
+    categories = {L"Starověk",L"Středověk",L"Moderní dějiny",L"Chaos"};
+    difficulties = {L"Lehká",L"Střední",L"Těžká"};
 
     currentCategoryIndex = 0;
     currentDifficultyIndex = 1;

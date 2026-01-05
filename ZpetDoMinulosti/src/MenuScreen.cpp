@@ -2,12 +2,11 @@
 
 MenuScreen::MenuScreen(float width, float height, const sf::Font&font) 
 :titleText(font),
-btnPlay(0,0,300,50,L"Hrej!",font), //uprostred
-btnSettings(0,0,300,50,L"Nastavení",font),        //vlevo nahore
-btnExit(0,0,300,50,L"Ukončit",font) //vpravo dole
+btnPlay(0,0,300,50,L"Hrej!",font), 
+btnSettings(0,0,300,50,L"Nastavení",font),      
+btnExit(0,0,300,50,L"Ukončit",font) 
 
 {
-    //nastaveni vzhledu nadpisu
     titleText.setString(L"Zpět do minulosti");
     titleText.setCharacterSize(85);
     titleText.setFillColor(sf::Color::White);
@@ -38,7 +37,6 @@ void MenuScreen::draw(sf::RenderWindow&window)
 
 int MenuScreen::handleInput(sf::RenderWindow&window)
 {
-    //prevod pozice mysi
     sf::Vector2i pixelPos=sf::Mouse::getPosition(window);
     sf::Vector2f mousePos=window.mapPixelToCoords(pixelPos);
 
@@ -52,24 +50,19 @@ int MenuScreen::handleInput(sf::RenderWindow&window)
     return 0;
 }
 
-// Vložte do MenuScreen.cpp
 
 void MenuScreen::recalculatePosition(float width, float height)
 {
-    // 1. Vycentrování nadpisu
     sf::FloatRect titleRect = titleText.getLocalBounds();
     
-    // SFML 3.0 syntaxe:
     titleText.setOrigin
     ({
         titleRect.position.x + titleRect.size.x / 2.0f,
         titleRect.position.y + titleRect.size.y / 2.0f
     });
     
-    // Pozice: střed šířky, 100px od vrchu
     titleText.setPosition({width / 2.0f, 100.0f});
 
-    // 2. Vycentrování tlačítek
     float buttonHalfWidth = 150.0f;
     float centerX = width / 2.0f - buttonHalfWidth; 
 
