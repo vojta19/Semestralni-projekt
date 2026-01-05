@@ -13,7 +13,6 @@ textCounter(font),
 textGameOverTitle(font),
 textScore(font),
 textPercentage(font),
-//textThanks(),
 textRank(font),
 textPausedTitle(font),
 eventLabel(font),
@@ -51,11 +50,6 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
 
     textPercentage.setFont(font);
     textPercentage.setCharacterSize(40);
-
-  //  textThanks.setFont(font);
- //   textThanks.setCharacterSize(30);
- //   textThanks.setString(L"Děkujeme za hru! ");
- //   textThanks.setFillColor(sf::Color::Yellow);
 
     resultsPanel.setFillColor(sf::Color(0,0,0,150));
     resultsPanel.setOutlineColor(sf::Color(0,255,255));
@@ -116,11 +110,9 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
 {
     questions.clear();
 
-    // 1. Zkusíme stáhnout a přeložit otázky (to může chvíli trvat!)
     std::cout << "Stahuji a prekladam otazky... Cekejte prosim." << std::endl;
     std::vector<Question> downloadedQuestions = QuestionManager::fetchQuestions(category, difficulty);
-
-    // 2. Pokud se stažení povedlo (máme aspoň 1 otázku)
+    
     if (!downloadedQuestions.empty())
     {
         questions = downloadedQuestions;
@@ -128,7 +120,6 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
     }
     else
     {
-        // 3. FALLBACK - Pokud selže internet, vygenerujeme nouzové otázky
         std::cerr << "Chyba stahovani! Pouzivam zalozni otazky." << std::endl;
         
         for (int i = 0; i < 5; i++)
@@ -172,7 +163,7 @@ void GamePlayScreen::triggerChaosEvent()
 
     sf::FloatRect r = eventLabel.getLocalBounds();
     eventLabel.setOrigin({r.position.x + r.size.x / 2.0f, r.position.y + r.size.y / 2.0f});
-    eventLabel.setPosition({windowWidth / 2.0f, 290.0f}); 
+    eventLabel.setPosition({windowWidth / 2.0f, 270.0f}); 
 }
 
 void GamePlayScreen::loadNextQuestionUI()
@@ -201,19 +192,15 @@ void GamePlayScreen::loadNextQuestionUI()
 
     Question& q = questions[currentQuestionIndex];
 
-    // --- ZALAMOVÁNÍ HLAVNÍ OTÁZKY ---
     std::wstring rawText = q.text;
     std::wstring wrappedText;
     std::wstring line;
     
-    // Nastavíme font a velikost, abychom mohli měřit
     textQuestion.setString(rawText);
-    textQuestion.setCharacterSize(24); // Velikost písma otázky
+    textQuestion.setCharacterSize(24); 
     
-    // Maximální šířka textu (např. 80% šířky okna)
     float maxWidth = windowWidth * 0.8f;
 
-    // Rozborka textu na slova
     std::size_t startPos = 0;
     std::size_t spacePos = rawText.find(L' ');
     
@@ -246,20 +233,16 @@ void GamePlayScreen::loadNextQuestionUI()
     if (!wrappedText.empty()) wrappedText += L"\n";
     wrappedText += line;
 
-    // Nastavíme finální zalomený text
     textQuestion.setString(wrappedText);
     
-    // Vycentrování
     sf::FloatRect qRect = textQuestion.getLocalBounds();
     textQuestion.setOrigin({
         qRect.position.x + qRect.size.x / 2.0f,
         qRect.position.y + qRect.size.y / 2.0f
     });
     
-    // Pozice: střed šířky, a trochu níž od vrchu (aby se vešly i 3 řádky)
     textQuestion.setPosition({windowWidth / 2.0f, 150.0f});
 
-    // --- NASTAVENÍ ODPOVĚDÍ (Zbytek funkce beze změny) ---
     btnAnswer0.setText(q.answers[0]);
     btnAnswer1.setText(q.answers[1]);
     btnAnswer2.setText(q.answers[2]);
@@ -300,7 +283,7 @@ void GamePlayScreen::update(sf::Time deltaTime)
 
     if (isShuffleActive) 
     {
-        if (chaosShuffleTimer.getElapsedTime().asSeconds() > 2.5f) 
+        if (chaosShuffleTimer.getElapsedTime().asSeconds() > 2.0f) 
         {
             std::vector<sf::Vector2f> positions;
             positions.push_back(btnAnswer0.getPosition());
@@ -383,7 +366,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         {
             sf::FloatRect eRect = eventLabel.getLocalBounds();
             eventLabel.setOrigin({eRect.position.x + eRect.size.x / 2.0f, eRect.position.y + eRect.size.y / 2.0f});
-            eventLabel.setPosition({centerX, 290.0f});
+            eventLabel.setPosition({centerX, 270.0f});
         }
 
         sf::FloatRect tRect = textTimer.getLocalBounds();
@@ -394,8 +377,8 @@ void GamePlayScreen::recalculatePosition(float width, float height)
 
         float centerX = width / 2.0f;
         float startY = 300.0f;
-        float gapX = 320.0f; // Rozestup mezi sloupci
-        float gapY = 80.0f;  // Rozestup mezi řádky
+        float gapX = 320.0f; 
+        float gapY = 80.0f;  
 
         btnAnswer0.setPosition(centerX - gapX/2.0f - 150.0f, startY);
         btnAnswer1.setPosition(centerX + gapX/2.0f - 150.0f, startY);
@@ -427,10 +410,6 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         sf::FloatRect percRect = textPercentage.getLocalBounds();
         textPercentage.setOrigin({percRect.position.x + percRect.size.x / 2.0f, 0});
         textPercentage.setPosition({centerX,centerY + 30.0f});
-
-       // sf::FloatRect thanksRect = textThanks.getLocalBounds();
-      //  textThanks.setOrigin({thanksRect.position.x + thanksRect.size.x / 2.0f, 0});
-      //  textThanks.setPosition({width / 2.0f, 400.0f});
 
         btnBackToMenu.setPosition(centerX - 10.0f - 300.0f, centerY + 120.0f);
         btnRestart.setPosition(centerX + 10.0f,centerY + 120.0f);
@@ -475,7 +454,6 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
         window.draw(textRank);
         window.draw(textScore);
         window.draw(textPercentage);
-        //window.draw(textThanks);
         btnBackToMenu.draw(window);
         btnRestart.draw(window);
     }

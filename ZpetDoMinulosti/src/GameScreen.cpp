@@ -31,20 +31,16 @@ void GameScreen::updateButtonLabels()
 
 void GameScreen::recalculatePosition(float width, float height)
 {
-        // 1. Vycentrování nadpisu
     sf::FloatRect titleRect = titleText.getLocalBounds();
     
-    // SFML 3.0 syntaxe:
     titleText.setOrigin
     ({
         titleRect.position.x + titleRect.size.x / 2.0f,
         titleRect.position.y + titleRect.size.y / 2.0f
     });
     
-    // Pozice: střed šířky, 100px od vrchu
     titleText.setPosition({width / 2.0f, 100.0f});
 
-    // 2. Vycentrování tlačítek
     float buttonHalfWidth = 150.0f;
     float centerX = width / 2.0f - buttonHalfWidth; 
 

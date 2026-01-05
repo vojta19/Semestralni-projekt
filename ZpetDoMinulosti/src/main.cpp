@@ -107,24 +107,23 @@ int main()
                     audio.PlayClick();
                 }
 
-                if (action == 1) // START
+                if (action == 1) 
                 {
                     currentState = GAME;
                     sf::Vector2u currentSize =window.getSize();
                     game.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                 }
-                else if (action == 2) // NASTAVENÍ
+                else if (action == 2) 
                 {
                     currentState = SETTINGS;
                 }
-                else if (action == 3) // UKONČIT
+                else if (action == 3) 
                 {
                     window.close();
                 }
             }
             else if (currentState == SETTINGS)
             {
-                // Předáváme audio manager, aby tlačítka v nastavení mohla dělat zvuky
                 bool goBack = settings.handleInput(window, audio);
                 
                 if (goBack)

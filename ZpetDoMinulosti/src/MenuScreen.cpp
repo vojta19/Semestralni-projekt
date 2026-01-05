@@ -12,21 +12,9 @@ btnExit(0,0,300,50,L"Ukončit",font)
     titleText.setFillColor(sf::Color::White);
     titleText.setStyle(sf::Text::Bold);
 
-    //vycentrovani nadpisu
-   // sf::FloatRect textRect = titleText.getLocalBounds();
-   // titleText.setOrigin
-   // (
-   //     {
-   //         textRect.position.x + textRect.size.x/2.0f,
-   //         textRect.position.y+textRect.size.y/2.0f
-   //     }
-   // );
-   // titleText.setPosition({width/2.0f,100.0f});
-
    recalculatePosition(width,height);
 }
 
-//vykresleni
 void MenuScreen::draw(sf::RenderWindow&window)
 {
     window.draw(titleText);

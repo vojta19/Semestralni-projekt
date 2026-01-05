@@ -7,7 +7,6 @@ SettingsScreen::SettingsScreen(float width, float height, const sf::Font& font)
       btnResolution(0, 0, 300, 50, L"Rozlišení: 800x600", font),
       btnBack(0, 0, 150, 40, L"Zpět", font)
 {
-    // --- Nadpis ---
     titleText.setString(L"NASTAVENÍ");
     titleText.setCharacterSize(50);
     titleText.setFillColor(sf::Color::White);
@@ -49,7 +48,6 @@ void SettingsScreen::updateResolutionButtonText()
 {
     sf::Vector2u res = resolutions[currentResIndex];
     
-    // Čeština
     std::wstring text = L"Rozlišení: " + std::to_wstring(res.x) + L"x" + std::to_wstring(res.y);
     
     btnResolution.setText(text);
@@ -95,15 +93,12 @@ bool SettingsScreen::handleInput(sf::RenderWindow& window, AudioManager& audio)
 
             sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
-            // Pokud se vybrané rozlišení rovná rozlišení monitoru -> Fullscreen
             if (newRes.x == desktopMode.size.x && newRes.y == desktopMode.size.y)
             {
-            // Režim Fullscreen (bez rámečků, exkluzivní režim)
             window.create(sf::VideoMode(newRes), L"Zpět do minulosti", sf::Style::None, sf::State::Fullscreen);
             }
             else
             {
-            // Režim Okno (s křížkem a lištou)
             window.create(sf::VideoMode(newRes), L"Zpět do minulosti", sf::Style::Default, sf::State::Windowed);
             }
 

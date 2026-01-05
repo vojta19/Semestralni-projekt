@@ -25,9 +25,7 @@ void replaceAll(std::string& str, const std::string& from, const std::string& to
 
 std::string cleanHtmlEntities(std::string text)
 {
-    // The Trivia API posílá čistší text, ale pro jistotu
     std::string buffer = text;
-    // Odstranění HTML tagů
     std::regex tagRegex("<[^>]*>");
     buffer = std::regex_replace(buffer, tagRegex, "");
     replaceAll(buffer, "&quot;", "\"");
@@ -88,7 +86,6 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
     
     char* encodedText = curl_easy_escape(curl, cleanText.c_str(), static_cast<int>(cleanText.length()));
     
-    // ZMĚNA: Používáme "gtx" klienta a "dt=t" (data type = text), což dává lepší větné překlady
     std::string url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=cs&dt=t&q=" + std::string(encodedText);
     curl_free(encodedText);
 
@@ -111,7 +108,6 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
             {
                 std::string fullTranslation = "";
                 
-                // Projdeme všechny části překladu (někdy Google rozdělí dlouhou větu na víc kusů)
                 for (auto& segment : jsonResponse[0]) 
                 {
                     if (segment.is_array() && !segment.empty()) 
@@ -144,29 +140,30 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
     if (!curl) return resultQuestions;
 
-    // A) Nastavení URL pro "The Trivia API"
     std::string baseUrl = "https://the-trivia-api.com/v2/questions?limit=100";
     
-    // B) Mapování kategorií na TAGY (tohle je ta magie)
     std::string tags = "";
     if (category == L"Starověk") 
     {
-        // Hledáme Řím, Řecko, starověk...
-        tags = "&tags=ancient_rome,ancient_greece,roman_empire,bronze_age,iron_age"; 
+        tags = "&tags=ancient_rome,ancient_greece,roman_empire,ancient_egypt,mesopotamia,"
+        "babylon,persian_empire,alexander_the_great,julius_caesar,cleopatra,"
+        "bronze_age,iron_age,mythology,ancient_world"; 
     } 
     else if (category == L"Středověk") 
     {
-        // Hledáme středověk, křížové výpravy...
-        tags = "&tags=middle_ages,medieval,crusades,vikings,hundred_years_war";
+        tags = "&tags=middle_ages,medieval,crusades,vikings,black_death,feudalism,"
+        "byzantine_empire,ottoman_empire,mongol_empire,genghis_khan,"
+        "hundred_years_war,war_of_the_roses,joan_of_arc,knights,castles,holy_roman_empire";
     }
     else if (category == L"Moderní dějiny") 
     {
-        // Hledáme světové války, studenou válku, 20. století
-        tags = "&tags=world_war_1,world_war_2,cold_war,soviet_union,american_civil_war,industrial_revolution";
+        tags = "&tags=world_war_1,world_war_2,cold_war,soviet_union,american_civil_war,"
+        "industrial_revolution,french_revolution,napoleon,victorian_era,"
+        "space_race,moon_landing,vietnam_war,korean_war,civil_rights_movement,"
+        "berlin_wall,jfk,atomic_bomb,modern_history";
     }
     else if (category == L"Chaos")
     {
-        // Fallback - prostě historie
         tags = "&categories=history";
     }
     else
@@ -174,7 +171,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
         tags = "&categories=history";
     }
 
-    // C) Obtížnost
     std::string diffParam = "";
     if (difficulty == L"Lehká") diffParam = "&difficulty=easy";
     else if (difficulty == L"Střední") diffParam = "&difficulty=medium";
@@ -183,12 +179,10 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
     std::srand(std::time(nullptr)); 
     std::string randomParam = "&random=" + std::to_string(std::rand());
     
-    // Sestavení URL
     std::string currentUrl = baseUrl + tags + diffParam;
 
-    // --- Smyčka pro získání dostatku otázek ---
     int retryCount = 0;
-    const int MAX_RETRIES = 15; // Tady stačí méně pokusů, protože API vrací přesnější data
+    const int MAX_RETRIES = 15;
 
     while (resultQuestions.size() < 30 && retryCount < MAX_RETRIES)
     {
@@ -227,7 +221,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
                         std::vector<std::string> enIncorrect;
                         for(auto& inc : item["incorrectAnswers"]) enIncorrect.push_back(inc);
 
-                        // 3. Překlad
                         std::string csQuestionStr = translateText(curl, enQuestion);                        
                         q.text = utf8ToWide(csQuestionStr);
                         formatQuestionText(q.text); 
@@ -245,7 +238,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
                             answers.push_back(wInc);
                         }
 
-                        // Míchání
                         std::wstring correctText = answers[0];
                         std::random_device rd;
                         std::mt19937 g(rd());
@@ -272,7 +264,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
 
     if (resultQuestions.empty()) {
         std::cerr << "VAROVANI: Nepodarilo se stahnout otazky. Zkousim zalozni zdroj..." << std::endl;
-        // Zde by mohl být fallback na OpenTriviaDB, ale pro jednoduchost necháme prázdné
     } 
 
     curl_easy_cleanup(curl);
