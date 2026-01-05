@@ -5,11 +5,13 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <future>
+#include <thread>
 
 class GamePlayScreen
 {
 public:
-    GamePlayScreen(float width, float height, const sf::Font&font);
+    GamePlayScreen(sf::RenderWindow&window,float width, float height, const sf::Font&font);
 
     void startNewGame(std::wstring category, std::wstring difficulty);
 
@@ -24,6 +26,7 @@ public:
     void togglePause();
 
 private:
+    sf::RenderWindow* windowRef;
     sf::Font font;
     float windowWidth, windowHeight;
 

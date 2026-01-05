@@ -4,8 +4,9 @@
 #include "QuestionManager.h"
 #include <random>
 
-GamePlayScreen::GamePlayScreen(float width, float height, const sf::Font&font)
-:font(font), windowHeight(height), windowWidth(width),
+GamePlayScreen::GamePlayScreen(sf::RenderWindow&window,float width, float height, const sf::Font&font)
+:windowRef(&window),
+font(font), windowHeight(height), windowWidth(width),
 
 textQuestion(font),
 textTimer(font),
@@ -110,18 +111,56 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
 {
     questions.clear();
 
-    std::cout << "Stahuji a prekladam otazky... Cekejte prosim." << std::endl;
-    std::vector<Question> downloadedQuestions = QuestionManager::fetchQuestions(category, difficulty);
-    
-    if (!downloadedQuestions.empty())
+    std::atomic<int> loadedCount(0);
+    int totalCount = 30;
+
+    sf::Text loadingText(font);
+    loadingText.setCharacterSize(40);
+    loadingText.setFillColor(sf::Color::White);
+    loadingText.setStyle(sf::Text::Bold);
+
+    auto future = std::async(std::launch::async, 
+    QuestionManager::fetchQuestions, category, difficulty, &loadedCount);
+
+    while (future.wait_for(std::chrono::milliseconds(16)) != std::future_status::ready)
     {
-        questions = downloadedQuestions;
-        std::cout << "Uspesne stazeno " << questions.size() << " otazek." << std::endl;
+        sf::Event event;
+        if (windowRef) 
+        {
+            while (windowRef->pollEvent(event)) 
+            {
+                if (event.type == sf::Event::Closed) 
+                {
+                    windowRef->close();
+                    return; 
+                }
+            }
+        }
+
+        if (windowRef && windowRef->isOpen())
+        {
+            windowRef->clear(sf::Color::Black); 
+
+            std::wstring msg = L"NAČÍTÁM OTÁZKY: " + std::to_wstring(loadedCount) + L" / " + std::to_wstring(totalCount);
+            loadingText.setString(msg);
+
+            sf::FloatRect r = loadingText.getLocalBounds();
+            loadingText.setOrigin({r.position.x + r.size.x/2.0f, r.position.y + r.size.y/2.0f});
+            loadingText.setPosition({windowWidth/2.0f, windowHeight/2.0f});
+
+            windowRef->draw(loadingText);
+            windowRef->display();
+        }
+    }
+
+    std::vector<Question> downloaded = future.get();
+
+    if (!downloaded.empty())
+    {
+        questions = downloaded;
     }
     else
-    {
-        std::cerr << "Chyba stahovani! Pouzivam zalozni otazky." << std::endl;
-        
+    {       
         for (int i = 0; i < 5; i++)
         {
             Question q;

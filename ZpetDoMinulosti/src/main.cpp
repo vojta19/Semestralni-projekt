@@ -47,7 +47,7 @@ int main()
     MenuScreen menu(800, 600, font);
     SettingsScreen settings(800, 600, font);
     GameScreen game(800,600,font);
-    GamePlayScreen playing (800,600,font);
+    GamePlayScreen playing (window,800,600,font);
 
     GameState currentState = MENU;
     bool mouseClickedReleased = true;

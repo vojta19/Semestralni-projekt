@@ -3,6 +3,7 @@
 #include <string>
 #include <SFML/System.hpp>
 #include <curl/curl.h>
+#include <atomic>
 
 struct Question
 {
@@ -14,7 +15,7 @@ struct Question
 class QuestionManager
 {
 public:
-    static std::vector<Question> fetchQuestions(std::wstring category, std::wstring difficulty);
+    static std::vector<Question> fetchQuestions(std::wstring category, std::wstring difficulty,std::atomic<int>* progressCounter = nullptr);
 
 private:
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);

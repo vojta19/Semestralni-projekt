@@ -75,7 +75,7 @@ size_t QuestionManager::WriteCallback(void* contents, size_t size, size_t nmemb,
 
 std::wstring QuestionManager::utf8ToWide(const std::string& str)
 {
-    return sf::String::fromUtf8(str.begin(), str.end()).toWideString();
+    return sf::String(str).toWideString();
 }
 
 std::string QuestionManager::translateText(CURL* curl, std::string text)
@@ -130,7 +130,7 @@ std::string QuestionManager::translateText(CURL* curl, std::string text)
 }
 
 
-std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std::wstring difficulty)
+std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std::wstring difficulty,std::atomic<int>* progressCounter)
 {
     std::vector<Question> resultQuestions;
     
@@ -193,7 +193,6 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         
-        std::cout << "Pokus " << (retryCount + 1) << ": Stahuji z The Trivia API..." << std::endl;
         CURLcode res = curl_easy_perform(curl);
 
         if (res == CURLE_OK) 
@@ -251,6 +250,11 @@ std::vector<Question> QuestionManager::fetchQuestions(std::wstring category, std
                         }
                         q.answers = answers;
                         resultQuestions.push_back(q);
+
+                        if (progressCounter !=nullptr)
+                        {
+                            (*progressCounter)++;
+                        }
                         
                         std::cout << "Nacteno: " << resultQuestions.size() << "/30" << std::endl;
                     }
