@@ -577,11 +577,11 @@ void GamePlayScreen::colorizeButtons(int clickedIndex, int correctIndex)
     {
         if(i==correctIndex)
         {
-            buttons[i]->setBackgroundColor(sf::Color::Green);
+            buttons[i]->setBackgroundColor(sf::Color(0,160,0));
         }
         else if (i==clickedIndex && i != correctIndex)
         {
-            buttons[i]->setBackgroundColor(sf::Color::Red);
+            buttons[i]->setBackgroundColor(sf::Color(100,0,0));
         }
         else
         {
