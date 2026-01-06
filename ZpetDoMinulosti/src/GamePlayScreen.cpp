@@ -103,6 +103,8 @@ void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty
     currentQuestionIndex = 0;
     currentCategory=category;
 
+    skipFirstUpdate = true;
+
     setTimeForDifficulty(difficulty);
     loadQuestions(category, difficulty);
     loadNextQuestionUI();
@@ -135,6 +137,15 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
                     return; 
                 }
             }
+
+            if (const auto* resized = event->getIf<sf::Event::Resized>())
+                {
+                    sf::FloatRect visibleArea({0, 0}, {static_cast<float>(resized->size.x), static_cast<float>(resized->size.y)});
+                    windowRef->setView(sf::View(visibleArea));
+                
+                    windowWidth = static_cast<float>(resized->size.x);
+                    windowHeight = static_cast<float>(resized->size.y);
+                }
         }
 
         if (windowRef && windowRef->isOpen())
@@ -297,6 +308,12 @@ void GamePlayScreen::loadNextQuestionUI()
 
 void GamePlayScreen::update(sf::Time deltaTime)
 {
+    if (skipFirstUpdate)
+    {
+        skipFirstUpdate = false;
+        return;
+    }
+
     if(isGameOver || isPaused) return;
     remainingTime -= deltaTime.asSeconds();
 

@@ -36,6 +36,8 @@ private:
     bool isGameOver;
     bool isPaused;
 
+    bool skipFirstUpdate;
+
     std::wstring currentCategory;
 
     float timeLimit;
