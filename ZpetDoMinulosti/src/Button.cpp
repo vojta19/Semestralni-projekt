@@ -149,3 +149,8 @@ void Button::moveText(float x, float y)
 {
     buttonText.move({x, y});
 }
+
+void Button::setBackgroundColor(sf::Color color)
+{
+    shape.setFillColor(color);
+}

@@ -21,6 +21,8 @@ public:
 
     void moveText(float x,float y);
 
+    void setBackgroundColor(sf::Color color);
+
 private:
     sf::RectangleShape shape; // Samotný obdélník tlačítka
     sf::Text buttonText;      // Text uvnitř tlačítka

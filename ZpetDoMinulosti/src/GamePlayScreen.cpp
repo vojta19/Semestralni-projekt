@@ -74,6 +74,9 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
 
     isGameOver = false;
     isPaused = false;
+    skipFirstUpdate = false;
+
+    isTransitioning = false;
 
     isShuffleActive=false;
     isFogActive=false;
@@ -232,6 +235,14 @@ void GamePlayScreen::triggerChaosEvent()
 
 void GamePlayScreen::loadNextQuestionUI()
 {
+    isTransitioning = false;
+
+    sf::Color defaultColor(0,50,100);
+    btnAnswer0.setBackgroundColor(defaultColor);
+    btnAnswer1.setBackgroundColor(defaultColor);
+    btnAnswer2.setBackgroundColor(defaultColor);
+    btnAnswer3.setBackgroundColor(defaultColor);
+
     if (currentQuestionIndex >= questions.size()) 
     {
         finishGame();
@@ -339,6 +350,16 @@ void GamePlayScreen::update(sf::Time deltaTime)
     }
 
     if(isGameOver || isPaused) return;
+
+    if (isTransitioning)
+    {
+        if (transitionClock.getElapsedTime().asSeconds()> 0.5f)
+        {
+            currentQuestionIndex++;
+            loadNextQuestionUI();
+        }
+        return;
+    }
     remainingTime -= deltaTime.asSeconds();
 
     int seconds = static_cast<int>(remainingTime);
@@ -549,6 +570,27 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
     }
 }
 
+void GamePlayScreen::colorizeButtons(int clickedIndex, int correctIndex)
+{
+    Button* buttons[4] = {&btnAnswer0,&btnAnswer1,&btnAnswer2,&btnAnswer3};
+    for(int i=0;i<4;i++)
+    {
+        if(i==correctIndex)
+        {
+            buttons[i]->setBackgroundColor(sf::Color::Green);
+        }
+        else if (i==clickedIndex && i != correctIndex)
+        {
+            buttons[i]->setBackgroundColor(sf::Color::Red);
+        }
+        else
+        {
+            buttons[i]->setBackgroundColor(sf::Color(100,0,0));
+        }
+        
+    }
+}
+
 int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
 {
     sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
@@ -585,6 +627,7 @@ int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
         }
         else
         {
+            if (isTransitioning) return 0;
             int clickedIndex = -1;
 
             if (btnAnswer0.isClicked(mousePos)) clickedIndex = 0;
@@ -595,13 +638,17 @@ int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
             if (clickedIndex != -1)
             {
                 audio.PlayClick();
+                int correct = questions[currentQuestionIndex].correctIndex;
                 
                 if (clickedIndex == questions[currentQuestionIndex].correctIndex)
                 {
                     score++;
                 }
-               currentQuestionIndex++;
-                loadNextQuestionUI();
+
+                isTransitioning = true;
+                transitionClock.restart();
+
+                colorizeButtons(clickedIndex,correct);
             }
         }
     }

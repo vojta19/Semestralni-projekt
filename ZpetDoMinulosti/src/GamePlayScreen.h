@@ -71,10 +71,14 @@ private:
     sf::Text eventLabel;
     sf::Clock chaosShuffleTimer;
 
+    bool isTransitioning;
+    sf::Clock transitionClock;
+
     void loadQuestions(std::wstring category,std::wstring difficulty);
     void setTimeForDifficulty(std::wstring difficulty);
     void loadNextQuestionUI();
     void finishGame();
     void triggerChaosEvent();
+    void colorizeButtons(int clickedIndex,int correctIndex);
 
 };
