@@ -185,6 +185,16 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
             questions.push_back(q);
         }
     }
+
+    if (windowRef) 
+    {
+        sf::Vector2u size = windowRef->getSize();
+        sf::FloatRect visibleArea(sf::Vector2f(0.f, 0.f), sf::Vector2f((float)size.x, (float)size.y));
+        windowRef->setView(sf::View(visibleArea));
+        
+        windowWidth = (float)size.x;
+        windowHeight = (float)size.y;
+    }
 }
 
 void GamePlayScreen::triggerChaosEvent()

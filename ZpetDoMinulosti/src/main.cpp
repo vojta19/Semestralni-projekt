@@ -16,6 +16,18 @@ enum GameState
     PLAYING
 };
 
+void updateViewAndLayout(sf::RenderWindow& window, auto& screen)
+{
+    sf::Vector2u size = window.getSize();
+    float w = static_cast<float>(size.x);
+    float h = static_cast<float>(size.y);
+
+    sf::FloatRect visibleArea(sf::Vector2f(0.f, 0.f), sf::Vector2f(w, h));
+    window.setView(sf::View(visibleArea));
+
+    screen.recalculatePosition(w, h);
+}
+
 int main()
 {
     
@@ -82,6 +94,15 @@ int main()
             if(const auto* resized = event->getIf<sf::Event::Resized>())
             {
                 sf::Vector2f newSize = static_cast<sf::Vector2f>(resized->size);
+                
+                sf::FloatRect visibleArea({0, 0}, {newSize.x, newSize.y});
+                window.setView(sf::View(visibleArea));
+
+                menu.recalculatePosition(newSize.x, newSize.y);
+                settings.recalculatePosition(newSize.x, newSize.y);
+                game.recalculatePosition(newSize.x, newSize.y);
+                playing.recalculatePosition(newSize.x, newSize.y);
+                
                 if (currentState == PLAYING) playing.recalculatePosition(newSize.x, newSize.y);
             }
             
@@ -112,10 +133,12 @@ int main()
                     currentState = GAME;
                     sf::Vector2u currentSize =window.getSize();
                     game.recalculatePosition((float)currentSize.x,(float)currentSize.y);
+                    updateViewAndLayout(window,playing);
                 }
                 else if (action == 2) 
                 {
                     currentState = SETTINGS;
+                    updateViewAndLayout(window,playing);
                 }
                 else if (action == 3) 
                 {
@@ -142,6 +165,7 @@ int main()
                     
                     mouseClickedReleased = false;
                     audio.PlayClick();
+                    updateViewAndLayout(window,playing);
                 }
             }
             else if (currentState == GAME)
@@ -153,14 +177,19 @@ int main()
                     sf::Vector2u currentSize = window.getSize();
                     menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                     audio.PlayClick();
+                    updateViewAndLayout(window,playing);
                 }
                 else if (action == 2)
                 {
                     std::wstring cat = game.getSelectedCategory();
                     std::wstring diff = game.getSelectedDifficulty();
 
+                    updateViewAndLayout(window,playing);
+                    
                     playing.startNewGame(cat,diff);
                     currentState = PLAYING;
+
+                    updateViewAndLayout(window,playing);
                     
                     sf::Vector2u currentSize = window.getSize();
                     playing.recalculatePosition((float)currentSize.x,(float)currentSize.y);
@@ -175,6 +204,7 @@ int main()
                     sf::Vector2u currentSize = window.getSize();
                     menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
                     audio.PlayClick();
+                    updateViewAndLayout(window,playing);
                 }
                 else if(action==3)
                 {
@@ -182,6 +212,7 @@ int main()
                     std::wstring diff = game.getSelectedDifficulty();
 
                     playing.startNewGame(cat,diff);
+                    updateViewAndLayout(window,playing);
 
                     sf::Vector2u currentSize = window.getSize();
                     playing.recalculatePosition((float)currentSize.x, (float)currentSize.y);
