@@ -3,6 +3,9 @@
 #include <cmath>
 #include "QuestionManager.h"
 #include <random>
+#include <future>
+#include <thread>
+#include <optional>
 
 GamePlayScreen::GamePlayScreen(sf::RenderWindow&window,float width, float height, const sf::Font&font)
 :windowRef(&window),
@@ -112,7 +115,7 @@ void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty
 
 void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficulty)
 {
-    questions.clear();
+   questions.clear();
 
     std::atomic<int> loadedCount(0);
     int totalCount = 30;
@@ -136,18 +139,6 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
                     windowRef->close();
                     return; 
                 }
-
-                if (const auto* resized = event->getIf<sf::Event::Resized>())
-                {
-                    float w = static_cast<float>(resized->size.x);
-                    float h = static_cast<float>(resized->size.y);
-                    
-                    sf::FloatRect visibleArea(sf::Vector2f(0.f,0.f),sf::Vector2f(w,h));
-                    windowRef->setView(sf::View(visibleArea));
-                
-                    windowWidth = w;
-                    windowHeight = h;
-                }
             }
         }
 
@@ -155,16 +146,22 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
         {
             windowRef->clear(sf::Color::Black); 
 
+            sf::Vector2u winSize = windowRef->getSize();
+            float w = static_cast<float>(winSize.x);
+            float h = static_cast<float>(winSize.y);
+
+            sf::FloatRect visibleArea(sf::Vector2f(0.f, 0.f), sf::Vector2f(w, h));
+            windowRef->setView(sf::View(visibleArea));
+
+            windowWidth = w;
+            windowHeight = h;
+
             std::wstring msg = L"NAČÍTÁM OTÁZKY: " + std::to_wstring(loadedCount) + L" / " + std::to_wstring(totalCount);
             loadingText.setString(msg);
 
-            sf::Vector2u winSize = windowRef->getSize();
-            float currentW = static_cast<float>(winSize.x);
-            float currentH = static_cast<float>(winSize.y);
-
             sf::FloatRect r = loadingText.getLocalBounds();
             loadingText.setOrigin({r.position.x + r.size.x/2.0f, r.position.y + r.size.y/2.0f});
-            loadingText.setPosition({windowWidth/2.0f, windowHeight/2.0f});
+            loadingText.setPosition({w / 2.0f, h / 2.0f});
 
             windowRef->draw(loadingText);
             windowRef->display();
@@ -246,6 +243,10 @@ void GamePlayScreen::loadNextQuestionUI()
     }
 
     chaosShuffleTimer.restart();
+
+    int seconds = static_cast<int>(remainingTime);
+    int decis = static_cast<int>((remainingTime - seconds) * 10);
+    textTimer.setString(std::to_wstring(seconds) + L"." + std::to_wstring(decis) + L" s");
 
     Question& q = questions[currentQuestionIndex];
 
