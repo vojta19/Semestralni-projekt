@@ -306,6 +306,16 @@ void GamePlayScreen::loadNextQuestionUI()
     btnAnswer3.setText(q.answers[3]);
 
     textCounter.setString(std::to_wstring(currentQuestionIndex + 1) + L" / " + std::to_wstring(questions.size()));
+
+    if (windowRef) 
+    {
+        sf::Vector2u size = windowRef->getSize();
+        recalculatePosition(static_cast<float>(size.x), static_cast<float>(size.y));
+    } 
+    else 
+    {
+        recalculatePosition(windowWidth, windowHeight);
+    }
 }
 
 
@@ -403,6 +413,12 @@ void GamePlayScreen::recalculatePosition(float width, float height)
 {
     windowWidth = width;
     windowHeight = height;
+
+    if (windowRef) 
+    {
+        sf::FloatRect visibleArea(sf::Vector2f(0.f, 0.f), sf::Vector2f(width, height));
+        windowRef->setView(sf::View(visibleArea));
+    }
 
     float centerX = width/2.0f;
     float centerY = height / 2.0f;
