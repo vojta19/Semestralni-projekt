@@ -136,16 +136,19 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
                     windowRef->close();
                     return; 
                 }
-            }
 
-            if (const auto* resized = event->getIf<sf::Event::Resized>())
+                if (const auto* resized = event->getIf<sf::Event::Resized>())
                 {
-                    sf::FloatRect visibleArea({0, 0}, {static_cast<float>(resized->size.x), static_cast<float>(resized->size.y)});
+                    float w = static_cast<float>(resized->size.x);
+                    float h = static_cast<float>(resized->size.y);
+                    
+                    sf::FloatRect visibleArea(sf::Vector2f(0.f,0.f),sf::Vector2f(w,h));
                     windowRef->setView(sf::View(visibleArea));
                 
-                    windowWidth = static_cast<float>(resized->size.x);
-                    windowHeight = static_cast<float>(resized->size.y);
+                    windowWidth = w;
+                    windowHeight = h;
                 }
+            }
         }
 
         if (windowRef && windowRef->isOpen())
