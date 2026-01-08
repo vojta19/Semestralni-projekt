@@ -7,7 +7,7 @@ public:
     Button(float x, float y, float width, float height, const sf::String& text, const sf::Font& font);
 
     
-    void draw(sf::RenderWindow& window, bool censored = false);
+    void draw(sf::RenderWindow& window, bool censored = false, bool locked = false);
     
     void setText(const sf::String& text);
 
@@ -26,4 +26,5 @@ public:
 private:
     sf::RectangleShape shape; // Samotný obdélník tlačítka
     sf::Text buttonText;      // Text uvnitř tlačítka
+    sf::Color baseColor;
 };

@@ -1,23 +1,36 @@
 #include "Button.h"
-#include <cmath> /
+#include <cmath>
+#include <algorithm>
 
 Button::Button(float x, float y, float width, float height, const sf::String& text, const sf::Font& font)
     : buttonText(font) 
 {
     shape.setPosition({x, y});
     shape.setSize({width, height});
-    shape.setFillColor(sf::Color(0, 50, 100)); 
+
+    baseColor = sf::Color(0,50,100);
+    shape.setFillColor(baseColor); 
+    
     shape.setOutlineThickness(2.f);
     shape.setOutlineColor(sf::Color(0, 255, 255));   
 
+    buttonText.setFont(font);
     buttonText.setString(text);                
     buttonText.setCharacterSize(22);
     buttonText.setFillColor(sf::Color::White);
 
+    sf::FloatRect textRect = buttonText.getLocalBounds();
+    buttonText.setOrigin
+    ({
+        textRect.position.x+textRect.size.x / 2.0f,
+        textRect.position.y + textRect.size.y / 2.0f
+    });
+
+    buttonText.setPosition({x+ width/2.0f, y+height/2.0f});
     setText(text);
 }
 
-void Button::draw(sf::RenderWindow& window, bool censored)
+void Button::draw(sf::RenderWindow& window, bool censored, bool locked)
 {
     window.draw(shape);
 
@@ -26,7 +39,8 @@ void Button::draw(sf::RenderWindow& window, bool censored)
     sf::Vector2i mousePixel = sf::Mouse::getPosition(window);
     sf::Vector2f mousePos = window.mapPixelToCoords(mousePixel);
 
-    if (shape.getGlobalBounds().contains(mousePos)) {
+    if (shape.getGlobalBounds().contains(mousePos)) 
+    {
         isHovered = true;
     }
 
@@ -43,6 +57,55 @@ void Button::draw(sf::RenderWindow& window, bool censored)
         mask.setPosition({pos.x + size.x / 2.0f, pos.y + size.y / 2.0f});
         
         window.draw(mask);
+    }
+    else
+    {
+        window.draw(buttonText);
+    }
+
+    if (!locked)
+    {
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+        sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
+
+        if (shape.getGlobalBounds().contains(mousePos))
+        {
+            sf::Color hoverColor = baseColor;
+            hoverColor.r = std::min(255, baseColor.r + 40);
+            hoverColor.g = std::min(255, baseColor.g + 40);
+            hoverColor.b = std::min(255, baseColor.b + 40);
+            shape.setFillColor(hoverColor);
+        }
+        else
+        {
+            shape.setFillColor(baseColor);
+        }
+    }
+    else
+    {
+        shape.setFillColor(baseColor);
+    }
+
+    window.draw(shape);
+
+    if (censored)
+    {
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+        sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
+
+        if (shape.getGlobalBounds().contains(mousePos))
+        {
+            window.draw(buttonText); 
+        }
+        else
+        {
+             sf::Text censoredText = buttonText;
+             censoredText.setString("???");
+             sf::FloatRect r = censoredText.getLocalBounds();
+             censoredText.setOrigin({r.position.x + r.size.x/2.0f, r.position.y + r.size.y/2.0f});
+             censoredText.setPosition(shape.getPosition() + shape.getSize() / 2.0f);
+             window.draw(censoredText);
+        }
     }
     else
     {
@@ -152,5 +215,6 @@ void Button::moveText(float x, float y)
 
 void Button::setBackgroundColor(sf::Color color)
 {
+    baseColor = color;
     shape.setFillColor(color);
 }
