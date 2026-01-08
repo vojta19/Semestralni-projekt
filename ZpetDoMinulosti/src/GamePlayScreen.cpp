@@ -553,10 +553,10 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
         }
         window.draw(textTimer);
         window.draw(textCounter);
-        btnAnswer0.draw(window,isFogActive);
-        btnAnswer1.draw(window,isFogActive);
-        btnAnswer2.draw(window,isFogActive);
-        btnAnswer3.draw(window,isFogActive);  
+        btnAnswer0.draw(window,isFogActive,isTransitioning);
+        btnAnswer1.draw(window,isFogActive,isTransitioning);
+        btnAnswer2.draw(window,isFogActive,isTransitioning);
+        btnAnswer3.draw(window,isFogActive,isTransitioning);  
     }
     else
     {
