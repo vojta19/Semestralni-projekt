@@ -26,7 +26,15 @@ btnBack(0,0,150,40,L"Zpět",font)
 void GameScreen::updateButtonLabels()
 {
     btnCategory.setText(L"Kategorie: " + categories[currentCategoryIndex]);
-    btnDifficulty.setText(L"Obtížnost: " + difficulties[currentDifficultyIndex]);
+
+    if (categories[currentCategoryIndex] ==L"Chaos")
+    {
+        btnDifficulty.setText(L"Obtížnost: Anomálie");
+    }
+    else
+    {
+        btnDifficulty.setText(L"Obtížnost: " + difficulties[currentDifficultyIndex]);
+    }
 }
 
 void GameScreen::recalculatePosition(float width, float height)
@@ -67,6 +75,10 @@ std::wstring GameScreen::getSelectedCategory()
 
 std::wstring GameScreen::getSelectedDifficulty()
 {
+    if (categories[currentCategoryIndex] ==L"Chaos")
+    {
+        return L"Anomálie";
+    }
     return difficulties[currentDifficultyIndex];
 }
 
