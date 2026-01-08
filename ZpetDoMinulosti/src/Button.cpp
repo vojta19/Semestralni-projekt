@@ -11,7 +11,7 @@ Button::Button(float x, float y, float width, float height, const sf::String& te
     baseColor = sf::Color(0,50,100);
     shape.setFillColor(baseColor); 
     
-    shape.setOutlineThickness(2.f);
+    shape.setOutlineThickness(2.0f);
     shape.setOutlineColor(sf::Color(0, 255, 255));   
 
     buttonText.setFont(font);
@@ -32,48 +32,19 @@ Button::Button(float x, float y, float width, float height, const sf::String& te
 
 void Button::draw(sf::RenderWindow& window, bool censored, bool locked)
 {
-    window.draw(shape);
-
     bool isHovered = false;
     
-    sf::Vector2i mousePixel = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePos = window.mapPixelToCoords(mousePixel);
-
-    if (shape.getGlobalBounds().contains(mousePos)) 
-    {
-        isHovered = true;
-    }
-
-    if (censored && !isHovered)
-    {
-        sf::RectangleShape mask;
-        sf::Vector2f size = shape.getSize();
-        
-        mask.setSize({size.x - 10.0f, size.y - 10.0f});
-        mask.setOrigin({mask.getSize().x / 2.0f, mask.getSize().y / 2.0f});
-        mask.setFillColor(sf::Color(10, 10, 10)); 
-        
-        sf::Vector2f pos = shape.getPosition();
-        mask.setPosition({pos.x + size.x / 2.0f, pos.y + size.y / 2.0f});
-        
-        window.draw(mask);
-    }
-    else
-    {
-        window.draw(buttonText);
-    }
-
     if (!locked)
     {
-        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-        sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
-
-        if (shape.getGlobalBounds().contains(mousePos))
+        sf::Vector2i mousePixel = sf::Mouse::getPosition(window);
+        sf::Vector2f mousePos = window.mapPixelToCoords(mousePixel);
+        
+        if (shape.getGlobalBounds().contains(mousePos)) 
         {
             sf::Color hoverColor = baseColor;
-            hoverColor.r = std::min(255, baseColor.r + 40);
-            hoverColor.g = std::min(255, baseColor.g + 40);
-            hoverColor.b = std::min(255, baseColor.b + 40);
+            hoverColor.r = std::min(255,baseColor.r + 40);
+            hoverColor.g = std::min(255,baseColor.g + 40);
+            hoverColor.b = std::min(255,baseColor.b + 40);
             shape.setFillColor(hoverColor);
         }
         else
@@ -87,30 +58,22 @@ void Button::draw(sf::RenderWindow& window, bool censored, bool locked)
     }
 
     window.draw(shape);
+    window.draw(buttonText);
 
-    if (censored)
+    if (censored && !isHovered && !locked)
     {
-        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-        sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
+        sf::RectangleShape veil;
+        veil.setSize(shape.getSize());
+        veil.setPosition(shape.getPosition());
+        
+        veil.setFillColor(sf::Color::Black); 
+        
+        veil.setOutlineColor(sf::Color(50, 50, 50)); 
+        veil.setOutlineThickness(1.0f);
 
-        if (shape.getGlobalBounds().contains(mousePos))
-        {
-            window.draw(buttonText); 
-        }
-        else
-        {
-             sf::Text censoredText = buttonText;
-             censoredText.setString("???");
-             sf::FloatRect r = censoredText.getLocalBounds();
-             censoredText.setOrigin({r.position.x + r.size.x/2.0f, r.position.y + r.size.y/2.0f});
-             censoredText.setPosition(shape.getPosition() + shape.getSize() / 2.0f);
-             window.draw(censoredText);
-        }
+        window.draw(veil);
     }
-    else
-    {
-        window.draw(buttonText);
-    }
+
 }
 
 bool Button::isClicked(sf::Vector2f mousePos)
