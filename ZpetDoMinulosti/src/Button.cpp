@@ -41,16 +41,17 @@ void Button::draw(sf::RenderWindow& window, bool censored, bool locked)
         
         if (shape.getGlobalBounds().contains(mousePos)) 
         {
-            sf::Color hoverColor = baseColor;
-            hoverColor.r = std::min(255,baseColor.r + 40);
-            hoverColor.g = std::min(255,baseColor.g + 40);
-            hoverColor.b = std::min(255,baseColor.b + 40);
-            shape.setFillColor(hoverColor);
+            isHovered = true;
         }
-        else
-        {
-            shape.setFillColor(baseColor);
-        }
+    }
+
+    if (isHovered && !locked && !censored)
+    {
+        sf::Color hoverColor = baseColor;
+        hoverColor.r = std::min(255, baseColor.r + 40);
+        hoverColor.g = std::min(255, baseColor.g + 40);
+        hoverColor.b = std::min(255, baseColor.b + 40);
+        shape.setFillColor(hoverColor);
     }
     else
     {
