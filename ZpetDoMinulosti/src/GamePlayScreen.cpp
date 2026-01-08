@@ -370,16 +370,23 @@ void GamePlayScreen::update(sf::Time deltaTime)
     if (remainingTime < 5.0f) 
     { 
         blinkTimer += deltaTime.asSeconds(); 
-        if (blinkTimer >= 0.2f) 
+        float blinkSpeed = (remainingTime<2.0f) ? 0.1f:0.2f;
+        if (blinkTimer >= blinkSpeed) 
         { 
             blinkTimer = 0; 
             timerBlinkState = !timerBlinkState; 
             textTimer.setFillColor(timerBlinkState ? sf::Color::Red : sf::Color::White); 
         } 
+
+        float pulseSpeed = 10.0f + (5.0f - remainingTime) * 2.0f;
+        float scaleFactor = 1.0f + 0.15f * std::sin(remainingTime*pulseSpeed);
+
+        textTimer.setScale({scaleFactor,scaleFactor});
     } 
     else 
     { 
         textTimer.setFillColor(sf::Color::White); 
+        textTimer.setScale({1.0f,1.0f});
     }
     if (remainingTime <= 0.0f) 
     { 
