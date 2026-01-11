@@ -81,6 +81,17 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
     isShuffleActive=false;
     isFogActive=false;
 
+    if(!texAncient.loadFromFile("assets/bg_ancient.jpg")) std::cerr << "Chyba: bg_ancient nenalezen" << std::endl;
+    if(!texMedieval.loadFromFile("assets/bg_medieval.jpg")) std::cerr << "Chyba: bg_medieval nenalezen" << std::endl;
+    if(!texModern.loadFromFile("assets/bg_modern.jpg")) std::cerr << "Chyba: bg_modern nenalezen" << std::endl;
+    if(!texChaos.loadFromFile("assets/bg_chaos.jpg")) std::cerr << "Chyba: bg_chaos nenalezen" << std::endl;
+
+    texAncient.setSmooth(true);
+    texMedieval.setSmooth(true);
+    texModern.setSmooth(true);
+    texChaos.setSmooth(true);
+    
+    background.setPosition({0,0});
     recalculatePosition(width,height);
 }
 
@@ -110,6 +121,31 @@ void GamePlayScreen::startNewGame(std::wstring category, std::wstring difficulty
     currentCategory=category;
 
     skipFirstUpdate = true;
+    isTransitioning = false;
+
+    background.setFillColor(sf::Color::White);
+
+    if(category==L"Starověk")
+    {
+        background.setTexture(&texAncient);
+    }
+    else if(category==L"Středověk")
+    {
+        background.setTexture(&texMedieval);
+    }
+    else if(category==L"Moderní dějiny")
+    {
+        background.setTexture(&texModern);
+    }
+    else if(category==L"Chaos")
+    {
+        background.setTexture(&texChaos);
+    }
+    else
+    {
+        background.setTexture(nullptr);
+        background.setFillColor(sf::Color(10,20,35));
+    }
 
     setTimeForDifficulty(difficulty);
     loadQuestions(category, difficulty);
@@ -459,6 +495,9 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         windowRef->setView(sf::View(visibleArea));
     }
 
+    background.setSize({width,height});
+    background.setPosition({0,0});
+
     float centerX = width/2.0f;
     float centerY = height / 2.0f;
 
@@ -537,6 +576,10 @@ void GamePlayScreen::recalculatePosition(float width, float height)
 
 void GamePlayScreen::draw(sf::RenderWindow&window)
 {
+    if(!isPaused&&!isGameOver)
+    {
+        window.draw(background);
+    }
     if(isPaused)
     {
         window.draw(textQuestion);

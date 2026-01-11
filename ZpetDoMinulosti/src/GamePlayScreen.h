@@ -74,6 +74,13 @@ private:
     bool isTransitioning;
     sf::Clock transitionClock;
 
+    sf::RectangleShape background;
+
+    sf::Texture texAncient;
+    sf::Texture texMedieval;
+    sf::Texture texModern;
+    sf::Texture texChaos;
+
     void loadQuestions(std::wstring category,std::wstring difficulty);
     void setTimeForDifficulty(std::wstring difficulty);
     void loadNextQuestionUI();
