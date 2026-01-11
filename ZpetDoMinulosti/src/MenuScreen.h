@@ -18,6 +18,9 @@ private:
 
     Button btnPlay;    
     Button btnSettings; 
-    Button btnExit;     
+    Button btnExit;
+    
+    sf::Texture logoTexture;
+    sf::Sprite logoSprite;
 };
 

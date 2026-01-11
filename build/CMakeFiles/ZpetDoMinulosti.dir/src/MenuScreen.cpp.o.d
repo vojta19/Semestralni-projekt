@@ -275,4 +275,5 @@ CMakeFiles/ZpetDoMinulosti.dir/src/MenuScreen.cpp.o: \
  /workspaces/Semestralni-projekt/build/_deps/sfml-src/include/SFML/System/InputStream.hpp \
  /workspaces/Semestralni-projekt/build/_deps/sfml-src/include/SFML/System/MemoryInputStream.hpp \
  /workspaces/Semestralni-projekt/build/_deps/sfml-src/include/SFML/System/Sleep.hpp \
- /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/Button.h
+ /workspaces/Semestralni-projekt/ZpetDoMinulosti/src/Button.h \
+ /usr/include/c++/12/iostream
