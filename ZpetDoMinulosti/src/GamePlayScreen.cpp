@@ -81,10 +81,26 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
     isShuffleActive=false;
     isFogActive=false;
 
-    if(!texAncient.loadFromFile("assets/bg_ancient.jpg")) std::cerr << "Chyba: bg_ancient nenalezen" << std::endl;
-    if(!texMedieval.loadFromFile("assets/bg_medieval.jpg")) std::cerr << "Chyba: bg_medieval nenalezen" << std::endl;
-    if(!texModern.loadFromFile("assets/bg_modern.jpg")) std::cerr << "Chyba: bg_modern nenalezen" << std::endl;
-    if(!texChaos.loadFromFile("assets/bg_chaos.jpg")) std::cerr << "Chyba: bg_chaos nenalezen" << std::endl;
+    std::string pathPrefix = "/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/";
+
+    if (!texAncient.loadFromFile(pathPrefix + "bg_ancient.jpg")) 
+    {
+        std::cerr << "CHYBA: bg_ancient.jpg nenalezen na ceste: " << pathPrefix << std::endl;
+        std::string fallbackPath = "../ZpetDoMinulosti/assets/";
+        if (!texAncient.loadFromFile(fallbackPath + "bg_ancient.jpg"))
+        {
+             std::cerr << "CHYBA: Ani relativni cesta nefunguje." << std::endl;
+        }
+        else
+        {
+            pathPrefix = fallbackPath; 
+        }
+    }
+       
+    if(!texAncient.loadFromFile(pathPrefix+"bg_ancient.jpg")) std::cerr << "Chyba: bg_ancient nenalezen" << std::endl;
+    if(!texMedieval.loadFromFile(pathPrefix+"bg_medieval.jpg")) std::cerr << "Chyba: bg_medieval nenalezen" << std::endl;
+    if(!texModern.loadFromFile(pathPrefix+"bg_modern.jpg")) std::cerr << "Chyba: bg_modern nenalezen" << std::endl;
+    if(!texChaos.loadFromFile(pathPrefix+"bg_chaos.jpg")) std::cerr << "Chyba: bg_chaos nenalezen" << std::endl;
 
     texAncient.setSmooth(true);
     texMedieval.setSmooth(true);
@@ -287,12 +303,14 @@ void GamePlayScreen::loadNextQuestionUI()
 
     if(currentCategory==L"Chaos")
     {
+        textQuestion.setFillColor(sf::Color::White);
         timeLimit = 20.0f;
         remainingTime = 20.0f;
         triggerChaosEvent();
     }
     else
     {
+        textQuestion.setFillColor(sf::Color::Black);
         remainingTime = timeLimit;
         isShuffleActive = false;
         isFogActive = false;
