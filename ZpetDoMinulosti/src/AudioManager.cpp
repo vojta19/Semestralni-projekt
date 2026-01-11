@@ -1,71 +1,89 @@
 #include "AudioManager.h"
 #include <iostream>
 
-AudioManager::AudioManager() : ClickSound(clickBuffer)
+AudioManager::AudioManager():ClickSound(clickBuffer)
 {
-  //  isMusicEnabled=true;  //konstruktor, na začátku chceme aby byla hudba povolená
+    isMusicEnabled = true;
+    isAudioAvailable = true; 
 }
 
 bool AudioManager::loadAssets()
 {
-//    if(!backgroundMusic.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/music.ogg")) //primární cesta načtení souboru
-//    {
-//        if(!backgroundMusic.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/music.ogg")) //záložní cesta načtení souboru
-//        {
-//            std::cerr << "CHYBA: Nepodarilo se nacist music.ogg!" << std::endl; //neúspěch tolik nevadí, hru to nezastaví
-//        }
-//
-//
- //     backgroundMusic.setLooping(true); //ať hraje pořád do kola
- //     backgroundMusic.setVolume(20.f); //hlasitost na 20%
+    std::string pathPrefix = "/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/";
 
-   //   if(!clickBuffer.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/click.wav")) //načtení zvuku cvaknutí
-   //   {
-//        if(!clickBuffer.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/click.wav"))
-//        {
-//            std::cerr << "CHYBA: Nepodarilo se nacist click.wav!" << std::endl;
-//            return false; //tady vrátíme false, je něco špatně
-//        }
-     //   }
-    
-//    ClickSound.setBuffer(clickBuffer); //propojíme data (buffer) s přehrávačem (sound)
-  return true; //vše ok
+
+    if (!clickBuffer.loadFromFile(pathPrefix + "click.wav"))
+    {
+        if (!clickBuffer.loadFromFile("assets/click.wav"))
+        {
+            std::cerr << "CHYBA: click.wav se nepodarilo nacist (nebo chybí audio zarizeni)." << std::endl;
+            isAudioAvailable = false;
+        }
+    }
+
+    if (isAudioAvailable)
+    {
+        ClickSound.setBuffer(clickBuffer);
+        ClickSound.setVolume(50.0f);
+    }
+
+    if (isAudioAvailable)
+    {
+        if (!backgroundMusic.openFromFile(pathPrefix + "music.ogg"))
+        {
+            if (!backgroundMusic.openFromFile("assets/music.ogg"))
+            {
+                std::cerr << "Varovani: music.ogg se nepodarilo nacist." << std::endl;
+            }
+        }
+        
+        backgroundMusic.setLooping(true); 
+        backgroundMusic.setVolume(20.0f);
+    }
+
+    return true; 
 }
 
 void AudioManager::playMusic()
 {
-//    if(isMusicEnabled && backgroundMusic.getStatus() !=sf::SoundSource::Status::Playing) //hrajeme jenom když je to povolené a zovna to nehraje
-//    {
-//        backgroundMusic.play();
-//    }
-//}
+    if (!isAudioAvailable) return;
 
-//void AudioManager::stopMusic()
-//{
-//    backgroundMusic.stop();
+    if (isMusicEnabled && backgroundMusic.getStatus() != sf::SoundSource::Status::Playing)
+    {
+        backgroundMusic.play();
+    }
 }
 
-void AudioManager::toggleMusic() //logika pro tlačítko v nastavení
+void AudioManager::stopMusic()
 {
-//    isMusicEnabled=!isMusicEnabled; //otočíme hodnotu, true -> false a naopak
+    if (!isAudioAvailable) return;
+    backgroundMusic.stop();
+}
+
+void AudioManager::toggleMusic()
+{
+    isMusicEnabled = !isMusicEnabled; 
     
-//    if(isMusicEnabled)
-//    {
-//        playMusic();
-//    }
-//    else
-//    {
-//        stopMusic();
-//    }
+    if (isMusicEnabled)
+    {
+        playMusic();
+    }
+    else
+    {
+        stopMusic();
+    }
 }
 
 bool AudioManager::isMusicPlaying() const 
 {
-  return false;
+    if (!isAudioAvailable) return false;
+    return backgroundMusic.getStatus() == sf::SoundSource::Status::Playing;
 }
 
 void AudioManager::PlayClick()
 {
-//    ClickSound.play();
-}
+    // BEZPEČNOSTNÍ POJISTKA
+    if (!isAudioAvailable) return;
 
+    ClickSound.play();
+}

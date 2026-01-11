@@ -16,9 +16,13 @@ public:
     void PlayClick(); 
 
 private:
+    bool isMusicEnabled;
+    bool isAudioAvailable;
+
     sf::Music backgroundMusic; 
+    
     sf::SoundBuffer clickBuffer; 
     sf::Sound ClickSound;
 
-    bool isMusicEnabled; 
+    
 };
