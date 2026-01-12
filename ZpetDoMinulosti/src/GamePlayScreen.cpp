@@ -11,15 +11,16 @@ GamePlayScreen::GamePlayScreen(sf::RenderWindow&window,float width, float height
 :windowRef(&window),
 font(font), windowHeight(height), windowWidth(width),
 
-textQuestion(font),
-textTimer(font),
-textCounter(font),
-textGameOverTitle(font),
-textScore(font),
-textPercentage(font),
-textRank(font),
-textPausedTitle(font),
-eventLabel(font),
+textQuestion(),
+textTimer(),
+textCounter(),
+textGameOverTitle(),
+textScore(),
+textPercentage(),
+textRank(),
+textPausedTitle(),
+eventLabel(),
+loadingText(),
 
 btnAnswer0(0,0,300,50,L"",font),
 btnAnswer1(0,0,300,50,L"",font),
@@ -65,11 +66,13 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
 
     pauseOverlay.setFillColor(sf::Color(0,0,0,240));
     textPausedTitle.setString(L"Hra pozastavena");
+    textPausedTitle.setFont(font);
     textPausedTitle.setCharacterSize(50);
     textPausedTitle.setFillColor(sf::Color::White);
     textPausedTitle.setStyle(sf::Text::Bold);
 
     eventLabel.setCharacterSize(28);
+    eventLabel.setFont(font);
     eventLabel.setStyle(sf::Text::Bold);
 
     isGameOver = false;
@@ -175,7 +178,7 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
     std::atomic<int> loadedCount(0);
     int totalCount = 30;
 
-    sf::Text loadingText(font);
+    loadingText.setFont(font);
     loadingText.setCharacterSize(40);
     loadingText.setFillColor(sf::Color::White);
     loadingText.setStyle(sf::Text::Bold);
@@ -185,11 +188,12 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
 
     while (future.wait_for(std::chrono::milliseconds(16)) != std::future_status::ready)
     {
+        sf::Event(event);
         if (windowRef) 
         {
-            while (const auto event = windowRef->pollEvent()) 
+            while (windowRef->pollEvent(event)) 
             {
-                if (event->is<sf::Event::Closed>()) 
+                if (event.type==sf::Event::Closed) 
                 {
                     windowRef->close();
                     return; 
@@ -215,7 +219,7 @@ void GamePlayScreen::loadQuestions(std::wstring category, std::wstring difficult
             loadingText.setString(msg);
 
             sf::FloatRect r = loadingText.getLocalBounds();
-            loadingText.setOrigin({r.position.x + r.size.x/2.0f, r.position.y + r.size.y/2.0f});
+            loadingText.setOrigin({r.left + r.width/2.0f, r.top + r.height/2.0f});
             loadingText.setPosition({w / 2.0f, h / 2.0f});
 
             windowRef->draw(loadingText);
@@ -281,7 +285,7 @@ void GamePlayScreen::triggerChaosEvent()
     }
 
     sf::FloatRect r = eventLabel.getLocalBounds();
-    eventLabel.setOrigin({r.position.x + r.size.x / 2.0f, r.position.y + r.size.y / 2.0f});
+    eventLabel.setOrigin({r.left + r.width / 2.0f, r.top + r.height / 2.0f});
     eventLabel.setPosition({windowWidth / 2.0f, 270.0f}); 
 }
 
@@ -351,7 +355,7 @@ void GamePlayScreen::loadNextQuestionUI()
         std::wstring testLine = line.empty() ? word : line + L" " + word;
         textQuestion.setString(testLine);
         
-        if (textQuestion.getLocalBounds().size.x > maxWidth)
+        if (textQuestion.getLocalBounds().width > maxWidth)
         {
             if (!wrappedText.empty()) wrappedText += L"\n";
             wrappedText += line;
@@ -370,8 +374,8 @@ void GamePlayScreen::loadNextQuestionUI()
     
     sf::FloatRect qRect = textQuestion.getLocalBounds();
     textQuestion.setOrigin({
-        qRect.position.x + qRect.size.x / 2.0f,
-        qRect.position.y + qRect.size.y / 2.0f
+        qRect.left + qRect.width / 2.0f,
+        qRect.top + qRect.height / 2.0f
     });
     
     textQuestion.setPosition({windowWidth / 2.0f, 150.0f});
@@ -525,7 +529,7 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         pauseOverlay.setPosition({0,0});
 
         sf::FloatRect pRect = textPausedTitle.getLocalBounds();
-        textPausedTitle.setOrigin({pRect.position.x + pRect.size.x / 2.0f, pRect.position.y + pRect.size.y / 2.0f});
+        textPausedTitle.setOrigin({pRect.left + pRect.width / 2.0f, pRect.top + pRect.height / 2.0f});
         textPausedTitle.setPosition({centerX, height * 0.25f});
 
         btnResume.setPosition(centerX - 150.0f, centerY);
@@ -534,18 +538,18 @@ void GamePlayScreen::recalculatePosition(float width, float height)
     else if(!isGameOver && !isPaused)
     {
         sf::FloatRect qRect = textQuestion.getLocalBounds();
-        textQuestion.setOrigin({qRect.position.x + qRect.size.x / 2.0f, qRect.position.y + qRect.size.y / 2.0f});
+        textQuestion.setOrigin({qRect.left + qRect.width / 2.0f, qRect.top + qRect.height / 2.0f});
         textQuestion.setPosition({width / 2.0f,150.0f});
 
         if(currentCategory==L"Chaos")
         {
             sf::FloatRect eRect = eventLabel.getLocalBounds();
-            eventLabel.setOrigin({eRect.position.x + eRect.size.x / 2.0f, eRect.position.y + eRect.size.y / 2.0f});
+            eventLabel.setOrigin({eRect.left + eRect.width / 2.0f, eRect.top + eRect.height / 2.0f});
             eventLabel.setPosition({centerX, 270.0f});
         }
 
         sf::FloatRect tRect = textTimer.getLocalBounds();
-        textTimer.setOrigin({tRect.position.x + tRect.size.x, 0.0f});
+        textTimer.setOrigin({tRect.left + tRect.width, 0.0f});
         textTimer.setPosition({width - 20.0f, 20.0f});
 
         textCounter.setPosition({20.0f,20.0f});
@@ -571,19 +575,19 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         resultsPanel.setPosition({centerX,centerY});
 
         sf::FloatRect titleRect = textGameOverTitle.getLocalBounds();
-        textGameOverTitle.setOrigin({titleRect.position.x + titleRect.size.x / 2.0f, 0});
+        textGameOverTitle.setOrigin({titleRect.left + titleRect.width / 2.0f, 0});
         textGameOverTitle.setPosition({centerX,centerY - 180.0f});
 
         sf::FloatRect rankRect = textRank.getLocalBounds();
-        textRank.setOrigin({rankRect.position.x + rankRect.size.x / 2.0f,0});
+        textRank.setOrigin({rankRect.left + rankRect.width / 2.0f,0});
         textRank.setPosition({centerX,centerY - 100.0f});
 
         sf::FloatRect scoreRect = textScore.getLocalBounds();
-        textScore.setOrigin({scoreRect.position.x + scoreRect.size.x / 2.0f, 0});
+        textScore.setOrigin({scoreRect.left + scoreRect.width / 2.0f, 0});
         textScore.setPosition({centerX,centerY - 20.0f});
 
         sf::FloatRect percRect = textPercentage.getLocalBounds();
-        textPercentage.setOrigin({percRect.position.x + percRect.size.x / 2.0f, 0});
+        textPercentage.setOrigin({percRect.left + percRect.width / 2.0f, 0});
         textPercentage.setPosition({centerX,centerY + 30.0f});
 
         btnBackToMenu.setPosition(centerX - 10.0f - 300.0f, centerY + 120.0f);

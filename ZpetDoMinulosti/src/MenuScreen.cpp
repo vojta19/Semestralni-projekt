@@ -2,13 +2,14 @@
 #include <iostream>
 
 MenuScreen::MenuScreen(float width, float height, const sf::Font&font) 
-:titleText(font),
+:titleText(),
 btnPlay(0,0,300,50,L"Hrej!",font), 
 btnSettings(0,0,300,50,L"Nastavení",font),      
 btnExit(0,0,300,50,L"Ukončit",font),
 logoSprite(logoTexture)
 
 {
+    titleText.setFont(font);
     titleText.setString(L"Zpět do minulosti");
     titleText.setCharacterSize(85);
     titleText.setFillColor(sf::Color::White);
@@ -71,8 +72,8 @@ void MenuScreen::recalculatePosition(float width, float height)
     
     titleText.setOrigin
     ({
-        titleRect.position.x + titleRect.size.x / 2.0f,
-        titleRect.position.y + titleRect.size.y / 2.0f
+        titleRect.left + titleRect.width / 2.0f,
+        titleRect.top + titleRect.height / 2.0f
     });
     
     titleText.setPosition({width / 2.0f, 100.0f});

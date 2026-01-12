@@ -3,7 +3,7 @@
 #include <algorithm>
 
 Button::Button(float x, float y, float width, float height, const sf::String& text, const sf::Font& font)
-    : buttonText(font) 
+    : buttonText() 
 {
     shape.setPosition({x, y});
     shape.setSize({width, height});
@@ -22,8 +22,8 @@ Button::Button(float x, float y, float width, float height, const sf::String& te
     sf::FloatRect textRect = buttonText.getLocalBounds();
     buttonText.setOrigin
     ({
-        textRect.position.x+textRect.size.x / 2.0f,
-        textRect.position.y + textRect.size.y / 2.0f
+        textRect.left+textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f
     });
 
     buttonText.setPosition({x+ width/2.0f, y+height/2.0f});
@@ -110,7 +110,7 @@ void Button::setText(const sf::String& text)
         std::wstring testLine = currentLine.empty() ? word : currentLine + L" " + word;
         
         buttonText.setString(testLine);
-        if (buttonText.getLocalBounds().size.x > containerWidth)
+        if (buttonText.getLocalBounds().width > containerWidth)
         {
             if (!finalString.empty()) finalString += L"\n";
             finalString += currentLine;
@@ -131,8 +131,8 @@ void Button::setText(const sf::String& text)
     sf::FloatRect bounds = buttonText.getLocalBounds();
     
     buttonText.setOrigin({
-        bounds.position.x + bounds.size.x / 2.0f,
-        bounds.position.y + bounds.size.y / 2.0f
+        bounds.left + bounds.width / 2.0f,
+        bounds.top + bounds.height / 2.0f
     });
 
     sf::Vector2f btnPos = shape.getPosition();

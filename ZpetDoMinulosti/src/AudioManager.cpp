@@ -37,7 +37,7 @@ bool AudioManager::loadAssets()
             }
         }
         
-        backgroundMusic.setLooping(true); 
+        backgroundMusic.setLoop(true); 
         backgroundMusic.setVolume(20.0f);
     }
 

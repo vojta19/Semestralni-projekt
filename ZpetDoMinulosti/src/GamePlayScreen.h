@@ -63,6 +63,7 @@ private:
     sf::Text textScore;
     sf::Text textPercentage;
     sf::Text textRank;
+    sf::Text loadingText;
     Button btnBackToMenu;
     Button btnRestart;
 

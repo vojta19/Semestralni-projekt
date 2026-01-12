@@ -45,10 +45,10 @@ int main()
     
     sf::Font font;
     
-    if (!font.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
+    if (!font.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
     {
         
-        if (!font.openFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
+        if (!font.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
         {
             std::cerr << "CHYBA: Font nenalezen!" << std::endl;
             return -1; 
@@ -70,16 +70,16 @@ int main()
     {
 
         sf::Time deltaTime = gameClock.restart();
-        
-        while (const std::optional event = window.pollEvent())
+        sf::Event(event);
+        while (window.pollEvent(event))
         {
-            if (event->is<sf::Event::Closed>())
+            if (event.type==sf::Event::Closed)
             {
                 window.close();
             }
-            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            if (event.type==sf::Event::KeyPressed)
             {
-                if(keyPressed->code == sf::Keyboard::Key::Escape)
+                if(event.key.code == sf::Keyboard::Escape)
                 {
                     if(currentState== PLAYING)
                     {
@@ -87,26 +87,27 @@ int main()
                     }
                 }
             }
-            if (event->is<sf::Event::MouseButtonReleased>())
+            if (event.type==sf::Event::MouseButtonReleased)
             {
                 mouseClickedReleased = true;
             }
-            if(const auto* resized = event->getIf<sf::Event::Resized>())
+            if(event.type==sf::Event::Resized)
             {
-                sf::Vector2f newSize = static_cast<sf::Vector2f>(resized->size);
+                float w = static_cast<float>(event.size.width);
+                float h = static_cast<float>(event.size.height);
                 
-                sf::FloatRect visibleArea({0, 0}, {newSize.x, newSize.y});
+                sf::FloatRect visibleArea(0, 0, w, h);
                 window.setView(sf::View(visibleArea));
 
-                menu.recalculatePosition(newSize.x, newSize.y);
-                settings.recalculatePosition(newSize.x, newSize.y);
-                game.recalculatePosition(newSize.x, newSize.y);
-                playing.recalculatePosition(newSize.x, newSize.y);
+                menu.recalculatePosition(w, h);
+                settings.recalculatePosition(w, h);
+                game.recalculatePosition(w, h);
+                playing.recalculatePosition(w, h);
                 
-                if (currentState == PLAYING) playing.recalculatePosition(newSize.x, newSize.y);
+                if (currentState == PLAYING) playing.recalculatePosition(event.size.width, event.size.height);
             }
             
-            if (event->is<sf::Event::MouseButtonReleased>()) mouseClickedReleased = true;
+            if (event.type==sf::Event::MouseButtonReleased) mouseClickedReleased = true;
         }
 
         if (currentState == PLAYING)

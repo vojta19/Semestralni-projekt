@@ -2,11 +2,12 @@
 #include <string> 
 
 SettingsScreen::SettingsScreen(float width, float height, const sf::Font& font)
-    : titleText(font),
+    : titleText(),
       btnToggle(0, 0, 300, 50, L"Hudba ZAP/VYP", font),
       btnResolution(0, 0, 300, 50, L"Rozlišení: 800x600", font),
       btnBack(0, 0, 150, 40, L"Zpět", font)
 {
+    titleText.setFont(font);
     titleText.setString(L"NASTAVENÍ");
     titleText.setCharacterSize(50);
     titleText.setFillColor(sf::Color::White);
@@ -15,8 +16,8 @@ SettingsScreen::SettingsScreen(float width, float height, const sf::Font& font)
     
     sf::FloatRect textRect = titleText.getLocalBounds();
     titleText.setOrigin({
-        textRect.position.x + textRect.size.x / 2.0f,
-        textRect.position.y + textRect.size.y / 2.0f
+        textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f
     });
 
     
@@ -93,13 +94,14 @@ bool SettingsScreen::handleInput(sf::RenderWindow& window, AudioManager& audio)
 
             sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
-            if (newRes.x == desktopMode.size.x && newRes.y == desktopMode.size.y)
+            sf::VideoMode mode(newRes.x,newRes.y);
+            if (newRes.x == desktopMode.width && newRes.y == desktopMode.height)
             {
-            window.create(sf::VideoMode(newRes), L"Zpět do minulosti", sf::Style::None, sf::State::Fullscreen);
+            window.create(mode, L"Zpět do minulosti",sf::Style::Fullscreen);
             }
             else
             {
-            window.create(sf::VideoMode(newRes), L"Zpět do minulosti", sf::Style::Default, sf::State::Windowed);
+            window.create(mode, L"Zpět do minulosti",sf::Style::Default);
             }
 
             window.setFramerateLimit(60);
