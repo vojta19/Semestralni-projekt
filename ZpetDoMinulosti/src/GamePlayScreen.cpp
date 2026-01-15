@@ -84,7 +84,7 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
     isShuffleActive=false;
     isFogActive=false;
 
-    std::string pathPrefix = "/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/";
+    std::string pathPrefix = "assets/";
 
     if (!texAncient.loadFromFile(pathPrefix + "bg_ancient.jpg")) 
     {
@@ -267,12 +267,14 @@ void GamePlayScreen::triggerChaosEvent()
     if (roll == 0) 
     {
         isShuffleActive = true;
+        eventLabel.setFont(font);
         eventLabel.setString(L"! CHAOS: ZPŘEHÁZENÉ ODPOVĚDI !");
         eventLabel.setFillColor(sf::Color::White);
     } 
     else if (roll == 1) 
     {
         isFogActive = true;
+        eventLabel.setFont(font);
         eventLabel.setString(L"! CHAOS: CENZURA (Najeď myší) !");
         eventLabel.setFillColor(sf::Color::White);
     } 
@@ -280,6 +282,7 @@ void GamePlayScreen::triggerChaosEvent()
     {
         isShuffleActive = true;
         isFogActive = true;
+        eventLabel.setFont(font);
         eventLabel.setString(L"!!! TOTÁLNÍ CHAOS !!!");
         eventLabel.setFillColor(sf::Color::White);
     }

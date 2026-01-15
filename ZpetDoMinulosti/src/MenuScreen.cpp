@@ -15,7 +15,7 @@ logoSprite(logoTexture)
     titleText.setFillColor(sf::Color::White);
     titleText.setStyle(sf::Text::Bold);
 
-    std::string pathPrefix = "/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/";
+    std::string pathPrefix = "assets/";
     
     if (!logoTexture.loadFromFile(pathPrefix + "logo.png"))
     {

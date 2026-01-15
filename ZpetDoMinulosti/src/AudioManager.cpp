@@ -9,7 +9,7 @@ AudioManager::AudioManager():ClickSound(clickBuffer)
 
 bool AudioManager::loadAssets()
 {
-    std::string pathPrefix = "/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/";
+    std::string pathPrefix = "assets/";
 
 
     if (!clickBuffer.loadFromFile(pathPrefix + "click.wav"))
