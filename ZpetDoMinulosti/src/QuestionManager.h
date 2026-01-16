@@ -9,7 +9,7 @@ struct Question
 {
     std::wstring text;
     std::vector<std::wstring> answers;
-    int correctIndex;
+    int correctIndex=0;
 };
 
 class QuestionManager

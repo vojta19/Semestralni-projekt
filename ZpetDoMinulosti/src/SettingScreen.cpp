@@ -34,16 +34,24 @@ SettingsScreen::SettingsScreen(float width, float height, const sf::Font& font)
 
 void SettingsScreen::recalculatePosition(float width, float height)
 {
-    
-    titleText.setPosition({width / 2.0f, 100.0f});
+    float centerX = width / 2.0f;
+    sf::FloatRect titleRect = titleText.getLocalBounds();
+    titleText.setOrigin({
+        titleRect.left + titleRect.width / 2.0f,
+        titleRect.top + titleRect.height / 2.0f
+        });
+    titleText.setPosition({ centerX, height * 0.22f });
 
-    float centerX = width / 2.0f - 150.0f;
+    float buttonHalfWidth = 150.0f;
+    float btnX = centerX - buttonHalfWidth;
+    float groupCenterY = height * 0.55f;
+    float offset = 45.0f;
 
-    btnToggle.setPosition(centerX, 200.0f);
-    btnResolution.setPosition(centerX, 300.0f);
-
+    btnToggle.setPosition(btnX, groupCenterY - offset);
+    btnResolution.setPosition(btnX, groupCenterY + offset);
     btnBack.setPosition(width - 170.0f, height - 60.0f);
 }
+
 
 void SettingsScreen::updateResolutionButtonText()
 {

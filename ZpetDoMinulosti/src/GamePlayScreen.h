@@ -66,6 +66,7 @@ private:
     sf::Text loadingText;
     Button btnBackToMenu;
     Button btnRestart;
+    Button btnToggleMusic;
 
     bool isShuffleActive;
     bool isFogActive;

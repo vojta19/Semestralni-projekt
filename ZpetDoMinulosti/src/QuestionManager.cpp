@@ -1,3 +1,4 @@
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include "QuestionManager.h"
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>

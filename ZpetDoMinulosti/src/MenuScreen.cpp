@@ -68,6 +68,7 @@ int MenuScreen::handleInput(sf::RenderWindow&window)
 
 void MenuScreen::recalculatePosition(float width, float height)
 {
+	float centerX = width / 2.0f;
     sf::FloatRect titleRect = titleText.getLocalBounds();
     
     titleText.setOrigin
@@ -76,14 +77,17 @@ void MenuScreen::recalculatePosition(float width, float height)
         titleRect.top + titleRect.height / 2.0f
     });
     
-    titleText.setPosition({width / 2.0f, 100.0f});
+    titleText.setPosition({centerX,height*0.22f});
 
     float buttonHalfWidth = 150.0f;
-    float centerX = width / 2.0f - buttonHalfWidth; 
+    float btnX = centerX - buttonHalfWidth;
+	float groupCenterY = height * 0.55f;
+	float gap = 80.0f;
+	float middleBtnY = groupCenterY-25.0f;
 
-    btnPlay.setPosition(centerX, 250.0f);     
-    btnSettings.setPosition(centerX, 350.0f);
-    btnExit.setPosition(centerX, 450.0f);
+    btnPlay.setPosition(btnX,middleBtnY-gap);     
+    btnSettings.setPosition(btnX,middleBtnY);
+    btnExit.setPosition(btnX,middleBtnY+gap);
 
     if(logoTexture.getSize().x>0)
     {

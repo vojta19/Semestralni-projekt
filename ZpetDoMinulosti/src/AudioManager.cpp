@@ -29,20 +29,64 @@ bool AudioManager::loadAssets()
 
     if (isAudioAvailable)
     {
-        if (!backgroundMusic.openFromFile(pathPrefix + "music.ogg"))
-        {
-            if (!backgroundMusic.openFromFile("assets/music.ogg"))
-            {
-                std::cerr << "Varovani: music.ogg se nepodarilo nacist." << std::endl;
-            }
-        }
-        
-        backgroundMusic.setLoop(true); 
-        backgroundMusic.setVolume(20.0f);
+        playMenuMusic();
     }
+    return true;
 
-    return true; 
 }
+
+void AudioManager::switchTrack(const std::string& filename)
+{
+    if (!isAudioAvailable) return;
+	backgroundMusic.stop();
+
+	std::string fullPath = "assets/" + filename;
+    if (!backgroundMusic.openFromFile(fullPath))
+    {
+        std::cerr << "CHYBA: Hudbu se nepodarilo nacist: " << fullPath << std::endl;
+        return;
+	}
+	backgroundMusic.setLoop(true);
+    backgroundMusic.setVolume(20.0f);
+
+    if (isMusicEnabled)
+    {
+      backgroundMusic.play();
+    }
+}
+
+void AudioManager::playMenuMusic()
+{
+    switchTrack("music_menu.ogg");
+}
+
+void AudioManager::playGameMusic(std::wstring category)
+{
+    std::string filename;
+
+    if (category == L"Starověk")
+    {
+        filename = "music_ancient.ogg";
+    }
+    else if (category == L"Středověk")
+    {
+        filename = "music_medieval.ogg";
+    }
+    else if (category == L"Moderní dějiny")
+    {
+        filename = "music_modern.ogg";
+    }
+    else if (category == L"Chaos")
+    {
+        filename = "music_chaos.ogg";
+    }
+    else
+    {
+        filename = "music_menu.ogg";
+    }
+    switchTrack(filename);
+}
+
 
 void AudioManager::playMusic()
 {
@@ -66,7 +110,8 @@ void AudioManager::toggleMusic()
     
     if (isMusicEnabled)
     {
-        playMusic();
+        if (backgroundMusic.getStatus() != sf::SoundSource::Status::Playing)
+            backgroundMusic.play();
     }
     else
     {
@@ -82,8 +127,10 @@ bool AudioManager::isMusicPlaying() const
 
 void AudioManager::PlayClick()
 {
-    // BEZPEČNOSTNÍ POJISTKA
     if (!isAudioAvailable) return;
-
-    ClickSound.play();
+    if (ClickSound.getBuffer() != nullptr)
+    {
+      ClickSound.play();
+    }
 }
+

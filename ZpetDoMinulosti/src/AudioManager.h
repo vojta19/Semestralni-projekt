@@ -8,6 +8,8 @@ public:
     AudioManager();   
     bool loadAssets(); 
     
+    void playMenuMusic();
+    void playGameMusic(std::wstring category);
     void playMusic(); 
     void stopMusic(); 
     void toggleMusic(); 
@@ -23,6 +25,8 @@ private:
     
     sf::SoundBuffer clickBuffer; 
     sf::Sound ClickSound;
+
+    void switchTrack(const std::string&filename);
 
     
 };

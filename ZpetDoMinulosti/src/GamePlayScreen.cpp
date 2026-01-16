@@ -8,33 +8,35 @@
 #include <optional>
 
 GamePlayScreen::GamePlayScreen(sf::RenderWindow&window,float width, float height, const sf::Font&font)
-:windowRef(&window),
-font(font), windowHeight(height), windowWidth(width),
+:   windowRef(&window),
+    font(font), windowHeight(height), windowWidth(width),
 
-textQuestion(),
-textTimer(),
-textCounter(),
-textGameOverTitle(),
-textScore(),
-textPercentage(),
-textRank(),
-textPausedTitle(),
-eventLabel(),
-loadingText(),
+    textQuestion(),
+    textTimer(),
+    textCounter(),
+    textGameOverTitle(),
+    textScore(),
+    textPercentage(),
+    textRank(),
+    textPausedTitle(),
+    eventLabel(),
+    loadingText(),
 
-btnAnswer0(0,0,300,50,L"",font),
-btnAnswer1(0,0,300,50,L"",font),
-btnAnswer2(0,0,300,50,L"",font),
-btnAnswer3(0,0,300,50,L"",font),
-btnResume(0,0,300,50,L"Zpět do hry",font),
-
-btnBackToMenu(0,0,300,50,L"Do hlavní nabídky",font),
-btnRestart(0,0,300,50,L"Zkusit znovu",font)
+    btnAnswer0(0,0,300,50,L"",font),
+    btnAnswer1(0,0,300,50,L"",font),
+    btnAnswer2(0,0,300,50,L"",font),
+    btnAnswer3(0,0,300,50,L"",font),
+    btnResume(0,0,300,50,L"Zpět do hry",font),
+	btnToggleMusic(0, 0, 300, 50, L"Vypnout hudbu", font),
+    btnBackToMenu(0,0,300,50,L"Do hlavní nabídky",font),
+    btnRestart(0,0,300,50,L"Zkusit znovu",font)
 
 {
     textQuestion.setFont(font);
     textQuestion.setCharacterSize(30);
     textQuestion.setFillColor(sf::Color::White);
+	textQuestion.setOutlineColor(sf::Color::Black);
+	textQuestion.setOutlineThickness(2.2f);
 
     textTimer.setFont(font);
     textTimer.setCharacterSize(40);
@@ -74,6 +76,8 @@ btnRestart(0,0,300,50,L"Zkusit znovu",font)
     eventLabel.setCharacterSize(28);
     eventLabel.setFont(font);
     eventLabel.setStyle(sf::Text::Bold);
+    eventLabel.setOutlineColor(sf::Color::Black);
+    eventLabel.setOutlineThickness(2.2f);
 
     isGameOver = false;
     isPaused = false;
@@ -270,13 +274,17 @@ void GamePlayScreen::triggerChaosEvent()
         eventLabel.setFont(font);
         eventLabel.setString(L"! CHAOS: ZPŘEHÁZENÉ ODPOVĚDI !");
         eventLabel.setFillColor(sf::Color::White);
+        eventLabel.setOutlineColor(sf::Color::Black);
+        eventLabel.setOutlineThickness(2.2f);
     } 
     else if (roll == 1) 
     {
         isFogActive = true;
-        eventLabel.setFont(font);
+		eventLabel.setFont(font);
         eventLabel.setString(L"! CHAOS: CENZURA (Najeď myší) !");
         eventLabel.setFillColor(sf::Color::White);
+        eventLabel.setOutlineColor(sf::Color::Black);
+        eventLabel.setOutlineThickness(2.2f);
     } 
     else 
     {
@@ -285,6 +293,8 @@ void GamePlayScreen::triggerChaosEvent()
         eventLabel.setFont(font);
         eventLabel.setString(L"!!! TOTÁLNÍ CHAOS !!!");
         eventLabel.setFillColor(sf::Color::White);
+        eventLabel.setOutlineColor(sf::Color::Black);
+        eventLabel.setOutlineThickness(2.2f);
     }
 
     sf::FloatRect r = eventLabel.getLocalBounds();
@@ -311,13 +321,17 @@ void GamePlayScreen::loadNextQuestionUI()
     if(currentCategory==L"Chaos")
     {
         textQuestion.setFillColor(sf::Color::White);
+        textQuestion.setOutlineColor(sf::Color::Black);
+        textQuestion.setOutlineThickness(2.2f);
         timeLimit = 20.0f;
         remainingTime = 20.0f;
         triggerChaosEvent();
     }
     else
     {
-        textQuestion.setFillColor(sf::Color::Black);
+        textQuestion.setFillColor(sf::Color::White);
+        textQuestion.setOutlineColor(sf::Color::Black);
+        textQuestion.setOutlineThickness(2.2f);
         remainingTime = timeLimit;
         isShuffleActive = false;
         isFogActive = false;
@@ -337,7 +351,9 @@ void GamePlayScreen::loadNextQuestionUI()
     std::wstring line;
     
     textQuestion.setString(rawText);
-    textQuestion.setCharacterSize(24); 
+    textQuestion.setCharacterSize(30);
+    textQuestion.setOutlineColor(sf::Color::Black);
+    textQuestion.setOutlineThickness(3.0f);
     
     float maxWidth = windowWidth * 0.8f;
 
@@ -536,37 +552,51 @@ void GamePlayScreen::recalculatePosition(float width, float height)
         textPausedTitle.setPosition({centerX, height * 0.25f});
 
         btnResume.setPosition(centerX - 150.0f, centerY);
-        btnBackToMenu.setPosition(centerX - 150.0f, centerY + 80.0f);
+		btnToggleMusic.setPosition(centerX - 150.0f, centerY + 70.0f);
+        btnBackToMenu.setPosition(centerX - 150.0f, centerY + 140.0f);
     }
-    else if(!isGameOver && !isPaused)
+    else if (!isGameOver && !isPaused)
     {
-        sf::FloatRect qRect = textQuestion.getLocalBounds();
-        textQuestion.setOrigin({qRect.left + qRect.width / 2.0f, qRect.top + qRect.height / 2.0f});
-        textQuestion.setPosition({width / 2.0f,150.0f});
+        sf::FloatRect tRect = textTimer.getLocalBounds();
+        textTimer.setOrigin({ tRect.left + tRect.width, 0.0f });
+        textTimer.setPosition({ width - 20.0f, 20.0f });
 
-        if(currentCategory==L"Chaos")
+        textCounter.setPosition({ 20.0f,20.0f });
+
+        float blockCenterY = height * 0.60f;
+        float btnW = 300.0f;
+        float btnH = 50.0f;
+        float gapX = 40.0f;
+        float gapY = 30.0f;
+
+        float leftX = centerX - btnW - (gapX / 2.0f);
+        float rightX = centerX + (gapX / 2.0f);
+
+        float topY = blockCenterY - btnH - (gapY / 2.0f);
+        float bottomY = blockCenterY + (gapY / 2.0f);
+
+        btnAnswer0.setPosition(leftX, topY);
+        btnAnswer1.setPosition(rightX, topY);
+        btnAnswer2.setPosition(leftX, bottomY);
+        btnAnswer3.setPosition(rightX, bottomY);
+
+        float questionBottomMargin = 0.0f;
+
+        if (currentCategory == L"Chaos")
         {
             sf::FloatRect eRect = eventLabel.getLocalBounds();
-            eventLabel.setOrigin({eRect.left + eRect.width / 2.0f, eRect.top + eRect.height / 2.0f});
-            eventLabel.setPosition({centerX, 270.0f});
+            eventLabel.setOrigin({ eRect.left + eRect.width / 2.0f, eRect.top + eRect.height / 2.0f });
+            eventLabel.setPosition({ centerX,topY - 45.0f });
+            questionBottomMargin = 110.0f;
+        }
+        else
+        {
+			questionBottomMargin = 70.0f;
         }
 
-        sf::FloatRect tRect = textTimer.getLocalBounds();
-        textTimer.setOrigin({tRect.left + tRect.width, 0.0f});
-        textTimer.setPosition({width - 20.0f, 20.0f});
-
-        textCounter.setPosition({20.0f,20.0f});
-
-        float centerX = width / 2.0f;
-        float startY = 300.0f;
-        float gapX = 320.0f; 
-        float gapY = 80.0f;  
-
-        btnAnswer0.setPosition(centerX - gapX/2.0f - 150.0f, startY);
-        btnAnswer1.setPosition(centerX + gapX/2.0f - 150.0f, startY);
-        
-        btnAnswer2.setPosition(centerX - gapX/2.0f - 150.0f, startY + gapY);
-        btnAnswer3.setPosition(centerX + gapX/2.0f - 150.0f, startY + gapY);
+        sf::FloatRect qRect = textQuestion.getLocalBounds();
+        textQuestion.setOrigin({ qRect.left + qRect.width / 2.0f, qRect.top + qRect.height / 2.0f });
+        textQuestion.setPosition({ centerX,topY-questionBottomMargin});
     }
     else
     {
@@ -617,6 +647,7 @@ void GamePlayScreen::draw(sf::RenderWindow&window)
         window.draw(pauseOverlay);
         window.draw(textPausedTitle);
         btnResume.draw(window);
+		btnToggleMusic.draw(window);
         btnBackToMenu.draw(window);
     }
     else if(!isGameOver)
@@ -680,6 +711,21 @@ int GamePlayScreen::handleInput(sf::RenderWindow&window, AudioManager&audio)
                 audio.PlayClick();
                 togglePause();
                 return 0;
+            }
+            if (btnToggleMusic.isClicked(mousePos))
+            {
+                audio.PlayClick();
+                audio.toggleMusic();
+
+                if (audio.isMusicPlaying())
+                {
+                    btnToggleMusic.setText(L"Vypnout hudbu");
+                }
+                else
+                {
+                    btnToggleMusic.setText(L"Zapnout hudbu");
+                }
+                return 0; 
             }
             if(btnBackToMenu.isClicked(mousePos))
             {

@@ -16,7 +16,8 @@ enum GameState
     PLAYING
 };
 
-void updateViewAndLayout(sf::RenderWindow& window, auto& screen)
+template<typename T>
+void updateViewAndLayout(sf::RenderWindow& window, T& screen)
 {
     sf::Vector2u size = window.getSize();
     float w = static_cast<float>(size.x);
@@ -40,15 +41,15 @@ int main()
     {
         std::cerr << "Varovani: Nepodarilo se nacist zvuky" << std::endl;
     }
-    audio.playMusic();
+    audio.playMenuMusic();
 
     
     sf::Font font;
     
-    if (!font.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
+    if (!font.loadFromFile("assets/font.ttf"))
     {
         
-        if (!font.loadFromFile("/workspaces/Semestralni-projekt/ZpetDoMinulosti/assets/font.ttf"))
+        if (!font.loadFromFile("/assets/font.ttf"))
         {
             std::cerr << "CHYBA: Font nenalezen!" << std::endl;
             return -1; 
@@ -187,6 +188,7 @@ int main()
 
                     updateViewAndLayout(window,playing);
                     
+					audio.playGameMusic(cat);
                     playing.startNewGame(cat,diff);
                     currentState = PLAYING;
 
@@ -204,6 +206,7 @@ int main()
                     currentState = MENU;
                     sf::Vector2u currentSize = window.getSize();
                     menu.recalculatePosition((float)currentSize.x,(float)currentSize.y);
+					audio.playMenuMusic();
                     audio.PlayClick();
                     updateViewAndLayout(window,playing);
                 }

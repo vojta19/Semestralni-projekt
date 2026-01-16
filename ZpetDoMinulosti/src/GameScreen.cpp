@@ -40,6 +40,8 @@ void GameScreen::updateButtonLabels()
 
 void GameScreen::recalculatePosition(float width, float height)
 {
+    
+	float centerX = width / 2.0f;
     sf::FloatRect titleRect = titleText.getLocalBounds();
     
     titleText.setOrigin
@@ -48,14 +50,17 @@ void GameScreen::recalculatePosition(float width, float height)
         titleRect.top + titleRect.height / 2.0f
     });
     
-    titleText.setPosition({width / 2.0f, 100.0f});
+    titleText.setPosition({centerX,height*0.22f});
 
     float buttonHalfWidth = 150.0f;
-    float centerX = width / 2.0f - buttonHalfWidth; 
+    float btnX = centerX - buttonHalfWidth;
+	float groupCenterY = height*0.55f;
+	float middleBtnY = groupCenterY-25.0f;
+    float gap = 90.0f;
 
-    btnCategory.setPosition(centerX, 250.0f);     
-    btnDifficulty.setPosition(centerX, 350.0f);
-    btnStart.setPosition(centerX, 500.0f);
+    btnCategory.setPosition(btnX,middleBtnY-gap);     
+    btnDifficulty.setPosition(btnX,middleBtnY);
+    btnStart.setPosition(btnX, middleBtnY+gap + 20.0f);
 
     btnBack.setPosition(width-170.0f,height-60.0f);
 }
