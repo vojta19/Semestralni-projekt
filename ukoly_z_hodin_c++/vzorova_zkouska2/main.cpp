@@ -20,6 +20,6 @@ int main()
     mujDum.PridatSensory(&s4);
 
     std::cout<<"--------SMART HOME LOG------------"<<std::endl;
-    mujDum.Simulace(8,50,15);
+    mujDum.Simulace(8,50,15,"zkouska.log");
     return 0;
 }

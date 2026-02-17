@@ -9,5 +9,5 @@ private:
     std::vector<Sensor*> senzory;
 public:
     void PridatSensory(Sensor*s);
-    void Simulace( int StartHodina, int PocetLogu, int krokMinuty); 
+    void Simulace( int StartHodina, int PocetLogu, int krokMinuty,std::string nazevSouboru); 
 };
