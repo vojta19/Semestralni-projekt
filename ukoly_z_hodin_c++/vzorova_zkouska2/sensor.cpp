@@ -12,7 +12,7 @@ Sensor::Sensor(std::string m,std::string t,double startHodnota)
 
 void Sensor::zmerit()
 {
-    double zmena = (rand() % 10-5) /10.0;
+    double zmena = (rand() % 10-5) /10.0; //náhodná změna mezi -0.5 a 0.5
     hodnota += zmena;
 
     if(typ=="HUMI")
