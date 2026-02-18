@@ -10,9 +10,9 @@
 
 int main()
 {
-    srand(time(0));
-    Sensor mujSensor("zkouska.log");
-    Smarthome mujSmarthome(&mujSensor);
-    mujSmarthome.simulace(10);
+    srand(time(0));                     // Inicializace generátoru náhodných čísel
+    Sensor mujSensor("zkouska.log");    // Vytvoření instance třídy Sensor s názvem souboru "zkouska.log"
+    Smarthome mujSmarthome(&mujSensor); // Vytvoření instance třídy Smarthome a předání ukazatele na objekt Sensor
+    mujSmarthome.simulace(50);          // Spuštění simulace s 50 událostmi
     return 0;
 }
